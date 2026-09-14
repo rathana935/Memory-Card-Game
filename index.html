@@ -2,29 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<script src="https://telegram.org/js/telegram-web-app.js?63"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
 <title>Memory Coins</title>
 
-<style>
+<script src="https://telegram.org/js/telegram-web-app.js?63"></script>
 
+<style>
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-body{
+html,body{
     margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f6fb;
-    color:#182033;
+    background:#101426;
+    color:#fff;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+button,input{
+    font:inherit;
 }
 
 button{
-    font-family:inherit;
+    border:0;
     cursor:pointer;
+}
+
+button:disabled{
+    cursor:not-allowed;
 }
 
 .app{
@@ -32,22 +46,19 @@ button{
     max-width:520px;
     margin:auto;
     min-height:100vh;
-    padding-bottom:85px;
+    padding-bottom:90px;
 }
 
 /* HEADER */
 
 .header{
     padding:18px 16px 10px;
-}
-
-.header-top{
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-.user-box{
+.profile{
     display:flex;
     align-items:center;
     gap:10px;
@@ -57,74 +68,76 @@ button{
     width:46px;
     height:46px;
     border-radius:50%;
-    background:linear-gradient(135deg,#6c2bd9,#9333ea);
-    color:white;
+    background:#2b3352;
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:22px;
-    font-weight:900;
+    overflow:hidden;
+}
+
+.avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 .username{
-    font-size:16px;
-    font-weight:800;
+    font-weight:bold;
+    font-size:15px;
 }
 
-.small{
-    font-size:12px;
-    color:#7d8495;
-}
-
-.balance-card{
-    margin:14px 0;
-    padding:22px;
-    border-radius:22px;
-    color:white;
-    background:linear-gradient(135deg,#6c2bd9,#9333ea);
-    box-shadow:0 12px 30px rgba(108,43,217,.25);
-}
-
-.balance-label{
-    font-size:13px;
-    opacity:.85;
+.status{
+    font-size:11px;
+    color:#8f9ab8;
+    margin-top:3px;
 }
 
 .balance{
-    font-size:34px;
-    font-weight:900;
-    margin:5px 0;
+    text-align:right;
 }
 
-.usd{
-    font-size:14px;
-    opacity:.9;
+.balance-label{
+    font-size:11px;
+    color:#8f9ab8;
+}
+
+.balance-value{
+    font-size:20px;
+    font-weight:bold;
+    color:#ffd54a;
 }
 
 /* PAGES */
 
 .page{
     display:none;
-    padding:8px 16px 20px;
+    padding:10px 16px;
 }
 
 .page.active{
     display:block;
 }
 
-.section-title{
-    margin:10px 0 16px;
+/* CARDS */
+
+.card{
+    background:#191f36;
+    border:1px solid #293150;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:14px;
 }
 
-.section-title h2{
-    margin:0 0 4px;
-    font-size:23px;
+.card-title{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:12px;
 }
 
-.section-title p{
-    margin:0;
-    color:#7b8292;
-    font-size:13px;
+.small{
+    font-size:12px;
+    color:#8f9ab8;
 }
 
 /* STATS */
@@ -132,323 +145,114 @@ button{
 .stats{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:12px;
+    gap:10px;
+    margin-bottom:14px;
 }
 
-.stat-card{
-    background:white;
-    border-radius:18px;
-    padding:16px;
-    box-shadow:0 5px 18px rgba(0,0,0,.06);
-}
-
-.stat-icon{
-    font-size:23px;
-}
-
-.stat-value{
-    font-size:20px;
-    font-weight:900;
-    margin-top:8px;
+.stat{
+    background:#191f36;
+    border:1px solid #293150;
+    border-radius:15px;
+    padding:13px;
 }
 
 .stat-label{
-    color:#7d8495;
-    font-size:12px;
-    margin-top:3px;
+    color:#8f9ab8;
+    font-size:11px;
 }
 
-/* LEVEL */
-
-.level-card{
-    background:white;
-    border-radius:20px;
-    padding:17px;
-    margin-bottom:12px;
-    box-shadow:0 5px 18px rgba(0,0,0,.06);
-}
-
-.level-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.level-name{
+.stat-value{
+    margin-top:5px;
     font-size:18px;
-    font-weight:900;
+    font-weight:bold;
 }
 
-.level-info{
-    color:#777;
-    font-size:12px;
-    margin-top:4px;
+/* BUTTONS */
+
+.primary{
+    width:100%;
+    padding:15px;
+    border-radius:14px;
+    background:#5b6cff;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+}
+
+.primary:active{
+    transform:scale(.98);
+}
+
+.secondary{
+    width:100%;
+    padding:13px;
+    border-radius:13px;
+    background:#272f4d;
+    color:white;
+    font-weight:bold;
+}
+
+.green{
+    background:#21b573;
+}
+
+.gold{
+    background:#e6a91a;
+    color:#111;
+}
+
+.red{
+    background:#d94c5b;
+}
+
+/* LEVELS */
+
+.level-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
 }
 
 .level-btn{
-    border:0;
-    padding:10px 15px;
-    border-radius:12px;
-    background:#6c2bd9;
-    color:white;
-    font-weight:800;
+    background:#242b48;
+    color:#fff;
+    border:1px solid #333c60;
+    border-radius:13px;
+    padding:12px 5px;
 }
+
+.level-btn.active{
+    background:#5b6cff;
+    border-color:#7180ff;
+}
+
+.level-name{
+    font-weight:bold;
+    font-size:13px;
+}
+
+.level-info{
+    font-size:10px;
+    color:#aeb7d1;
+    margin-top:4px;
+}
+
+/* PROGRESS */
 
 .progress{
     width:100%;
-    height:7px;
-    background:#eee;
+    height:8px;
+    background:#292f49;
     border-radius:10px;
-    margin-top:13px;
     overflow:hidden;
+    margin-top:8px;
 }
 
 .progress-bar{
     height:100%;
-    background:linear-gradient(90deg,#6c2bd9,#c026d3);
-    border-radius:10px;
-}
-
-/* BONUS */
-
-.bonus-card{
-    background:linear-gradient(135deg,#ff9d00,#ff5b00);
-    color:white;
-    border-radius:22px;
-    padding:22px;
-    text-align:center;
-}
-
-.bonus-icon{
-    font-size:48px;
-}
-
-.bonus-reward{
-    font-size:28px;
-    font-weight:900;
-    margin:7px 0;
-}
-
-.claim-btn{
-    width:100%;
-    border:0;
-    border-radius:14px;
-    padding:14px;
-    margin-top:14px;
-    background:white;
-    color:#f05a00;
-    font-weight:900;
-    font-size:16px;
-}
-
-.claim-btn:disabled{
-    opacity:.55;
-}
-
-.days{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:6px;
-    margin-top:15px;
-}
-
-.day{
-    background:white;
-    color:#333;
-    border-radius:10px;
-    padding:9px 2px;
-    text-align:center;
-    font-size:10px;
-    font-weight:800;
-}
-
-/* LEADERBOARD */
-
-.tabs{
-    display:flex;
-    background:#e9eaf0;
-    padding:4px;
-    border-radius:13px;
-    margin-bottom:15px;
-}
-
-.tab{
-    flex:1;
-    border:0;
-    padding:10px;
-    border-radius:10px;
-    background:transparent;
-    font-weight:800;
-}
-
-.tab.active{
-    background:white;
-}
-
-.podium{
-    display:flex;
-    justify-content:center;
-    align-items:end;
-    gap:10px;
-    margin:20px 0;
-}
-
-.podium-item{
-    text-align:center;
-    width:30%;
-}
-
-.podium-avatar{
-    width:50px;
-    height:50px;
-    margin:auto;
-    border-radius:50%;
-    background:#eee;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:23px;
-}
-
-.podium-rank{
-    font-size:12px;
-    font-weight:900;
-    margin-top:5px;
-}
-
-.leader-row{
-    background:white;
-    border-radius:15px;
-    padding:13px;
-    margin-bottom:8px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.leader-left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.rank-number{
-    width:28px;
-    text-align:center;
-    font-weight:900;
-}
-
-.leader-coins{
-    font-weight:900;
-    color:#6c2bd9;
-}
-
-/* WALLET */
-
-.wallet-card{
-    background:white;
-    border-radius:20px;
-    padding:18px;
-    box-shadow:0 5px 18px rgba(0,0,0,.06);
-}
-
-.wallet-balance{
-    font-size:30px;
-    font-weight:900;
-}
-
-.wallet-usd{
-    color:#777;
-    margin-top:4px;
-}
-
-.input{
-    width:100%;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:12px;
-    outline:none;
-    margin-top:8px;
-}
-
-.presets{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    margin-top:10px;
-}
-
-.preset{
-    border:1px solid #ddd;
-    background:white;
-    padding:10px 4px;
-    border-radius:10px;
-    font-size:12px;
-    font-weight:800;
-}
-
-.preset.selected{
-    background:#6c2bd9;
-    color:white;
-}
-
-.withdraw-btn{
-    width:100%;
-    border:0;
-    padding:15px;
-    border-radius:14px;
-    margin-top:14px;
-    background:#6c2bd9;
-    color:white;
-    font-size:16px;
-    font-weight:900;
-}
-
-.note{
-    margin-top:12px;
-    background:#fff8e8;
-    color:#8a6200;
-    padding:12px;
-    border-radius:12px;
-    font-size:12px;
-}
-
-/* ACHIEVEMENTS */
-
-.achievement{
-    background:white;
-    border-radius:17px;
-    padding:15px;
-    margin-bottom:9px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.achievement-icon{
-    width:45px;
-    height:45px;
-    border-radius:13px;
-    background:#eee;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-}
-
-.achievement-info{
-    flex:1;
-}
-
-.achievement-title{
-    font-weight:900;
-    font-size:14px;
-}
-
-.achievement-desc{
-    color:#777;
-    font-size:11px;
-    margin-top:3px;
+    width:0%;
+    background:#5b6cff;
+    transition:.3s;
 }
 
 /* GAME */
@@ -457,205 +261,226 @@ button{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:12px;
 }
 
-.game-title{
-    font-size:20px;
-    font-weight:900;
+.timer{
+    color:#ffd54a;
+    font-weight:bold;
 }
 
-.game-info{
-    display:flex;
-    justify-content:space-between;
-    margin:12px 0;
-    color:#666;
-    font-size:12px;
-}
-
-.game-stat{
-    background:white;
-    border-radius:11px;
-    padding:8px 10px;
-    font-size:11px;
-    font-weight:800;
-}
-
-.memory-board{
+.memory-grid{
     display:grid;
     gap:9px;
     margin-top:15px;
 }
 
+.memory-grid.easy{
+    grid-template-columns:repeat(4,1fr);
+}
+
+.memory-grid.medium{
+    grid-template-columns:repeat(4,1fr);
+}
+
+.memory-grid.hard{
+    grid-template-columns:repeat(4,1fr);
+}
+
 .memory-card{
     aspect-ratio:1;
-    border:0;
-    border-radius:15px;
-    background:linear-gradient(135deg,#6c2bd9,#9333ea);
-    color:white;
-    font-size:30px;
+    perspective:800px;
+    cursor:pointer;
+}
+
+.card-inner{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:.35s;
+}
+
+.memory-card.flipped .card-inner,
+.memory-card.matched .card-inner{
+    transform:rotateY(180deg);
+}
+
+.card-face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
+    font-size:26px;
+    font-weight:bold;
 }
 
-.memory-card.flipped,
-.memory-card.matched{
-    background:white;
-    color:#222;
-    border:2px solid #8b5cf6;
+.card-front{
+    background:#293352;
+    border:2px solid #3b476d;
 }
 
-.memory-card.matched{
-    opacity:.65;
+.card-front::after{
+    content:"?";
+    color:#68769f;
 }
 
-.game-actions{
-    display:flex;
-    gap:8px;
-    margin-top:15px;
+.card-back{
+    transform:rotateY(180deg);
+    background:#5b6cff;
+    border:2px solid #7885ff;
 }
 
-.game-action{
-    flex:1;
-    border:0;
-    border-radius:12px;
-    padding:12px;
-    background:white;
-    font-weight:800;
+.memory-card.matched .card-back{
+    background:#21a86c;
 }
 
 /* RESULT */
 
-.result-card{
-    background:white;
-    border-radius:24px;
-    padding:28px 20px;
+.result{
     text-align:center;
+    padding:25px 10px;
 }
 
 .result-icon{
-    font-size:60px;
+    font-size:55px;
 }
 
 .result-title{
-    font-size:27px;
-    font-weight:900;
+    font-size:25px;
+    font-weight:bold;
+    margin:12px 0 5px;
+}
+
+.reward{
+    color:#ffd54a;
+    font-size:22px;
+    font-weight:bold;
+    margin:12px;
+}
+
+.bonus-reward{
+    color:#54e69b;
+    font-size:18px;
+    font-weight:bold;
     margin:10px 0;
 }
 
-.result-reward{
-    font-size:31px;
-    color:#16a34a;
-    font-weight:900;
+/* DAILY */
+
+.daily{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
 }
 
-.result-stats{
-    margin:18px 0;
-    color:#666;
-    line-height:1.9;
-}
-
-.next-btn,
-.ad-btn{
-    width:100%;
-    border:0;
-    border-radius:14px;
-    padding:14px;
-    margin-top:8px;
-    font-size:15px;
-    font-weight:900;
-}
-
-.next-btn{
-    background:#6c2bd9;
-    color:white;
-}
-
-.ad-btn{
-    background:#f59e0b;
-    color:white;
+.daily-icon{
+    font-size:34px;
 }
 
 /* LUCKY */
 
-.lucky-card{
-    background:linear-gradient(135deg,#6c2bd9,#9333ea);
-    border-radius:24px;
-    padding:28px 20px;
-    text-align:center;
-    color:white;
-    box-shadow:0 12px 30px rgba(108,43,217,.25);
-}
-
-.lucky-icon{
-    font-size:55px;
-}
-
 .lucky-number{
-    font-size:42px;
-    font-weight:900;
-    letter-spacing:4px;
-    margin:15px 0;
+    font-size:34px;
+    text-align:center;
+    font-weight:bold;
+    color:#ffd54a;
+    margin:12px 0;
 }
 
-.lucky-result{
-    min-height:28px;
-    font-size:16px;
-    font-weight:800;
-    margin-bottom:18px;
+.cooldown{
+    text-align:center;
+    color:#8f9ab8;
+    font-size:12px;
 }
 
-.lucky-btn{
+/* WALLET */
+
+.wallet-balance{
+    text-align:center;
+    padding:12px;
+}
+
+.wallet-coins{
+    font-size:30px;
+    color:#ffd54a;
+    font-weight:bold;
+}
+
+.wallet-usd{
+    color:#8f9ab8;
+    margin-top:5px;
+}
+
+.input{
     width:100%;
-    border:0;
-    border-radius:15px;
-    padding:15px;
-    font-size:18px;
-    font-weight:900;
-    background:white;
-    color:#7c3aed;
-    box-shadow:0 6px 15px rgba(0,0,0,.2);
+    padding:13px;
+    border-radius:12px;
+    border:1px solid #374263;
+    background:#11162a;
+    color:white;
+    outline:none;
+    margin-bottom:10px;
 }
 
-.lucky-btn:disabled{
-    opacity:.55;
+.input:focus{
+    border-color:#5b6cff;
 }
 
-.lucky-timer{
-    margin-top:14px;
-    font-size:14px;
+/* LIST */
+
+.list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
 }
 
-.lucky-rules{
-    background:white;
-    border-radius:20px;
-    padding:10px 16px;
-    margin-top:18px;
-}
-
-.rule-row{
+.list-item{
     display:flex;
     justify-content:space-between;
-    padding:14px 4px;
-    border-bottom:1px solid #eee;
-    font-size:14px;
+    align-items:center;
+    background:#202741;
+    padding:12px;
+    border-radius:12px;
 }
 
-.rule-row:last-child{
-    border-bottom:0;
+.rank{
+    width:30px;
+    font-weight:bold;
 }
 
-.rule-row b{
-    color:#16a34a;
+.user-info{
+    flex:1;
 }
 
-.rule-row.jackpot{
-    color:#dc2626;
-    font-weight:900;
+.user-name{
+    font-weight:bold;
+    font-size:13px;
 }
 
-.rule-row.jackpot b{
-    color:#dc2626;
+.user-score{
+    color:#ffd54a;
+    font-size:12px;
+}
+
+/* ACHIEVEMENTS */
+
+.achievement{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.achievement-icon{
+    font-size:28px;
+}
+
+.locked{
+    opacity:.45;
 }
 
 /* NAV */
@@ -667,30 +492,56 @@ button{
     transform:translateX(-50%);
     width:100%;
     max-width:520px;
-    height:70px;
-    background:white;
-    border-top:1px solid #eee;
+    height:72px;
+    background:#151a2d;
+    border-top:1px solid #2b3350;
     display:grid;
-    grid-template-columns:repeat(6,1fr);
+    grid-template-columns:repeat(5,1fr);
     z-index:100;
 }
 
 .nav-btn{
-    border:0;
-    background:white;
-    color:#8b90a0;
+    background:transparent;
+    color:#7782a4;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:4px;
     font-size:10px;
-    font-weight:700;
 }
 
-.nav-btn span{
-    display:block;
+.nav-icon{
     font-size:20px;
-    margin-bottom:3px;
 }
 
 .nav-btn.active{
-    color:#6c2bd9;
+    color:#7180ff;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    left:50%;
+    top:20px;
+    transform:translateX(-50%) translateY(-20px);
+    background:#252d49;
+    border:1px solid #3b466b;
+    padding:11px 16px;
+    border-radius:12px;
+    z-index:1000;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    font-size:13px;
+    max-width:90%;
+    text-align:center;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
 }
 
 /* MODAL */
@@ -698,11 +549,11 @@ button{
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.55);
+    background:rgba(0,0,0,.72);
     display:none;
     align-items:center;
     justify-content:center;
-    z-index:300;
+    z-index:900;
     padding:20px;
 }
 
@@ -711,73 +562,52 @@ button{
 }
 
 .modal-box{
-    background:white;
     width:100%;
     max-width:400px;
-    border-radius:22px;
-    padding:22px;
+    background:#191f36;
+    border:1px solid #303a5d;
+    border-radius:20px;
+    padding:20px;
 }
 
 .modal-title{
     font-size:20px;
-    font-weight:900;
+    font-weight:bold;
+    margin-bottom:10px;
 }
 
-.modal-text{
-    color:#666;
-    font-size:13px;
-    line-height:1.6;
-    margin-top:10px;
+/* AD */
+
+.ad-box{
+    text-align:center;
+    padding:15px;
+    background:#202741;
+    border-radius:14px;
+    margin-top:12px;
 }
 
-.modal-actions{
-    display:flex;
-    gap:8px;
-    margin-top:18px;
+.ad-label{
+    font-size:11px;
+    color:#7e89a9;
 }
 
-.modal-actions button{
-    flex:1;
-    border:0;
-    padding:13px;
-    border-radius:12px;
-    font-weight:800;
+/* MOBILE */
+
+@media(max-width:380px){
+
+    .level-grid{
+        grid-template-columns:1fr;
+    }
+
+    .memory-grid{
+        gap:6px;
+    }
+
+    .card-face{
+        font-size:21px;
+    }
+
 }
-
-.cancel-btn{
-    background:#eee;
-}
-
-.confirm-btn{
-    background:#6c2bd9;
-    color:white;
-}
-
-/* TOAST */
-
-.toast{
-    position:fixed;
-    left:50%;
-    bottom:82px;
-    transform:translateX(-50%) translateY(20px);
-    background:#20232d;
-    color:white;
-    padding:12px 17px;
-    border-radius:13px;
-    font-size:13px;
-    font-weight:700;
-    opacity:0;
-    pointer-events:none;
-    transition:.25s;
-    z-index:500;
-    white-space:nowrap;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-}
-
 </style>
 </head>
 
@@ -785,2603 +615,3404 @@ button{
 
 <div class="app">
 
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="profile">
+
+        <div class="avatar" id="avatar">
+            🧠
+        </div>
+
+        <div>
+
+            <div class="username" id="username">
+                Demo Player
+            </div>
+
+            <div class="status">
+                Memory Coins
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="balance">
+
+        <div class="balance-label">
+            COINS
+        </div>
+
+        <div class="balance-value" id="headerCoins">
+            0
+        </div>
+
+    </div>
+
+</header>
+
+
 <!-- HOME -->
 
-<section id="homeSection" class="page active">
+<section class="page active" id="homePage">
 
-<div class="header">
+    <div class="card">
 
-<div class="header-top">
+        <div class="card-title">
+            🧠 Memory Coins
+        </div>
 
-<div class="user-box">
+        <div class="small">
+            Match all pairs and earn coins.
+        </div>
 
-<div class="avatar" id="avatar">👤</div>
+        <button
+            class="primary"
+            onclick="startSelectedGame()"
+            style="margin-top:14px">
 
-<div>
-<div class="username" id="username">
-Player
-</div>
+            ▶ PLAY GAME
 
-<div class="small">
-Memory Coins
-</div>
-</div>
+        </button>
 
-</div>
+    </div>
 
-</div>
 
-<div class="balance-card">
+    <div class="stats">
 
-<div class="balance-label">
-COIN BALANCE
-</div>
+        <div class="stat">
 
-<div class="balance">
-🪙 <span id="coinBalance">0</span>
-</div>
+            <div class="stat-label">
+                Lives
+            </div>
 
-<div class="usd">
-≈ $<span id="usdBalance">0.0000</span>
-</div>
+            <div class="stat-value" id="lives">
+                5 ❤️
+            </div>
 
-</div>
+        </div>
 
-</div>
 
+        <div class="stat">
 
-<div class="stats">
+            <div class="stat-label">
+                Today's Coins
+            </div>
 
-<div class="stat-card">
-<div class="stat-icon">❤️</div>
-<div class="stat-value" id="lives">❤️❤️❤️❤️❤️</div>
-<div class="stat-label">Lives</div>
-</div>
+            <div class="stat-value" id="todayCoins">
+                0
+            </div>
 
-<div class="stat-card">
-<div class="stat-icon">💰</div>
-<div class="stat-value" id="todayCoins">0</div>
-<div class="stat-label">Today</div>
-</div>
+        </div>
 
-<div class="stat-card">
-<div class="stat-icon">🎮</div>
-<div class="stat-value" id="gamesPlayed">0</div>
-<div class="stat-label">Games</div>
-</div>
 
-<div class="stat-card">
-<div class="stat-icon">🔥</div>
-<div class="stat-value" id="streak">0</div>
-<div class="stat-label">Streak</div>
-</div>
+        <div class="stat">
 
-</div>
+            <div class="stat-label">
+                Games Played
+            </div>
 
+            <div class="stat-value" id="gamesPlayed">
+                0
+            </div>
 
-<div class="section-title">
-<h2>🧠 Memory Game</h2>
-<p>Choose your difficulty</p>
-</div>
+        </div>
 
-<div id="levelCards"></div>
 
-</section>
+        <div class="stat">
 
+            <div class="stat-label">
+                Streak
+            </div>
 
-<!-- BONUS -->
+            <div class="stat-value" id="streak">
+                0 🔥
+            </div>
 
-<section id="bonusSection" class="page">
+        </div>
 
-<div class="section-title">
-<h2>🎁 Daily Bonus</h2>
-<p>Come back every day.</p>
-</div>
+    </div>
 
-<div class="bonus-card">
 
-<div class="bonus-icon">🎁</div>
+    <div class="card">
 
-<div class="bonus-reward">
-+100 COINS
-</div>
+        <div class="card-title">
+            🎮 Select Difficulty
+        </div>
 
-<div>Daily reward</div>
+        <div class="level-grid">
 
-<button
-class="claim-btn"
-id="claimBtn"
-onclick="claimDaily()">
-CLAIM BONUS
-</button>
+            <button
+                class="level-btn active"
+                id="easyBtn"
+                onclick="selectDifficulty('easy')">
 
-<div class="days">
+                <div class="level-name">
+                    Easy
+                </div>
 
-<div class="day">DAY<br>1</div>
-<div class="day">DAY<br>2</div>
-<div class="day">DAY<br>3</div>
-<div class="day">DAY<br>4</div>
-<div class="day">DAY<br>5</div>
-<div class="day">DAY<br>6</div>
-<div class="day">DAY<br>7</div>
+                <div class="level-info">
+                    2 × 4<br>
+                    +10 coins
+                </div>
 
-</div>
+            </button>
 
-</div>
 
-</section>
+            <button
+                class="level-btn"
+                id="mediumBtn"
+                onclick="selectDifficulty('medium')">
 
+                <div class="level-name">
+                    Medium
+                </div>
 
-<!-- RANK -->
+                <div class="level-info">
+                    3 × 4<br>
+                    +12 coins
+                </div>
 
-<section id="rankSection" class="page">
+            </button>
 
-<div class="section-title">
-<h2>🏆 Leaderboard</h2>
-<p>Top players</p>
-</div>
 
-<div class="tabs">
+            <button
+                class="level-btn"
+                id="hardBtn"
+                onclick="selectDifficulty('hard')">
 
-<button
-id="weeklyTab"
-class="tab active"
-onclick="setLeaderboardTab('weekly')">
-Weekly
-</button>
+                <div class="level-name">
+                    Hard
+                </div>
 
-<button
-id="allTab"
-class="tab"
-onclick="setLeaderboardTab('all')">
-All Time
-</button>
+                <div class="level-info">
+                    4 × 4<br>
+                    +15 coins
+                </div>
 
-</div>
+            </button>
 
-<div class="podium" id="podium"></div>
+        </div>
 
-<div id="leaderboard"></div>
+    </div>
 
-</section>
 
+    <div class="card">
 
-<!-- LUCKY -->
+        <div class="daily">
 
-<section id="luckySection" class="page">
+            <div>
 
-<div class="section-title">
+                <div class="card-title">
+                    🎁 Daily Bonus
+                </div>
 
-<h2>🎰 Lucky Roll</h2>
+                <div class="small">
+                    Claim once every day
+                </div>
 
-<p>
-Wait 5 minutes and watch an ad to unlock your roll.
-</p>
+            </div>
 
-</div>
+            <div class="daily-icon">
+                🎁
+            </div>
 
+        </div>
 
-<div class="lucky-card">
+        <button
+            class="primary gold"
+            id="dailyBtn"
+            onclick="claimDailyBonus()"
+            style="margin-top:12px">
 
-<div class="lucky-icon">
-🎰
-</div>
+            CLAIM +100 COINS
 
+        </button>
 
-<div
-class="lucky-number"
-id="luckyNumber">
------
-</div>
+    </div>
 
 
-<div
-class="lucky-result"
-id="luckyResult">
+    <div class="card">
 
-Wait 5 minutes, then watch an ad
-to unlock your Lucky Roll.
+        <div class="card-title">
+            🎲 Lucky Roll
+        </div>
 
-</div>
+        <div class="small">
+            Watch an ad to unlock one roll every 5 minutes.
+        </div>
 
+        <div class="lucky-number" id="luckyNumber">
+            ?
+        </div>
 
-<!-- WATCH AD -->
+        <div class="cooldown" id="luckyCooldown">
+            Ready
+        </div>
 
-<button
-class="lucky-btn"
-id="luckyAdBtn"
-onclick="watchLuckyAd()">
+        <button
+            class="primary green"
+            id="luckyBtn"
+            onclick="unlockLuckyRoll()"
+            style="margin-top:12px">
 
-📺 WATCH AD
+            📺 WATCH AD & ROLL
 
-</button>
+        </button>
 
-
-<!-- ROLL -->
-
-<button
-class="lucky-btn"
-id="luckyRollBtn"
-onclick="luckyRoll()"
-style="display:none;">
-
-🎲 ROLL NOW
-
-</button>
-
-
-<div
-class="lucky-timer"
-id="luckyTimer">
-
-Ready
-
-</div>
-
-</div>
-
-
-<div class="lucky-rules">
-
-<div class="rule-row">
-<span>1 – 89,999</span>
-<b>+5 🪙</b>
-</div>
-
-<div class="rule-row">
-<span>90,000 – 94,999</span>
-<b>+8 🪙</b>
-</div>
-
-<div class="rule-row">
-<span>95,000 – 99,499</span>
-<b>+12 🪙</b>
-</div>
-
-<div class="rule-row">
-<span>99,500 – 99,996</span>
-<b>+18 🪙</b>
-</div>
-
-<div class="rule-row">
-<span>99,997 – 99,998</span>
-<b>+82 🪙</b>
-</div>
-
-<div class="rule-row jackpot">
-<span>99,999</span>
-<b>🎰 +10,000 🪙</b>
-</div>
-
-</div>
-
-
-<div class="note">
-
-🎯 Jackpot chance:
-<b>1 / 99,999 ≈ 0.001%</b>
-
-<br><br>
-
-The ad unlocks the roll. The ad itself does
-not give Lucky Roll coins.
-
-</div>
-
-</section>
-
-
-<!-- WALLET -->
-
-<section id="walletSection" class="page">
-
-<div class="section-title">
-<h2>💰 Wallet</h2>
-<p>FaucetPay withdrawal</p>
-</div>
-
-<div class="wallet-card">
-
-<div class="small">
-Available Balance
-</div>
-
-<div class="wallet-balance">
-🪙 <span id="walletCoins">0</span>
-</div>
-
-<div class="wallet-usd">
-≈ $<span id="walletUsd">0.0000</span>
-</div>
-
-<div style="margin-top:18px;font-weight:800;">
-Withdrawal amount
-</div>
-
-<div class="presets">
-
-<button
-class="preset"
-onclick="selectWithdrawPreset(2500)">
-2,500
-</button>
-
-<button
-class="preset"
-onclick="selectWithdrawPreset(5000)">
-5,000
-</button>
-
-<button
-class="preset"
-onclick="selectWithdrawPreset(10000)">
-10,000
-</button>
-
-</div>
-
-<input
-id="withdrawAmount"
-class="input"
-type="number"
-placeholder="Enter coins">
-
-<div style="margin-top:15px;font-weight:800;">
-FaucetPay Email
-</div>
-
-<input
-id="faucetEmail"
-class="input"
-type="email"
-placeholder="your@email.com">
-
-<div class="note">
-
-Minimum withdrawal:
-<b>2,500 coins</b>
-
-<br>
-
-Exchange:
-<b>10,000 coins = $1</b>
-
-<br>
-
-Method:
-<b>FaucetPay only</b>
-
-</div>
-
-<button
-class="withdraw-btn"
-onclick="openWithdrawConfirm()">
-
-💸 WITHDRAW
-
-</button>
-
-</div>
-
-</section>
-
-
-<!-- ACHIEVEMENTS -->
-
-<section id="awardsSection" class="page">
-
-<div class="section-title">
-<h2>🏅 Achievements</h2>
-<p>Complete achievements.</p>
-</div>
-
-<div id="achievements"></div>
+    </div>
 
 </section>
 
 
 <!-- GAME -->
 
-<section id="gameSection" class="page">
+<section class="page" id="gamePage">
 
-<div class="game-header">
+    <div class="game-header">
 
-<div>
+        <div>
 
-<div class="game-title"
-id="gameDifficulty">
-Easy
-</div>
+            <b id="gameDifficulty">
+                Easy
+            </b>
 
-<div class="small">
-Level <span id="gameLevel">1</span>/100
-</div>
+            <div class="small">
+                Level <span id="gameLevel">1</span>/100
+            </div>
 
-</div>
+        </div>
 
-<div class="game-stat">
-❤️ <span id="gameLives">5</span>
-</div>
+        <div class="timer">
+            ⏱ <span id="timer">0</span>s
+        </div>
 
-</div>
-
-
-<div class="game-info">
-
-<span>
-⏱ <span id="gameTimer">0</span>s
-</span>
-
-<span>
-🔄 Moves:
-<span id="gameMoves">0</span>
-</span>
-
-<span>
-🧩
-<span id="pairsFound">0</span>/
-<span id="totalPairs">4</span>
-</span>
-
-</div>
+    </div>
 
 
-<div class="progress">
+    <div class="progress">
 
-<div
-class="progress-bar"
-id="gameProgress"
-style="width:0%">
-</div>
+        <div
+            class="progress-bar"
+            id="gameProgress">
+        </div>
 
-</div>
-
-
-<div
-class="memory-board"
-id="memoryBoard">
-</div>
+    </div>
 
 
-<div class="game-actions">
+    <div
+        class="memory-grid easy"
+        id="memoryGrid">
+    </div>
 
-<button
-class="game-action"
-onclick="restartCurrentGame()">
-🔄 Restart
-</button>
 
-<button
-class="game-action"
-onclick="leaveGame()">
-✕ Leave
-</button>
+    <button
+        class="secondary"
+        onclick="exitGame()"
+        style="margin-top:15px">
 
-</div>
+        EXIT GAME
+
+    </button>
 
 </section>
 
 
 <!-- RESULT -->
 
-<section id="resultSection" class="page">
+<section class="page" id="resultPage">
 
-<div class="result-card">
+    <div class="card result">
 
-<div class="result-icon">
-🎉
-</div>
-
-<div class="result-title">
-Level Complete!
-</div>
-
-<div class="result-reward">
-+<span id="resultCoins">0</span> 🪙
-</div>
-
-<div class="result-stats">
-
-⏱ Time:
-<b><span id="resultTime">0</span>s</b>
-
-<br>
-
-🔄 Moves:
-<b><span id="resultMoves">0</span></b>
-
-<br>
-
-🧠 Difficulty:
-<b><span id="resultDifficulty">Easy</span></b>
-
-</div>
+        <div class="result-icon" id="resultIcon">
+            🎉
+        </div>
 
 
-<button
-class="next-btn"
-onclick="nextLevel()">
-
-▶ NEXT LEVEL
-
-</button>
+        <div class="result-title" id="resultTitle">
+            Great Job!
+        </div>
 
 
-<button
-class="ad-btn"
-onclick="watchDemoAd()">
+        <div class="small" id="resultMessage">
+            You matched all pairs.
+        </div>
 
-📺 WATCH AD +2.5 COINS
 
-</button>
+        <div class="reward" id="resultReward">
+            +10 coins
+        </div>
 
-</div>
+
+        <!-- IMPORTANT:
+             WATCH AD +2.5 COINS
+        -->
+
+        <button
+            class="primary green"
+            id="gameAdButton"
+            onclick="watchGameRewardAd()">
+
+            📺 WATCH AD +2.5 COINS
+
+        </button>
+
+
+        <div class="ad-box">
+
+            <div class="ad-label">
+                AdsGram Rewarded Ad
+            </div>
+
+            <div class="small">
+                Watch the complete ad to claim +2.5 coins.
+            </div>
+
+        </div>
+
+
+        <button
+            class="primary"
+            onclick="nextGame()"
+            style="margin-top:12px">
+
+            NEXT GAME
+
+        </button>
+
+    </div>
 
 </section>
 
 
-<!-- NAV -->
+<!-- LEADERBOARD -->
 
-<div class="bottom-nav">
+<section class="page" id="leaderboardPage">
 
-<button
-class="nav-btn active"
-data-page="homeSection"
-onclick="showPage('homeSection')">
+    <div class="card">
 
-<span>🏠</span>
-Home
+        <div class="card-title">
+            🏆 Leaderboard
+        </div>
 
-</button>
+        <div class="small">
+            Real rankings will come from PostgreSQL after backend connection.
+        </div>
 
-<button
-class="nav-btn"
-data-page="bonusSection"
-onclick="showPage('bonusSection')">
+    </div>
 
-<span>🎁</span>
-Bonus
+    <div
+        class="list"
+        id="leaderboardList">
+    </div>
 
-</button>
+</section>
 
-<button
-class="nav-btn"
-data-page="rankSection"
-onclick="showPage('rankSection')">
 
-<span>🏆</span>
-Rank
+<!-- WALLET -->
 
-</button>
+<section class="page" id="walletPage">
 
-<button
-class="nav-btn"
-data-page="luckySection"
-onclick="showPage('luckySection')">
+    <div class="card">
 
-<span>🎰</span>
-Lucky
+        <div class="wallet-balance">
 
-</button>
+            <div class="small">
+                Available Balance
+            </div>
 
-<button
-class="nav-btn"
-data-page="walletSection"
-onclick="showPage('walletSection')">
+            <div
+                class="wallet-coins"
+                id="walletCoins">
+                0
+            </div>
 
-<span>💰</span>
-Wallet
+            <div
+                class="wallet-usd"
+                id="walletUSD">
+                $0.00
+            </div>
 
-</button>
+        </div>
 
-<button
-class="nav-btn"
-data-page="awardsSection"
-onclick="showPage('awardsSection')">
+    </div>
 
-<span>🏅</span>
-Awards
 
-</button>
+    <div class="card">
+
+        <div class="card-title">
+            💸 Withdraw
+        </div>
+
+        <div class="small" style="margin-bottom:12px">
+
+            Minimum withdrawal:
+            2,500 coins
+
+            <br>
+
+            10,000 coins = $1
+
+            <br>
+
+            Payment:
+            FaucetPay
+
+        </div>
+
+
+        <input
+            class="input"
+            id="withdrawCoins"
+            type="number"
+            min="2500"
+            placeholder="Coins to withdraw">
+
+
+        <input
+            class="input"
+            id="faucetEmail"
+            type="email"
+            placeholder="FaucetPay email">
+
+
+        <button
+            class="primary"
+            onclick="requestWithdrawal()">
+
+            WITHDRAW
+
+        </button>
+
+
+        <div
+            class="small"
+            style="margin-top:10px;text-align:center">
+
+            FaucetPay payment processing will be
+            connected through the secure backend.
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            📋 Withdrawal History
+        </div>
+
+        <div class="small">
+            No withdrawals yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ACHIEVEMENTS -->
+
+<section class="page" id="achievementPage">
+
+    <div class="card">
+
+        <div class="card-title">
+            🏅 Achievements
+        </div>
+
+        <div class="small">
+            Complete achievements to unlock rewards.
+        </div>
+
+    </div>
+
+
+    <div
+        class="card achievement locked"
+        id="achievementFirst">
+
+        <div class="achievement-icon">
+            🎮
+        </div>
+
+        <div>
+
+            <b>
+                First Game
+            </b>
+
+            <div class="small">
+                Complete your first game.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="card achievement locked"
+        id="achievementFive">
+
+        <div class="achievement-icon">
+            ⭐
+        </div>
+
+        <div>
+
+            <b>
+                5 Games
+            </b>
+
+            <div class="small">
+                Complete 5 games.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card achievement locked">
+
+        <div class="achievement-icon">
+            ⚡
+        </div>
+
+        <div>
+
+            <b>
+                Memory Master
+            </b>
+
+            <div class="small">
+                Complete a game under 30 seconds.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card achievement locked">
+
+        <div class="achievement-icon">
+            🪙
+        </div>
+
+        <div>
+
+            <b>
+                Coin Collector
+            </b>
+
+            <div class="small">
+                Collect 10,000 coins.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-btn active"
+        onclick="showPage('homePage',this)">
+
+        <div class="nav-icon">
+            🏠
+        </div>
+
+        Home
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('leaderboardPage',this)">
+
+        <div class="nav-icon">
+            🏆
+        </div>
+
+        Rank
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('walletPage',this)">
+
+        <div class="nav-icon">
+            💰
+        </div>
+
+        Wallet
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('achievementPage',this)">
+
+        <div class="nav-icon">
+            🏅
+        </div>
+
+        Awards
+
+    </button>
+
+
+    <button
+        class="nav-btn"
+        onclick="showPage('homePage',this)">
+
+        <div class="nav-icon">
+            🎮
+        </div>
+
+        Play
+
+    </button>
+
+</nav>
 
 </div>
 
-</div>
 
-
-<!-- WITHDRAW MODAL -->
+<!-- TOAST -->
 
 <div
-class="modal"
-id="withdrawModal">
-
-<div class="modal-box">
-
-<div class="modal-title">
-Confirm Withdrawal
+    class="toast"
+    id="toast">
 </div>
+
+
+<!-- MODAL -->
 
 <div
-class="modal-text"
-id="withdrawConfirmText">
-</div>
+    class="modal"
+    id="modal">
 
-<div class="modal-actions">
+    <div class="modal-box">
 
-<button
-class="cancel-btn"
-onclick="closeWithdrawModal()">
-Cancel
-</button>
+        <div
+            class="modal-title"
+            id="modalTitle">
+            Message
+        </div>
 
-<button
-class="confirm-btn"
-onclick="confirmWithdraw()">
-Confirm
-</button>
+        <div
+            class="small"
+            id="modalText">
+            Message
+        </div>
 
-</div>
+        <button
+            class="primary"
+            onclick="closeModal()"
+            style="margin-top:18px">
 
-</div>
+            OK
 
-</div>
+        </button>
 
+    </div>
 
-<div
-class="toast"
-id="toast">
 </div>
 
 
 <script>
 
-/* TELEGRAM */
+/* =========================================================
+   MEMORY COINS
+   COMPLETE FRONTEND
+   ========================================================= */
 
-let tg = null;
 
-if(
-window.Telegram &&
-Telegram.WebApp
-){
+/* =========================================================
+   CONFIG
+   ========================================================= */
 
-tg = Telegram.WebApp;
+const API_BASE = "";
 
-tg.ready();
+const COINS_PER_USD = 10000;
 
-tg.expand();
+const MIN_WITHDRAW = 2500;
 
-}
+const DAILY_BONUS = 100;
 
-
-/* PLAYER */
-
-let player =
-JSON.parse(
-localStorage.getItem(
-"memoryPlayer"
-)
-) || {
-
-username:"Player",
-
-coins:0,
-
-todayCoins:0,
-
-gamesPlayed:0,
-
-easyGames:0,
-
-mediumGames:0,
-
-hardGames:0,
-
-easyLevel:1,
-
-mediumLevel:1,
-
-hardLevel:1,
-
-lives:5,
-
-lastLifeTime:null,
-
-lastDaily:null,
-
-dailyStreak:0
-
-};
-
-
-/* MIGRATION */
-
-player.username ??= "Player";
-player.coins ??= 0;
-player.todayCoins ??= 0;
-player.gamesPlayed ??= 0;
-player.easyGames ??= 0;
-player.mediumGames ??= 0;
-player.hardGames ??= 0;
-player.easyLevel ??= 1;
-player.mediumLevel ??= 1;
-player.hardLevel ??= 1;
-player.lives ??= 5;
-player.lastLifeTime ??= null;
-player.lastDaily ??= null;
-player.dailyStreak ??= 0;
-
-
-function savePlayer(){
-
-localStorage.setItem(
-"memoryPlayer",
-JSON.stringify(player)
-);
-
-}
-
-
-/* LEVELS */
-
-const LEVELS = {
-
-easy:{
-name:"Easy",
-pairs:4,
-cards:8,
-reward:10,
-maxLevels:100
-},
-
-medium:{
-name:"Medium",
-pairs:6,
-cards:12,
-reward:12,
-maxLevels:100
-},
-
-hard:{
-name:"Hard",
-pairs:8,
-cards:16,
-reward:15,
-maxLevels:100
-}
-
-};
-
-
-const emojiPool = [
-
-"🍎","🍊","🍋","🍉",
-"🍇","🍓","🍒","🥝",
-"🍍","🥭","🍑","🍌",
-"🥥","🍈","🍐","🫐"
-
-];
-
-
-/* GAME STATE */
-
-let currentDifficulty="easy";
-
-let currentCards=[];
-
-let firstCard=null;
-
-let secondCard=null;
-
-let lockBoard=false;
-
-let matchedPairs=0;
-
-let moves=0;
-
-let gameSeconds=0;
-
-let gameInterval=null;
-
-let gameFinished=false;
-
-
-/* NAVIGATION */
-
-function showPage(id){
-
-document
-.querySelectorAll(".page")
-.forEach(
-page=>page.classList.remove("active")
-);
-
-document
-.getElementById(id)
-.classList.add("active");
-
-
-document
-.querySelectorAll(".nav-btn")
-.forEach(btn=>{
-
-btn.classList.remove("active");
-
-if(
-btn.dataset.page===id
-){
-
-btn.classList.add("active");
-
-}
-
-});
-
-window.scrollTo(0,0);
-
-}
-
-
-/* TELEGRAM USER */
-
-function loadTelegramUser(){
-
-if(
-tg &&
-tg.initDataUnsafe &&
-tg.initDataUnsafe.user
-){
-
-const user =
-tg.initDataUnsafe.user;
-
-player.username =
-user.username
-? "@"+user.username
-: user.first_name || "Player";
-
-}
-
-document.getElementById("username")
-.textContent=player.username;
-
-savePlayer();
-
-}
-
-
-/* FORMAT */
-
-function formatNumber(number){
-
-return Number(number)
-.toLocaleString(
-"en-US",
-{
-maximumFractionDigits:2
-}
-);
-
-}
-
-
-/* UI */
-
-function updateUI(){
-
-updateLives();
-
-document.getElementById(
-"coinBalance"
-).textContent=
-formatNumber(player.coins);
-
-document.getElementById(
-"usdBalance"
-).textContent=
-(player.coins/10000)
-.toFixed(4);
-
-document.getElementById(
-"walletCoins"
-).textContent=
-formatNumber(player.coins);
-
-document.getElementById(
-"walletUsd"
-).textContent=
-(player.coins/10000)
-.toFixed(4);
-
-document.getElementById(
-"todayCoins"
-).textContent=
-formatNumber(player.todayCoins);
-
-document.getElementById(
-"gamesPlayed"
-).textContent=
-player.gamesPlayed;
-
-document.getElementById(
-"streak"
-).textContent=
-player.dailyStreak;
-
-renderLevelCards();
-
-updateDailyUI();
-
-renderLeaderboard();
-
-updateAchievements();
-
-}
-
-
-/* LEVEL CARDS */
-
-function renderLevelCards(){
-
-const container =
-document.getElementById(
-"levelCards"
-);
-
-container.innerHTML="";
-
-
-Object.keys(LEVELS)
-.forEach(key=>{
-
-const level=LEVELS[key];
-
-const current=
-getCurrentLevel(key);
-
-const games=
-key==="easy"
-?player.easyGames
-:key==="medium"
-?player.mediumGames
-:player.hardGames;
-
-const percent=
-((current-1)/100)*100;
-
-const card=
-document.createElement("div");
-
-card.className="level-card";
-
-card.innerHTML=`
-
-<div class="level-top">
-
-<div>
-
-<div class="level-name">
-${level.name}
-</div>
-
-<div class="level-info">
-${level.cards} cards •
-${level.reward} coins/game •
-Level ${current}/100
-</div>
-
-</div>
-
-<button
-class="level-btn"
-onclick="startGame('${key}')">
-PLAY
-</button>
-
-</div>
-
-<div class="progress">
-
-<div
-class="progress-bar"
-style="width:${percent}%">
-</div>
-
-</div>
-
-<div
-class="small"
-style="margin-top:8px">
-
-Completed:
-${games}/100
-
-</div>
-
-`;
-
-container.appendChild(card);
-
-});
-
-}
-
-
-/* LEVEL */
-
-function getCurrentLevel(difficulty){
-
-if(difficulty==="easy")
-return Math.min(
-player.easyLevel,100
-);
-
-if(difficulty==="medium")
-return Math.min(
-player.mediumLevel,100
-);
-
-return Math.min(
-player.hardLevel,100
-);
-
-}
-
-
-function setCurrentLevel(
-difficulty,
-level
-){
-
-level=Math.min(
-Math.max(level,1),
-100
-);
-
-if(difficulty==="easy")
-player.easyLevel=level;
-
-if(difficulty==="medium")
-player.mediumLevel=level;
-
-if(difficulty==="hard")
-player.hardLevel=level;
-
-savePlayer();
-
-}
-
-
-/* LIVES */
-
-function updateLives(){
-
-if(
-player.lastLifeTime &&
-player.lives<5
-){
-
-const elapsed=
-Date.now()-player.lastLifeTime;
-
-const recovered=
-Math.floor(
-elapsed/(60*60*1000)
-);
-
-if(recovered>0){
-
-player.lives=
-Math.min(
-5,
-player.lives+recovered
-);
-
-if(player.lives>=5){
-
-player.lastLifeTime=null;
-
-}else{
-
-player.lastLifeTime+=
-recovered*
-60*
-60*
-1000;
-
-}
-
-savePlayer();
-
-}
-
-}
-
-
-const lifeElement=
-document.getElementById(
-"lives"
-);
-
-if(lifeElement){
-
-lifeElement.textContent=
-"❤️".repeat(player.lives)+
-"🖤".repeat(5-player.lives);
-
-}
-
-}
-
-
-function useLife(){
-
-if(player.lives<=0){
-
-showToast(
-"❤️ No lives available."
-);
-
-return false;
-
-}
-
-player.lives--;
-
-player.lastLifeTime=
-Date.now();
-
-savePlayer();
-
-updateLives();
-
-return true;
-
-}
-
-
-/* START GAME */
-
-function startGame(difficulty){
-
-if(player.lives<=0){
-
-showToast(
-"❤️ No lives available."
-);
-
-return;
-
-}
-
-if(!useLife())
-return;
-
-
-currentDifficulty=difficulty;
-
-const level=
-LEVELS[difficulty];
-
-matchedPairs=0;
-
-moves=0;
-
-gameSeconds=0;
-
-firstCard=null;
-
-secondCard=null;
-
-lockBoard=false;
-
-gameFinished=false;
-
-currentCards=
-createCards(level.pairs);
-
-
-document.getElementById(
-"gameDifficulty"
-).textContent=
-level.name;
-
-document.getElementById(
-"gameLevel"
-).textContent=
-getCurrentLevel(difficulty);
-
-document.getElementById(
-"gameLives"
-).textContent=
-player.lives;
-
-document.getElementById(
-"gameMoves"
-).textContent="0";
-
-document.getElementById(
-"pairsFound"
-).textContent="0";
-
-document.getElementById(
-"totalPairs"
-).textContent=
-level.pairs;
-
-document.getElementById(
-"gameTimer"
-).textContent="0";
-
-document.getElementById(
-"gameProgress"
-).style.width="0%";
-
-renderBoard();
-
-clearInterval(gameInterval);
-
-gameInterval=
-setInterval(()=>{
-
-gameSeconds++;
-
-document.getElementById(
-"gameTimer"
-).textContent=
-gameSeconds;
-
-},1000);
-
-showPage("gameSection");
-
-}
-
-
-/* CARDS */
-
-function createCards(pairs){
-
-const selected=
-[...emojiPool]
-.sort(()=>Math.random()-.5)
-.slice(0,pairs);
-
-const values=
-[...selected,...selected]
-.sort(()=>Math.random()-.5);
-
-return values.map(
-(value,index)=>({
-
-id:index,
-
-value:value,
-
-flipped:false,
-
-matched:false
-
-})
-);
-
-}
-
-
-/* BOARD */
-
-function renderBoard(){
-
-const board=
-document.getElementById(
-"memoryBoard"
-);
-
-board.style.gridTemplateColumns=
-"repeat(4,1fr)";
-
-board.innerHTML="";
-
-currentCards.forEach(card=>{
-
-const button=
-document.createElement("button");
-
-button.className=
-"memory-card";
-
-if(card.flipped)
-button.classList.add("flipped");
-
-if(card.matched)
-button.classList.add("matched");
-
-button.textContent=
-card.flipped ||
-card.matched
-?card.value
-:"?";
-
-button.onclick=
-()=>flipCard(card);
-
-board.appendChild(button);
-
-});
-
-}
-
-
-/* FLIP */
-
-function flipCard(card){
-
-if(
-lockBoard||
-card.flipped||
-card.matched||
-gameFinished
-)
-return;
-
-card.flipped=true;
-
-renderBoard();
-
-if(!firstCard){
-
-firstCard=card;
-
-return;
-
-}
-
-secondCard=card;
-
-moves++;
-
-document.getElementById(
-"gameMoves"
-).textContent=
-moves;
-
-checkMatch();
-
-}
-
-
-/* MATCH */
-
-function checkMatch(){
-
-lockBoard=true;
-
-if(
-firstCard.value===
-secondCard.value
-){
-
-firstCard.matched=true;
-
-secondCard.matched=true;
-
-matchedPairs++;
-
-document.getElementById(
-"pairsFound"
-).textContent=
-matchedPairs;
-
-const total=
-LEVELS[currentDifficulty]
-.pairs;
-
-document.getElementById(
-"gameProgress"
-).style.width=
-(matchedPairs/total*100)+"%";
-
-resetTurn();
-
-if(matchedPairs===total){
-
-setTimeout(
-finishGame,
-450
-);
-
-}
-
-}else{
-
-setTimeout(()=>{
-
-firstCard.flipped=false;
-
-secondCard.flipped=false;
-
-resetTurn();
-
-renderBoard();
-
-},650);
-
-}
-
-}
-
-
-/* RESET */
-
-function resetTurn(){
-
-firstCard=null;
-
-secondCard=null;
-
-lockBoard=false;
-
-}
-
-
-/* FINISH */
-
-function finishGame(){
-
-if(gameFinished)
-return;
-
-gameFinished=true;
-
-clearInterval(gameInterval);
-
-const level=
-LEVELS[currentDifficulty];
-
-const reward=
-level.reward;
-
-player.coins+=reward;
-
-player.todayCoins+=reward;
-
-player.gamesPlayed++;
-
-
-if(currentDifficulty==="easy")
-player.easyGames++;
-
-if(currentDifficulty==="medium")
-player.mediumGames++;
-
-if(currentDifficulty==="hard")
-player.hardGames++;
-
-
-const current=
-getCurrentLevel(
-currentDifficulty
-);
-
-if(current<100){
-
-setCurrentLevel(
-currentDifficulty,
-current+1
-);
-
-}
-
-
-savePlayer();
-
-
-document.getElementById(
-"resultCoins"
-).textContent=
-reward;
-
-document.getElementById(
-"resultTime"
-).textContent=
-gameSeconds;
-
-document.getElementById(
-"resultMoves"
-).textContent=
-moves;
-
-document.getElementById(
-"resultDifficulty"
-).textContent=
-level.name;
-
-updateUI();
-
-showPage("resultSection");
-
-}
-
-
-/* NEXT */
-
-function nextLevel(){
-
-if(
-getCurrentLevel(
-currentDifficulty
-)>=100
-){
-
-showToast(
-"🏆 All 100 levels completed!"
-);
-
-showPage("homeSection");
-
-return;
-
-}
-
-startGame(
-currentDifficulty
-);
-
-}
-
-
-/* RESTART */
-
-function restartCurrentGame(){
-
-clearInterval(gameInterval);
-
-matchedPairs=0;
-
-moves=0;
-
-gameSeconds=0;
-
-firstCard=null;
-
-secondCard=null;
-
-lockBoard=false;
-
-gameFinished=false;
-
-currentCards=
-createCards(
-LEVELS[currentDifficulty].pairs
-);
-
-document.getElementById(
-"gameTimer"
-).textContent="0";
-
-document.getElementById(
-"gameMoves"
-).textContent="0";
-
-document.getElementById(
-"pairsFound"
-).textContent="0";
-
-document.getElementById(
-"gameProgress"
-).style.width="0%";
-
-renderBoard();
-
-gameInterval=
-setInterval(()=>{
-
-gameSeconds++;
-
-document.getElementById(
-"gameTimer"
-).textContent=
-gameSeconds;
-
-},1000);
-
-}
-
-
-/* LEAVE */
-
-function leaveGame(){
-
-clearInterval(gameInterval);
-
-showPage("homeSection");
-
-updateUI();
-
-}
-
-
-/* DAILY */
-
-function claimDaily(){
-
-const today=
-new Date()
-.toISOString()
-.slice(0,10);
-
-if(player.lastDaily===today){
-
-showToast(
-"🎁 Already claimed today."
-);
-
-return;
-
-}
-
-player.coins+=100;
-
-player.todayCoins+=100;
-
-player.dailyStreak++;
-
-player.lastDaily=today;
-
-savePlayer();
-
-updateUI();
-
-showToast(
-"🎁 Daily Bonus +100 coins!"
-);
-
-}
-
-
-function updateDailyUI(){
-
-const today=
-new Date()
-.toISOString()
-.slice(0,10);
-
-const button=
-document.getElementById(
-"claimBtn"
-);
-
-if(!button)
-return;
-
-if(player.lastDaily===today){
-
-button.disabled=true;
-
-button.textContent=
-"✓ CLAIMED TODAY";
-
-}else{
-
-button.disabled=false;
-
-button.textContent=
-"CLAIM +100 COINS";
-
-}
-
-}
-
-
-/* LEADERBOARD */
-
-let leaderboardTab="weekly";
-
-
-function setLeaderboardTab(tab){
-
-leaderboardTab=tab;
-
-document.getElementById(
-"weeklyTab"
-).classList.toggle(
-"active",
-tab==="weekly"
-);
-
-document.getElementById(
-"allTab"
-).classList.toggle(
-"active",
-tab==="all"
-);
-
-renderLeaderboard();
-
-}
-
-
-function getLeaderboardData(){
-
-const names=[
-"LuckyPlayer",
-"MemoryKing",
-"CoinMaster",
-"BrainPro",
-"FastFlip",
-"Winner99",
-"PuzzleStar",
-"SmartPlayer",
-"CardHero",
-"TopGamer"
-];
-
-const data=
-names.map(
-(name,index)=>({
-
-name:name,
-
-coins:
-Math.max(
-1500,
-12000-index*870+
-(
-leaderboardTab==="weekly"
-?0
-:10000
-)
-)
-
-})
-);
-
-data.push({
-name:player.username,
-coins:player.coins
-});
-
-return data.sort(
-(a,b)=>b.coins-a.coins
-);
-
-}
-
-
-function renderLeaderboard(){
-
-const data=
-getLeaderboardData();
-
-const podium=
-document.getElementById(
-"podium"
-);
-
-const list=
-document.getElementById(
-"leaderboard"
-);
-
-if(!podium||!list)
-return;
-
-podium.innerHTML=
-data.slice(0,3)
-.map(
-(item,index)=>`
-
-<div class="podium-item">
-
-<div class="podium-avatar">
-
-${
-index===0
-?"🥇"
-:index===1
-?"🥈"
-:"🥉"
-}
-
-</div>
-
-<div class="podium-rank">
-${item.name}
-</div>
-
-<div class="small">
-${formatNumber(item.coins)}
-</div>
-
-</div>
-
-`
-)
-.join("");
-
-
-list.innerHTML=
-data.slice(3,10)
-.map(
-(item,index)=>`
-
-<div class="leader-row">
-
-<div class="leader-left">
-
-<div class="rank-number">
-${index+4}
-</div>
-
-<b>${item.name}</b>
-
-</div>
-
-<div class="leader-coins">
-🪙 ${formatNumber(item.coins)}
-</div>
-
-</div>
-
-`
-)
-.join("");
-
-}
-
-
-/* WALLET */
-
-function selectWithdrawPreset(value){
-
-document.getElementById(
-"withdrawAmount"
-).value=value;
-
-document
-.querySelectorAll(".preset")
-.forEach(
-btn=>btn.classList.remove("selected")
-);
-
-}
-
-
-function openWithdrawConfirm(){
-
-const amount=
-Number(
-document.getElementById(
-"withdrawAmount"
-).value
-);
-
-const email=
-document.getElementById(
-"faucetEmail"
-).value.trim();
-
-if(amount<2500){
-
-showToast(
-"Minimum withdrawal is 2,500 coins."
-);
-
-return;
-
-}
-
-if(amount>player.coins){
-
-showToast(
-"Insufficient balance."
-);
-
-return;
-
-}
-
-if(!email){
-
-showToast(
-"Enter your FaucetPay email."
-);
-
-return;
-
-}
-
-const usd=
-amount/10000;
-
-document.getElementById(
-"withdrawConfirmText"
-).innerHTML=`
-
-You are requesting:
-
-<br><br>
-
-🪙 <b>${formatNumber(amount)}
-coins</b>
-
-<br>
-
-💵 <b>$${usd.toFixed(4)}</b>
-
-<br><br>
-
-FaucetPay:<br>
-
-<b>${email}</b>
-
-<br><br>
-
-<small>
-Frontend demo only.
-Real FaucetPay payment needs a secure backend.
-</small>
-
-`;
-
-document.getElementById(
-"withdrawModal"
-).classList.add("show");
-
-}
-
-
-function closeWithdrawModal(){
-
-document.getElementById(
-"withdrawModal"
-).classList.remove("show");
-
-}
-
-
-function confirmWithdraw(){
-
-const amount=
-Number(
-document.getElementById(
-"withdrawAmount"
-).value
-);
-
-const email=
-document.getElementById(
-"faucetEmail"
-).value.trim();
-
-if(
-amount<2500||
-amount>player.coins||
-!email
-){
-
-closeWithdrawModal();
-
-return;
-
-}
-
-player.coins-=amount;
-
-savePlayer();
-
-closeWithdrawModal();
-
-updateUI();
-
-showToast(
-"✅ Demo withdrawal request created."
-);
-
-}
-
-
-/* GAME AD */
-
-function watchDemoAd(){
-
-const reward=2.5;
-
-player.coins+=reward;
-
-player.todayCoins+=reward;
-
-savePlayer();
-
-updateUI();
-
-showToast(
-"📺 Demo ad completed! +2.5 coins"
-);
-
-}
-
-
-/* ACHIEVEMENTS */
-
-const achievements=[
-
-{
-id:"first",
-icon:"🎮",
-title:"First Game",
-desc:"Complete your first game."
-},
-
-{
-id:"five",
-icon:"🔥",
-title:"5 Games",
-desc:"Complete 5 games."
-},
-
-{
-id:"fast",
-icon:"⚡",
-title:"Memory Master",
-desc:"Complete under 30 seconds."
-},
-
-{
-id:"coins",
-icon:"💰",
-title:"Coin Collector",
-desc:"Collect 10,000 coins."
-}
-
-];
-
-
-let achievementState=
-JSON.parse(
-localStorage.getItem(
-"memoryAchievements"
-)
-)||{};
-
-
-function setAchievement(id,value){
-
-achievementState[id]=value;
-
-localStorage.setItem(
-"memoryAchievements",
-JSON.stringify(
-achievementState
-)
-);
-
-}
-
-
-function updateAchievements(){
-
-if(player.gamesPlayed>=1)
-setAchievement("first",true);
-
-if(player.gamesPlayed>=5)
-setAchievement("five",true);
-
-if(gameFinished&&gameSeconds<30)
-setAchievement("fast",true);
-
-if(player.coins>=10000)
-setAchievement("coins",true);
-
-
-const container=
-document.getElementById(
-"achievements"
-);
-
-if(!container)
-return;
-
-
-container.innerHTML=
-achievements.map(
-item=>{
-
-const unlocked=
-achievementState[item.id];
-
-return `
-
-<div class="achievement">
-
-<div class="achievement-icon">
-${item.icon}
-</div>
-
-<div class="achievement-info">
-
-<div class="achievement-title">
-${item.title}
-</div>
-
-<div class="achievement-desc">
-${item.desc}
-</div>
-
-</div>
-
-<div>
-${unlocked?"✅":"🔒"}
-</div>
-
-</div>
-
-`;
-
-}
-).join("");
-
-}
-
-
-/* =================================
-   LUCKY ROLL
-================================= */
+const GAME_AD_REWARD = 2.5;
 
 const LUCKY_COOLDOWN =
-5*60*1000;
-
-
-/* REWARD TABLE */
-
-function getLuckyReward(number){
-
-if(number===99999){
-
-return 10000;
-
-}
-
-if(number>=99997){
-
-return 82;
-
-}
-
-if(number>=99500){
-
-return 18;
-
-}
-
-if(number>=95000){
-
-return 12;
-
-}
-
-if(number>=90000){
-
-return 8;
-
-}
-
-return 5;
-
-}
-
-
-/* WATCH AD */
-
-function watchLuckyAd(){
-
-const lastRoll=
-Number(
-localStorage.getItem(
-"luckyLastRoll"
-)||0
-);
-
-const remaining=
-LUCKY_COOLDOWN-
-(Date.now()-lastRoll);
-
-
-if(remaining>0){
-
-showToast(
-"⏳ Wait "+
-formatLuckyTime(remaining)
-);
-
-return;
-
-}
-
-
-const adButton=
-document.getElementById(
-"luckyAdBtn"
-);
-
-adButton.disabled=true;
-
-adButton.textContent=
-"📺 AD PLAYING...";
+    5 * 60 * 1000;
 
 
 /*
- DEMO REWARDED AD
+    Add your real AdsGram Block ID here later.
 
- Replace this 3-second simulation
- with your real rewarded-ad SDK
- later.
+    Example:
+
+    const ADSGRAM_BLOCK_ID = "12345";
 */
 
-setTimeout(()=>{
-
-localStorage.setItem(
-"luckyAdUnlocked",
-"true"
-);
+const ADSGRAM_BLOCK_ID = "";
 
 
-adButton.style.display=
-"none";
+/* =========================================================
+   TELEGRAM
+   ========================================================= */
+
+const tg =
+    window.Telegram &&
+    window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
 
 
-const rollButton=
-document.getElementById(
-"luckyRollBtn"
-);
+if(tg){
 
-rollButton.style.display=
-"block";
+    tg.ready();
 
-rollButton.disabled=false;
+    tg.expand();
 
+    try{
 
-document.getElementById(
-"luckyResult"
-).textContent=
-"✅ Ad completed! Roll unlocked.";
+        tg.setHeaderColor(
+            "#101426"
+        );
 
+        tg.setBackgroundColor(
+            "#101426"
+        );
 
-document.getElementById(
-"luckyTimer"
-).textContent=
-"🎲 Roll now!";
-
-
-showToast(
-"📺 Ad completed! Roll unlocked!"
-);
-
-
-},3000);
+    }catch(e){}
 
 }
 
 
-/* ROLL */
+/* =========================================================
+   DEMO MODE
+   ========================================================= */
 
-function luckyRoll(){
-
-const unlocked=
-localStorage.getItem(
-"luckyAdUnlocked"
-)==="true";
-
-
-if(!unlocked){
-
-showToast(
-"📺 Watch the ad first!"
-);
-
-return;
-
-}
+const DEMO_MODE =
+    !API_BASE ||
+    API_BASE.includes(
+        "YOUR-RENDER"
+    );
 
 
-const lastRoll=
-Number(
-localStorage.getItem(
-"luckyLastRoll"
-)||0
-);
+/* =========================================================
+   PLAYER
+   ========================================================= */
+
+const defaultPlayer = {
+
+    telegramId:null,
+
+    username:"Demo Player",
+
+    firstName:"Demo",
+
+    photoUrl:"",
+
+    coins:0,
+
+    todayCoins:0,
+
+    gamesPlayed:0,
+
+    easyGames:0,
+
+    mediumGames:0,
+
+    hardGames:0,
+
+    easyLevel:1,
+
+    mediumLevel:1,
+
+    hardLevel:1,
+
+    lives:5,
+
+    dailyStreak:0,
+
+    lastDailyClaim:null,
+
+    selectedDifficulty:"easy"
+
+};
 
 
-const remaining=
-LUCKY_COOLDOWN-
-(Date.now()-lastRoll);
+let player = {
+    ...defaultPlayer
+};
 
 
-if(remaining>0){
-
-showToast(
-"⏳ Wait "+
-formatLuckyTime(remaining)
-);
-
-return;
-
-}
+let sessionToken =
+    localStorage.getItem(
+        "memorySessionToken"
+    ) || "";
 
 
-/* RANDOM NUMBER */
+/* =========================================================
+   LOAD DEMO
+   ========================================================= */
 
-const number=
-Math.floor(
-Math.random()*99999
-)+1;
+function loadDemoData(){
 
+    try{
 
-/* REWARD */
-
-const reward=
-getLuckyReward(number);
-
-
-/* SAVE TIME */
-
-localStorage.setItem(
-"luckyLastRoll",
-Date.now()
-);
+        const saved =
+            JSON.parse(
+                localStorage.getItem(
+                    "memoryCoinsDemo"
+                )
+            );
 
 
-/* LOCK AD */
+        if(saved){
 
-localStorage.setItem(
-"luckyAdUnlocked",
-"false"
-);
+            player = {
+                ...defaultPlayer,
+                ...saved
+            };
 
+        }
 
-/* SHOW NUMBER */
+    }catch(error){
 
-document.getElementById(
-"luckyNumber"
-).textContent=
-String(number)
-.padStart(5,"0");
+        console.log(
+            "Demo data unavailable."
+        );
 
-
-const result=
-document.getElementById(
-"luckyResult"
-);
-
-
-if(number===99999){
-
-result.innerHTML=
-"🎉 JACKPOT!!! +10,000 COINS 🎰";
-
-showToast(
-"🎰 JACKPOT! +10,000 coins!"
-);
-
-}else{
-
-result.innerHTML=
-"🎉 You won +"+
-reward+
-" coins!";
-
-showToast(
-"🎉 Lucky Roll +"+
-reward+
-" coins!"
-);
+    }
 
 }
 
 
-/* ADD COINS */
+function saveDemoData(){
 
-player.coins+=reward;
+    if(!DEMO_MODE){
 
-player.todayCoins+=reward;
+        return;
 
-savePlayer();
-
-updateUI();
-
-updateLuckyTimer();
-
-}
+    }
 
 
-/* FORMAT TIME */
-
-function formatLuckyTime(ms){
-
-const totalSeconds=
-Math.ceil(ms/1000);
-
-const minutes=
-Math.floor(
-totalSeconds/60
-);
-
-const seconds=
-totalSeconds%60;
-
-return(
-minutes+
-"m "+
-String(seconds)
-.padStart(2,"0")+
-"s"
-);
+    localStorage.setItem(
+        "memoryCoinsDemo",
+        JSON.stringify(player)
+    );
 
 }
 
 
-/* LUCKY UI */
+/* =========================================================
+   FORMAT
+   ========================================================= */
+
+function formatCoins(number){
+
+    return Number(
+        number || 0
+    ).toLocaleString();
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   UPDATE UI
+   ========================================================= */
+
+function updateUI(){
+
+    document.getElementById(
+        "headerCoins"
+    ).textContent =
+        formatCoins(
+            player.coins
+        );
+
+
+    document.getElementById(
+        "walletCoins"
+    ).textContent =
+        formatCoins(
+            player.coins
+        );
+
+
+    document.getElementById(
+        "walletUSD"
+    ).textContent =
+        "$" +
+        (
+            player.coins /
+            COINS_PER_USD
+        ).toFixed(4);
+
+
+    document.getElementById(
+        "todayCoins"
+    ).textContent =
+        formatCoins(
+            player.todayCoins
+        );
+
+
+    document.getElementById(
+        "gamesPlayed"
+    ).textContent =
+        player.gamesPlayed;
+
+
+    document.getElementById(
+        "lives"
+    ).textContent =
+        player.lives +
+        " ❤️";
+
+
+    document.getElementById(
+        "streak"
+    ).textContent =
+        player.dailyStreak +
+        " 🔥";
+
+
+    document.getElementById(
+        "username"
+    ).textContent =
+        player.username;
+
+
+    updateAvatar();
+
+    updateDailyButton();
+
+    updateAchievements();
+
+}
+
+
+function updateAvatar(){
+
+    const avatar =
+        document.getElementById(
+            "avatar"
+        );
+
+
+    if(player.photoUrl){
+
+        avatar.innerHTML =
+            `<img src="${escapeHTML(
+                player.photoUrl
+            )}">`;
+
+    }else{
+
+        avatar.textContent =
+            "🧠";
+
+    }
+
+}
+
+
+/* =========================================================
+   TELEGRAM AUTH
+   ========================================================= */
+
+async function authenticateTelegram(){
+
+    if(DEMO_MODE){
+
+        loadDemoData();
+
+
+        if(
+            tg &&
+            tg.initDataUnsafe &&
+            tg.initDataUnsafe.user
+        ){
+
+            const user =
+                tg.initDataUnsafe.user;
+
+
+            player.telegramId =
+                String(user.id);
+
+
+            player.username =
+                user.username
+                    ? "@" +
+                      user.username
+                    : user.first_name ||
+                      "Telegram User";
+
+
+            player.firstName =
+                user.first_name || "";
+
+
+            player.photoUrl =
+                user.photo_url || "";
+
+        }
+
+
+        updateUI();
+
+        return true;
+
+    }
+
+
+    if(
+        !tg ||
+        !tg.initData
+    ){
+
+        showToast(
+            "Please open the game inside Telegram."
+        );
+
+        return false;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                API_BASE +
+                "/api/auth/telegram",
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        initData:
+                            tg.initData
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
+
+            throw new Error(
+                data.error ||
+                "Authentication failed"
+            );
+
+        }
+
+
+        sessionToken =
+            data.token;
+
+
+        localStorage.setItem(
+            "memorySessionToken",
+            sessionToken
+        );
+
+
+        player.telegramId =
+            String(
+                data.user.telegramId
+            );
+
+
+        player.username =
+            data.user.username
+                ? "@" +
+                  data.user.username
+                : data.user.firstName ||
+                  "Player";
+
+
+        player.firstName =
+            data.user.firstName || "";
+
+
+        player.photoUrl =
+            data.user.photoUrl || "";
+
+
+        player.coins =
+            Number(
+                data.user.coins || 0
+            );
+
+
+        player.todayCoins =
+            Number(
+                data.user.todayCoins || 0
+            );
+
+
+        player.gamesPlayed =
+            Number(
+                data.user.gamesPlayed || 0
+            );
+
+
+        player.easyGames =
+            Number(
+                data.user.easyGames || 0
+            );
+
+
+        player.mediumGames =
+            Number(
+                data.user.mediumGames || 0
+            );
+
+
+        player.hardGames =
+            Number(
+                data.user.hardGames || 0
+            );
+
+
+        player.easyLevel =
+            Number(
+                data.user.easyLevel || 1
+            );
+
+
+        player.mediumLevel =
+            Number(
+                data.user.mediumLevel || 1
+            );
+
+
+        player.hardLevel =
+            Number(
+                data.user.hardLevel || 1
+            );
+
+
+        player.lives =
+            Number(
+                data.user.lives ?? 5
+            );
+
+
+        player.dailyStreak =
+            Number(
+                data.user.dailyStreak || 0
+            );
+
+
+        player.lastDailyClaim =
+            data.user.lastDailyClaim ||
+            null;
+
+
+        updateUI();
+
+
+        showToast(
+            "✅ Telegram account connected"
+        );
+
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        showToast(
+            "❌ Telegram authentication failed"
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   API
+   ========================================================= */
+
+async function apiRequest(
+    endpoint,
+    options={}
+){
+
+    if(DEMO_MODE){
+
+        return null;
+
+    }
+
+
+    const headers = {
+
+        "Content-Type":
+            "application/json",
+
+        ...(options.headers || {})
+
+    };
+
+
+    if(sessionToken){
+
+        headers.Authorization =
+            "Bearer " +
+            sessionToken;
+
+    }
+
+
+    const response =
+        await fetch(
+            API_BASE +
+            endpoint,
+            {
+                ...options,
+                headers
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if(!response.ok){
+
+        throw new Error(
+            data.error ||
+            "Request failed"
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function showPage(
+    pageId,
+    button
+){
+
+    document
+        .querySelectorAll(
+            ".page"
+        )
+        .forEach(
+            page =>
+                page.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const page =
+        document.getElementById(
+            pageId
+        );
+
+
+    if(page){
+
+        page.classList.add(
+            "active"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(
+            ".nav-btn"
+        )
+        .forEach(
+            btn =>
+                btn.classList.remove(
+                    "active"
+                )
+        );
+
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    if(
+        pageId ===
+        "leaderboardPage"
+    ){
+
+        renderLeaderboard();
+
+    }
+
+}
+
+
+function goHome(){
+
+    showPage(
+        "homePage",
+        document.querySelector(
+            ".nav-btn"
+        )
+    );
+
+}
+
+
+/* =========================================================
+   DIFFICULTY
+   ========================================================= */
+
+const difficultyConfig = {
+
+    easy:{
+        name:"Easy",
+        rows:2,
+        cols:4,
+        pairs:4,
+        reward:10
+    },
+
+    medium:{
+        name:"Medium",
+        rows:3,
+        cols:4,
+        pairs:6,
+        reward:12
+    },
+
+    hard:{
+        name:"Hard",
+        rows:4,
+        cols:4,
+        pairs:8,
+        reward:15
+    }
+
+};
+
+
+function selectDifficulty(
+    level
+){
+
+    player.selectedDifficulty =
+        level;
+
+
+    document
+        .querySelectorAll(
+            ".level-btn"
+        )
+        .forEach(
+            button =>
+                button.classList.remove(
+                    "active"
+                )
+        );
+
+
+    document
+        .getElementById(
+            level +
+            "Btn"
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    saveDemoData();
+
+}
+
+
+function getCurrentLevel(){
+
+    return Number(
+        player[
+            player.selectedDifficulty +
+            "Level"
+        ] || 1
+    );
+
+}
+
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+let game = {
+
+    difficulty:"easy",
+
+    level:1,
+
+    cards:[],
+
+    flipped:[],
+
+    matched:0,
+
+    moves:0,
+
+    startTime:null,
+
+    timer:null,
+
+    locked:false,
+
+    gameId:null,
+
+    adRewardClaimed:false
+
+};
+
+
+const symbols = [
+
+    "🍎","🍌","🍇","🍉",
+    "🍒","🍋","🥝","🍓",
+    "🍊","🥥","🍍","🥑",
+    "🍕","🍔","🍩","🍪",
+    "⚽","🏀","🎮","🎯",
+    "🚗","✈️","🚀","⭐"
+
+];
+
+
+/* =========================================================
+   START GAME
+   ========================================================= */
+
+function startSelectedGame(){
+
+    if(player.lives <= 0){
+
+        showModal(
+            "No Lives",
+            "You have no lives available. Please wait for your lives to recover."
+        );
+
+        return;
+
+    }
+
+
+    startGame(
+        player.selectedDifficulty
+    );
+
+}
+
+
+async function startGame(
+    difficulty
+){
+
+    game.difficulty =
+        difficulty;
+
+
+    game.level =
+        getCurrentLevel();
+
+
+    game.flipped = [];
+
+    game.matched = 0;
+
+    game.moves = 0;
+
+    game.locked = false;
+
+    game.gameId = null;
+
+    game.adRewardClaimed =
+        false;
+
+
+    game.startTime =
+        Date.now();
+
+
+    const config =
+        difficultyConfig[
+            difficulty
+        ];
+
+
+    document.getElementById(
+        "gameDifficulty"
+    ).textContent =
+        config.name;
+
+
+    document.getElementById(
+        "gameLevel"
+    ).textContent =
+        game.level;
+
+
+    document.getElementById(
+        "gameProgress"
+    ).style.width =
+        "0%";
+
+
+    const adButton =
+        document.getElementById(
+            "gameAdButton"
+        );
+
+
+    adButton.disabled =
+        false;
+
+
+    adButton.textContent =
+        "📺 WATCH AD +2.5 COINS";
+
+
+    const grid =
+        document.getElementById(
+            "memoryGrid"
+        );
+
+
+    grid.className =
+        "memory-grid " +
+        difficulty;
+
+
+    const selectedSymbols =
+        symbols.slice(
+            0,
+            config.pairs
+        );
+
+
+    game.cards =
+        shuffle(
+            [
+                ...selectedSymbols,
+                ...selectedSymbols
+            ]
+        );
+
+
+    grid.innerHTML = "";
+
+
+    game.cards.forEach(
+        (
+            symbol,
+            index
+        ) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "memory-card";
+
+
+            card.dataset.index =
+                index;
+
+
+            card.innerHTML = `
+
+                <div class="card-inner">
+
+                    <div class="card-face card-front"></div>
+
+                    <div class="card-face card-back">
+                        ${symbol}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            card.onclick =
+                () =>
+                    flipCard(
+                        card,
+                        index
+                    );
+
+
+            grid.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    startTimer();
+
+
+    showPage(
+        "gamePage"
+    );
+
+
+    if(!DEMO_MODE){
+
+        try{
+
+            const result =
+                await apiRequest(
+                    "/api/game/start",
+                    {
+
+                        method:"POST",
+
+                        body:
+                            JSON.stringify({
+                                difficulty
+                            })
+
+                    }
+                );
+
+
+            game.gameId =
+                result.gameId;
+
+        }catch(error){
+
+            console.error(
+                error
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   FLIP CARD
+   ========================================================= */
+
+function flipCard(
+    card,
+    index
+){
+
+    if(game.locked){
+
+        return;
+
+    }
+
+
+    if(
+        card.classList.contains(
+            "flipped"
+        ) ||
+        card.classList.contains(
+            "matched"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        game.flipped.length >= 2
+    ){
+
+        return;
+
+    }
+
+
+    card.classList.add(
+        "flipped"
+    );
+
+
+    game.flipped.push({
+        card,
+        index
+    });
+
+
+    if(
+        game.flipped.length === 2
+    ){
+
+        game.moves++;
+
+        checkMatch();
+
+    }
+
+}
+
+
+/* =========================================================
+   MATCH
+   ========================================================= */
+
+function checkMatch(){
+
+    const first =
+        game.flipped[0];
+
+
+    const second =
+        game.flipped[1];
+
+
+    if(
+        game.cards[
+            first.index
+        ] ===
+        game.cards[
+            second.index
+        ]
+    ){
+
+        first.card.classList.add(
+            "matched"
+        );
+
+
+        second.card.classList.add(
+            "matched"
+        );
+
+
+        game.matched++;
+
+        game.flipped = [];
+
+
+        updateGameProgress();
+
+
+        const config =
+            difficultyConfig[
+                game.difficulty
+            ];
+
+
+        if(
+            game.matched ===
+            config.pairs
+        ){
+
+            setTimeout(
+                completeGame,
+                400
+            );
+
+        }
+
+    }else{
+
+        game.locked = true;
+
+
+        setTimeout(
+            () => {
+
+                first.card.classList.remove(
+                    "flipped"
+                );
+
+
+                second.card.classList.remove(
+                    "flipped"
+                );
+
+
+                game.flipped = [];
+
+                game.locked = false;
+
+            },
+            700
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME PROGRESS
+   ========================================================= */
+
+function updateGameProgress(){
+
+    const config =
+        difficultyConfig[
+            game.difficulty
+        ];
+
+
+    const percent =
+        (
+            game.matched /
+            config.pairs
+        ) * 100;
+
+
+    document.getElementById(
+        "gameProgress"
+    ).style.width =
+        percent + "%";
+
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function startTimer(){
+
+    stopTimer();
+
+
+    game.startTime =
+        Date.now();
+
+
+    game.timer =
+        setInterval(
+            () => {
+
+                const seconds =
+                    Math.floor(
+                        (
+                            Date.now() -
+                            game.startTime
+                        ) / 1000
+                    );
+
+
+                document.getElementById(
+                    "timer"
+                ).textContent =
+                    seconds;
+
+            },
+            1000
+        );
+
+}
+
+
+function stopTimer(){
+
+    if(game.timer){
+
+        clearInterval(
+            game.timer
+        );
+
+        game.timer =
+            null;
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPLETE GAME
+   ========================================================= */
+
+async function completeGame(){
+
+    stopTimer();
+
+
+    const duration =
+        Math.floor(
+            (
+                Date.now() -
+                game.startTime
+            ) / 1000
+        );
+
+
+    const config =
+        difficultyConfig[
+            game.difficulty
+        ];
+
+
+    let reward =
+        config.reward;
+
+
+    if(DEMO_MODE){
+
+        player.coins +=
+            reward;
+
+
+        player.todayCoins +=
+            reward;
+
+
+        player.gamesPlayed++;
+
+
+        player[
+            game.difficulty +
+            "Games"
+        ]++;
+
+
+        const currentLevel =
+            player[
+                game.difficulty +
+                "Level"
+            ];
+
+
+        if(
+            currentLevel < 100
+        ){
+
+            player[
+                game.difficulty +
+                "Level"
+            ] =
+                currentLevel + 1;
+
+        }
+
+
+        saveDemoData();
+
+    }else{
+
+        try{
+
+            const result =
+                await apiRequest(
+                    "/api/game/complete",
+                    {
+
+                        method:"POST",
+
+                        body:
+                            JSON.stringify({
+
+                                gameId:
+                                    game.gameId,
+
+                                moves:
+                                    game.moves,
+
+                                durationSeconds:
+                                    duration
+
+                            })
+
+                    }
+                );
+
+
+            reward =
+                Number(
+                    result.rewardCoins ||
+                    0
+                );
+
+
+            player.coins =
+                Number(
+                    result.user.coins
+                );
+
+
+            player.todayCoins =
+                Number(
+                    result.user.todayCoins
+                );
+
+
+            player.gamesPlayed =
+                Number(
+                    result.user.gamesPlayed
+                );
+
+
+        }catch(error){
+
+            console.error(
+                error
+            );
+
+
+            showToast(
+                "Could not save game."
+            );
+
+
+            return;
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "resultReward"
+    ).textContent =
+        "+" +
+        reward +
+        " coins";
+
+
+    document.getElementById(
+        "resultMessage"
+    ).textContent =
+        `Completed in ${duration} seconds with ${game.moves} moves.`;
+
+
+    document.getElementById(
+        "resultIcon"
+    ).textContent =
+        "🎉";
+
+
+    document.getElementById(
+        "resultTitle"
+    ).textContent =
+        "Great Job!";
+
+
+    const adButton =
+        document.getElementById(
+            "gameAdButton"
+        );
+
+
+    adButton.disabled =
+        false;
+
+
+    adButton.textContent =
+        "📺 WATCH AD +2.5 COINS";
+
+
+    game.adRewardClaimed =
+        false;
+
+
+    updateUI();
+
+
+    showPage(
+        "resultPage"
+    );
+
+}
+
+
+/* =========================================================
+   WATCH AD +2.5 COINS
+   ========================================================= */
+
+async function watchGameRewardAd(){
+
+    if(game.adRewardClaimed){
+
+        showToast(
+            "You already claimed this reward."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "gameAdButton"
+        );
+
+
+    if(button.disabled){
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "📺 WATCHING AD...";
+
+
+    const watched =
+        await showAdsGramRewarded();
+
+
+    if(!watched){
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "📺 WATCH AD +2.5 COINS";
+
+
+        return;
+
+    }
+
+
+    /*
+        DEMO MODE
+
+        Add 2.5 coins locally.
+
+        IMPORTANT:
+        For production, the backend should
+        verify the ad reward and update
+        PostgreSQL.
+    */
+
+    if(DEMO_MODE){
+
+        player.coins +=
+            GAME_AD_REWARD;
+
+
+        player.todayCoins +=
+            GAME_AD_REWARD;
+
+
+        game.adRewardClaimed =
+            true;
+
+
+        saveDemoData();
+
+        updateUI();
+
+
+        button.textContent =
+            "✅ +2.5 COINS CLAIMED";
+
+
+        showToast(
+            "🎉 You earned +2.5 coins!"
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+        PRODUCTION
+
+        The backend will verify that the
+        rewarded ad was actually completed.
+
+        It should also use an idempotency
+        check so the same ad cannot reward
+        the player twice.
+    */
+
+    try{
+
+        const result =
+            await apiRequest(
+                "/api/ad-reward",
+                {
+
+                    method:"POST",
+
+                    body:
+                        JSON.stringify({
+
+                            adType:
+                                "game_complete",
+
+                            gameId:
+                                game.gameId
+
+                        })
+
+                }
+            );
+
+
+        player.coins =
+            Number(
+                result.user.coins
+            );
+
+
+        player.todayCoins =
+            Number(
+                result.user.todayCoins
+            );
+
+
+        game.adRewardClaimed =
+            true;
+
+
+        updateUI();
+
+
+        button.textContent =
+            "✅ +2.5 COINS CLAIMED";
+
+
+        showToast(
+            "🎉 You earned +2.5 coins!"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "📺 WATCH AD +2.5 COINS";
+
+
+        showToast(
+            error.message ||
+            "Ad reward failed."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ADSGRAM
+   ========================================================= */
+
+async function showAdsGramRewarded(){
+
+    /*
+        Demo mode if no AdsGram Block ID
+        is configured.
+    */
+
+    if(
+        !ADSGRAM_BLOCK_ID ||
+        !window.Adsgram
+    ){
+
+        return new Promise(
+            resolve => {
+
+                let remaining = 3;
+
+
+                showToast(
+                    "Demo ad: wait 3 seconds..."
+                );
+
+
+                const timer =
+                    setInterval(
+                        () => {
+
+                            remaining--;
+
+
+                            if(
+                                remaining <= 0
+                            ){
+
+                                clearInterval(
+                                    timer
+                                );
+
+
+                                showToast(
+                                    "✅ Ad completed"
+                                );
+
+
+                                resolve(
+                                    true
+                                );
+
+                            }
+
+                        },
+                        1000
+                    );
+
+            }
+        );
+
+    }
+
+
+    try{
+
+        const AdController =
+            window.Adsgram.init({
+                blockId:
+                    ADSGRAM_BLOCK_ID
+            });
+
+
+        await AdController.show();
+
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "AdsGram error:",
+            error
+        );
+
+
+        showToast(
+            "Ad was not completed."
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   LUCKY ROLL
+   ========================================================= */
+
+function getLuckyUnlockTime(){
+
+    return Number(
+        localStorage.getItem(
+            "memoryLuckyUnlock"
+        ) || 0
+    );
+
+}
+
+
+function setLuckyUnlockTime(){
+
+    localStorage.setItem(
+        "memoryLuckyUnlock",
+        String(
+            Date.now()
+        )
+    );
+
+}
+
+
+function getLuckyReward(
+    number
+){
+
+    if(number === 99999){
+
+        return 10000;
+
+    }
+
+
+    if(number >= 99997){
+
+        return 82;
+
+    }
+
+
+    if(number >= 99500){
+
+        return 18;
+
+    }
+
+
+    if(number >= 95000){
+
+        return 12;
+
+    }
+
+
+    if(number >= 90000){
+
+        return 8;
+
+    }
+
+
+    return 5;
+
+}
+
 
 function updateLuckyTimer(){
 
-const adButton=
-document.getElementById(
-"luckyAdBtn"
-);
-
-const rollButton=
-document.getElementById(
-"luckyRollBtn"
-);
-
-const timer=
-document.getElementById(
-"luckyTimer"
-);
+    const unlockTime =
+        getLuckyUnlockTime();
 
 
-if(
-!adButton||
-!rollButton||
-!timer
-)
-return;
+    const button =
+        document.getElementById(
+            "luckyBtn"
+        );
 
 
-const lastRoll=
-Number(
-localStorage.getItem(
-"luckyLastRoll"
-)||0
-);
+    const cooldown =
+        document.getElementById(
+            "luckyCooldown"
+        );
 
 
-const remaining=
-LUCKY_COOLDOWN-
-(Date.now()-lastRoll);
+    if(!unlockTime){
+
+        button.disabled =
+            false;
 
 
-const unlocked=
-localStorage.getItem(
-"luckyAdUnlocked"
-)==="true";
+        button.textContent =
+            "📺 WATCH AD & ROLL";
 
 
-/* WAITING */
-
-if(remaining>0){
-
-adButton.style.display=
-"block";
-
-adButton.disabled=true;
-
-adButton.textContent=
-"⏳ WAIT FOR 5 MIN";
-
-rollButton.style.display=
-"none";
-
-timer.textContent=
-"Next roll in "+
-formatLuckyTime(
-remaining
-);
-
-return;
-
-}
+        cooldown.textContent =
+            "Ready";
 
 
-/* AD COMPLETED */
+        return;
 
-if(unlocked){
-
-adButton.style.display=
-"none";
-
-rollButton.style.display=
-"block";
-
-rollButton.disabled=false;
-
-timer.textContent=
-"🎲 Roll unlocked!";
-
-return;
-
-}
+    }
 
 
-/* READY FOR AD */
+    const remaining =
+        LUCKY_COOLDOWN -
+        (
+            Date.now() -
+            unlockTime
+        );
 
-adButton.style.display=
-"block";
 
-adButton.disabled=false;
+    if(remaining <= 0){
 
-adButton.textContent=
-"📺 WATCH AD";
+        button.disabled =
+            false;
 
-rollButton.style.display=
-"none";
 
-timer.textContent=
-"Watch the ad to unlock.";
+        button.textContent =
+            "📺 WATCH AD & ROLL";
+
+
+        cooldown.textContent =
+            "Ready";
+
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+
+    const minutes =
+        Math.floor(
+            remaining / 60000
+        );
+
+
+    const seconds =
+        Math.floor(
+            (
+                remaining %
+                60000
+            ) / 1000
+        );
+
+
+    button.textContent =
+        "⏳ WAIT";
+
+
+    cooldown.textContent =
+        `${minutes}:${String(
+            seconds
+        ).padStart(2,"0")}`;
 
 }
 
-
-/* UPDATE TIMER */
 
 setInterval(
-updateLuckyTimer,
-1000
+    updateLuckyTimer,
+    1000
 );
 
 
-/* LIFE TIMER */
+async function unlockLuckyRoll(){
 
-setInterval(
-updateLives,
-60000
-);
+    const unlockTime =
+        getLuckyUnlockTime();
 
 
-/* TOAST */
+    if(
+        unlockTime &&
+        Date.now() -
+        unlockTime <
+        LUCKY_COOLDOWN
+    ){
 
-let toastTimer=null;
+        showToast(
+            "Lucky Roll is still locked."
+        );
+
+        return;
+
+    }
 
 
-function showToast(message){
+    showToast(
+        "📺 Starting rewarded ad..."
+    );
 
-const toast=
-document.getElementById(
-"toast"
-);
 
-toast.textContent=message;
+    const adWatched =
+        await showAdsGramRewarded();
 
-toast.classList.add("show");
 
-clearTimeout(toastTimer);
+    if(!adWatched){
 
-toastTimer=
-setTimeout(()=>{
+        return;
 
-toast.classList.remove("show");
+    }
 
-},2500);
+
+    if(DEMO_MODE){
+
+        setLuckyUnlockTime();
+
+        performDemoLuckyRoll();
+
+        updateLuckyTimer();
+
+        return;
+
+    }
+
+
+    try{
+
+        const result =
+            await apiRequest(
+                "/api/lucky/ad-unlock",
+                {
+                    method:"POST"
+                }
+            );
+
+
+        if(result.success){
+
+            setLuckyUnlockTime();
+
+            await rollLucky();
+
+        }
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
 
 }
 
 
-/* START */
+function performDemoLuckyRoll(){
 
-loadTelegramUser();
+    const number =
+        Math.floor(
+            Math.random() *
+            99999
+        ) + 1;
 
-updateUI();
 
-updateLuckyTimer();
+    const reward =
+        getLuckyReward(
+            number
+        );
+
+
+    document.getElementById(
+        "luckyNumber"
+    ).textContent =
+        number.toLocaleString();
+
+
+    player.coins +=
+        reward;
+
+
+    player.todayCoins +=
+        reward;
+
+
+    saveDemoData();
+
+    updateUI();
+
+
+    if(
+        number === 99999
+    ){
+
+        showModal(
+            "🎉 JACKPOT!",
+            "You rolled 99,999 and won 10,000 coins!"
+        );
+
+    }else{
+
+        showToast(
+            `🎲 You won ${reward} coins!`
+        );
+
+    }
+
+}
+
+
+async function rollLucky(){
+
+    try{
+
+        const result =
+            await apiRequest(
+                "/api/lucky/roll",
+                {
+                    method:"POST"
+                }
+            );
+
+
+        document.getElementById(
+            "luckyNumber"
+        ).textContent =
+            Number(
+                result.rollNumber
+            ).toLocaleString();
+
+
+        player.coins =
+            Number(
+                result.user.coins
+            );
+
+
+        player.todayCoins =
+            Number(
+                result.user.todayCoins
+            );
+
+
+        updateUI();
+
+        setLuckyUnlockTime();
+
+        updateLuckyTimer();
+
+
+        showToast(
+            `🎲 +${result.rewardCoins} coins!`
+        );
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DAILY BONUS
+   ========================================================= */
+
+function todayString(){
+
+    return new Date()
+        .toISOString()
+        .slice(0,10);
+
+}
+
+
+function updateDailyButton(){
+
+    const button =
+        document.getElementById(
+            "dailyBtn"
+        );
+
+
+    if(
+        player.lastDailyClaim ===
+        todayString()
+    ){
+
+        button.disabled =
+            true;
+
+
+        button.textContent =
+            "✅ CLAIMED TODAY";
+
+
+        button.style.opacity =
+            ".55";
+
+    }else{
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "CLAIM +100 COINS";
+
+
+        button.style.opacity =
+            "1";
+
+    }
+
+}
+
+
+async function claimDailyBonus(){
+
+    if(
+        player.lastDailyClaim ===
+        todayString()
+    ){
+
+        showToast(
+            "You already claimed today's bonus."
+        );
+
+        return;
+
+    }
+
+
+    if(DEMO_MODE){
+
+        player.coins +=
+            DAILY_BONUS;
+
+
+        player.todayCoins +=
+            DAILY_BONUS;
+
+
+        player.dailyStreak++;
+
+
+        player.lastDailyClaim =
+            todayString();
+
+
+        saveDemoData();
+
+        updateUI();
+
+
+        showToast(
+            "🎁 +100 coins!"
+        );
+
+
+        return;
+
+    }
+
+
+    try{
+
+        const result =
+            await apiRequest(
+                "/api/bonus/claim",
+                {
+                    method:"POST"
+                }
+            );
+
+
+        player.coins =
+            Number(
+                result.user.coins
+            );
+
+
+        player.todayCoins =
+            Number(
+                result.user.todayCoins
+            );
+
+
+        player.dailyStreak =
+            Number(
+                result.user.dailyStreak
+            );
+
+
+        player.lastDailyClaim =
+            result.user.lastDailyClaim;
+
+
+        updateUI();
+
+
+        showToast(
+            "🎁 Daily bonus claimed!"
+        );
+
+    }catch(error){
+
+        showToast(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LEADERBOARD
+   ========================================================= */
+
+function renderLeaderboard(){
+
+    const list =
+        document.getElementById(
+            "leaderboardList"
+        );
+
+
+    const users = [
+
+        {
+            name:"MemoryKing",
+            coins:12580
+        },
+
+        {
+            name:"LuckyPlayer",
+            coins:10850
+        },
+
+        {
+            name:"BrainMaster",
+            coins:9500
+        },
+
+        {
+            name:"CoinHunter",
+            coins:8200
+        },
+
+        {
+            name:"PuzzlePro",
+            coins:7150
+        },
+
+        {
+            name:player.username,
+            coins:player.coins
+        }
+
+    ];
+
+
+    users.sort(
+        (a,b) =>
+            b.coins -
+            a.coins
+    );
+
+
+    list.innerHTML =
+        users.map(
+            (user,index) => `
+
+            <div class="list-item">
+
+                <div class="rank">
+                    #${index + 1}
+                </div>
+
+                <div class="user-info">
+
+                    <div class="user-name">
+                        ${escapeHTML(
+                            user.name
+                        )}
+                    </div>
+
+                    <div class="user-score">
+                        ${formatCoins(
+                            user.coins
+                        )} coins
+                    </div>
+
+                </div>
+
+                <div>
+                    ${
+                        index === 0
+                        ? "🥇"
+                        : index === 1
+                        ? "🥈"
+                        : index === 2
+                        ? "🥉"
+                        : "🏆"
+                    }
+                </div>
+
+            </div>
+
+        `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+function updateAchievements(){
+
+    const first =
+        document.getElementById(
+            "achievementFirst"
+        );
+
+
+    const five =
+        document.getElementById(
+            "achievementFive"
+        );
+
+
+    if(
+        player.gamesPlayed >= 1
+    ){
+
+        first.classList.remove(
+            "locked"
+        );
+
+    }
+
+
+    if(
+        player.gamesPlayed >= 5
+    ){
+
+        five.classList.remove(
+            "locked"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   WITHDRAW
+   ========================================================= */
+
+async function requestWithdrawal(){
+
+    const coins =
+        Number(
+            document.getElementById(
+                "withdrawCoins"
+            ).value
+        );
+
+
+    const email =
+        document.getElementById(
+            "faucetEmail"
+        ).value.trim();
+
+
+    if(
+        !coins ||
+        coins < MIN_WITHDRAW
+    ){
+
+        showToast(
+            `Minimum withdrawal is ${MIN_WITHDRAW.toLocaleString()} coins.`
+        );
+
+        return;
+
+    }
+
+
+    if(
+        coins >
+        player.coins
+    ){
+
+        showToast(
+            "Insufficient coins."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !email ||
+        !email.includes("@")
+    ){
+
+        showToast(
+            "Please enter a valid FaucetPay email."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Payment intentionally disabled
+        until the secure backend is connected.
+    */
+
+    showModal(
+        "Withdrawals Coming Soon",
+        "The withdrawal interface is ready. FaucetPay payments will be processed securely by the backend after the payment service is connected."
+    );
+
+}
+
+
+/* =========================================================
+   NEXT / EXIT
+   ========================================================= */
+
+function nextGame(){
+
+    startGame(
+        player.selectedDifficulty
+    );
+
+}
+
+
+function exitGame(){
+
+    stopTimer();
+
+    goHome();
+
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+function showModal(
+    title,
+    text
+){
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        title;
+
+
+    document.getElementById(
+        "modalText"
+    ).textContent =
+        text;
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+function closeModal(){
+
+    document.getElementById(
+        "modal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+
+function showToast(
+    message
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+}
+
+
+/* =========================================================
+   SHUFFLE
+   ========================================================= */
+
+function shuffle(
+    array
+){
+
+    const result =
+        [...array];
+
+
+    for(
+        let i =
+            result.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
+        ];
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+async function init(){
+
+    await authenticateTelegram();
+
+
+    selectDifficulty(
+        "easy"
+    );
+
+
+    updateUI();
+
+    updateLuckyTimer();
+
+    renderLeaderboard();
+
+}
+
+
+init();
 
 </script>
 
