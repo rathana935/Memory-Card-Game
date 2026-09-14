@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#111827">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
+<meta name="theme-color"
+      content="#111827">
 
 <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
 
 <title>Memory Coins</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
@@ -31,6 +37,11 @@ input{
 button{
     border:0;
     cursor:pointer;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
 .app{
@@ -338,14 +349,17 @@ button{
     aspect-ratio:1/1;
     border-radius:12px;
     background:#2563eb;
-    color:transparent;
+    color:#fff;
     display:flex;
     justify-content:center;
     align-items:center;
     font-size:30px;
     font-weight:bold;
-    transform-style:preserve-3d;
     transition:.25s;
+}
+
+.memory-card:not(.flipped):not(.matched){
+    color:transparent;
 }
 
 .memory-card.flipped,
@@ -486,6 +500,7 @@ button{
     transition:.3s;
     z-index:100;
     white-space:nowrap;
+    max-width:90%;
 }
 
 .toast.show{
@@ -525,66 +540,10 @@ button{
     }
 }
 
-/* MODAL */
-
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.75);
-    z-index:150;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    background:#1f2937;
-    width:100%;
-    max-width:400px;
-    border-radius:22px;
-    padding:22px;
-}
-
-.modal-title{
-    font-size:20px;
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.close-btn{
-    float:right;
-    background:#374151;
-    color:#fff;
-    width:30px;
-    height:30px;
-    border-radius:50%;
-}
-
-/* XP */
-
-.xp-bar{
-    height:9px;
-    background:#374151;
-    border-radius:20px;
-    overflow:hidden;
-    margin-top:8px;
-}
-
-.xp-fill{
-    height:100%;
-    background:#22c55e;
-    width:0%;
-    transition:.3s;
-}
-
 /* MOBILE */
 
 @media(max-width:380px){
+
     .balance{
         font-size:32px;
     }
@@ -593,6 +552,7 @@ button{
         grid-template-columns:1fr 1fr;
     }
 }
+
 </style>
 </head>
 
@@ -600,42 +560,87 @@ button{
 
 <div class="app">
 
+<!-- LOADING -->
+
 <div class="loading" id="loadingScreen">
+
     <div class="loading-box">
+
         <div class="spinner"></div>
+
         <b>Connecting...</b>
-        <div style="font-size:12px;color:#9ca3af;margin-top:6px">
+
+        <div style="
+            font-size:12px;
+            color:#9ca3af;
+            margin-top:6px">
+
             Authenticating Telegram
+
         </div>
+
     </div>
+
 </div>
 
+
+<!-- HEADER -->
+
 <header class="header">
-    <div class="logo">🧠 Memory Coins</div>
-    <div id="connectionStatus" class="status">Connecting</div>
+
+    <div class="logo">
+        🧠 Memory Coins
+    </div>
+
+    <div
+        id="connectionStatus"
+        class="status">
+
+        Connecting
+
+    </div>
+
 </header>
+
 
 <!-- HOME -->
 
-<section id="homePage" class="page active">
+<section
+    id="homePage"
+    class="page active">
 
     <div class="profile-card">
 
-        <div class="avatar" id="avatar">
+        <div
+            class="avatar"
+            id="avatar">
+
             👤
+
         </div>
 
         <div>
-            <div class="username" id="username">
+
+            <div
+                class="username"
+                id="username">
+
                 Telegram User
+
             </div>
 
-            <div class="telegram-id" id="telegramId">
+            <div
+                class="telegram-id"
+                id="telegramId">
+
                 Connecting...
+
             </div>
+
         </div>
 
     </div>
+
 
     <div class="balance-card">
 
@@ -644,43 +649,99 @@ button{
         </div>
 
         <div class="balance">
-            <span id="coinBalance">0</span>
+
+            <span id="coinBalance">
+                0
+            </span>
+
         </div>
 
         <div class="usd">
-            ≈ $<span id="usdBalance">0.00</span>
+
+            ≈ $<span id="usdBalance">
+                0.0000
+            </span>
+
         </div>
 
     </div>
+
 
     <div class="stats">
 
         <div class="stat">
-            <div class="stat-value" id="lives">5</div>
-            <div class="stat-label">❤️ Lives</div>
+
+            <div
+                class="stat-value"
+                id="lives">
+
+                5
+
+            </div>
+
+            <div class="stat-label">
+                ❤️ Lives
+            </div>
+
         </div>
 
-        <div class="stat">
-            <div class="stat-value" id="gamesPlayed">0</div>
-            <div class="stat-label">🎮 Games</div>
-        </div>
 
         <div class="stat">
-            <div class="stat-value" id="todayCoins">0</div>
-            <div class="stat-label">📅 Today</div>
+
+            <div
+                class="stat-value"
+                id="gamesPlayed">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                🎮 Games
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-value"
+                id="todayCoins">
+
+                0
+
+            </div>
+
+            <div class="stat-label">
+                📅 Today
+            </div>
+
         </div>
 
     </div>
 
-    <button class="primary-btn" onclick="openGame()">
+
+    <button
+        class="primary-btn"
+        onclick="openGame()">
+
         🎮 PLAY MEMORY
+
     </button>
 
-    <div class="section-title">Daily Bonus</div>
+
+    <!-- DAILY BONUS -->
+
+    <div class="section-title">
+        Daily Bonus
+    </div>
 
     <div class="daily-card">
 
-        <h3>🎁 Daily Bonus +100</h3>
+        <h3>
+            🎁 Daily Bonus +100
+        </h3>
 
         <p>
             Claim your daily reward once every day.
@@ -691,30 +752,49 @@ button{
             style="background:#f59e0b"
             id="dailyButton"
             onclick="claimDailyBonus()">
+
             CLAIM BONUS
+
         </button>
 
     </div>
 
-    <div class="section-title">Lucky Roll</div>
+
+    <!-- LUCKY ROLL -->
+
+    <div class="section-title">
+        Lucky Roll
+    </div>
 
     <div class="lucky-card">
 
-        <div>🎰 Roll every 5 minutes</div>
-
-        <div class="lucky-number" id="luckyNumber">
-            ?
+        <div>
+            🎰 Roll every 5 minutes
         </div>
 
-        <div class="lucky-result" id="luckyResult">
+        <div
+            class="lucky-number"
+            id="luckyNumber">
+
+            ?
+
+        </div>
+
+        <div
+            class="lucky-result"
+            id="luckyResult">
+
             Watch an ad to unlock
+
         </div>
 
         <button
             class="primary-btn"
             style="background:#9333ea"
             onclick="watchLuckyAd()">
+
             📺 WATCH AD & ROLL
+
         </button>
 
     </div>
@@ -724,21 +804,31 @@ button{
 
 <!-- GAME -->
 
-<section id="gamePage" class="page">
+<section
+    id="gamePage"
+    class="page">
 
     <div class="game-header">
 
-        <button class="secondary-btn"
-                style="width:auto;margin:0"
-                onclick="showPage('homePage')">
+        <button
+            class="secondary-btn"
+            style="width:auto;margin:0"
+            onclick="leaveGame()">
+
             ← Back
+
         </button>
 
         <div class="timer">
-            ⏱ <span id="timer">60</span>
+
+            ⏱ <span id="timer">
+                60
+            </span>
+
         </div>
 
     </div>
+
 
     <div class="level-select">
 
@@ -746,81 +836,139 @@ button{
             class="level-btn active"
             id="easyBtn"
             onclick="selectDifficulty('easy')">
+
             Easy<br>
-            <small>+10</small>
+
+            <small>
+                +10
+            </small>
+
         </button>
+
 
         <button
             class="level-btn"
             id="mediumBtn"
             onclick="selectDifficulty('medium')">
+
             Medium<br>
-            <small>+12</small>
+
+            <small>
+                +12
+            </small>
+
         </button>
+
 
         <button
             class="level-btn"
             id="hardBtn"
             onclick="selectDifficulty('hard')">
+
             Hard<br>
-            <small>+15</small>
+
+            <small>
+                +15
+            </small>
+
         </button>
 
     </div>
 
+
     <div class="game-info">
 
         <span>
+
             Level:
-            <b id="currentLevel">1</b>
+            <b id="currentLevel">
+                1
+            </b>
+
         </span>
 
         <span>
+
             Moves:
-            <b id="moves">0</b>
+            <b id="moves">
+                0
+            </b>
+
         </span>
 
         <span>
+
             Pairs:
-            <b id="pairsFound">0</b>
+            <b id="pairsFound">
+                0
+            </b>
+
         </span>
 
     </div>
 
-    <div id="memoryGrid" class="memory-grid"></div>
+
+    <div
+        id="memoryGrid"
+        class="memory-grid">
+
+    </div>
 
 </section>
 
 
 <!-- RESULT -->
 
-<section id="resultPage" class="page">
+<section
+    id="resultPage"
+    class="page">
 
     <div class="result-card">
 
-        <div class="result-icon" id="resultIcon">
+        <div
+            class="result-icon"
+            id="resultIcon">
+
             🎉
+
         </div>
 
         <h2 id="resultTitle">
+
             Great Job!
+
         </h2>
 
         <div class="reward">
-            +<span id="resultReward">0</span> 🪙
+
+            +<span id="resultReward">
+                0
+            </span> 🪙
+
         </div>
 
         <p id="resultText">
+
             Game completed.
+
         </p>
 
-        <button class="primary-btn" onclick="openGame()">
+
+        <button
+            class="primary-btn"
+            onclick="openGame()">
+
             🎮 PLAY AGAIN
+
         </button>
 
-        <button class="secondary-btn"
-                onclick="showPage('homePage')">
+
+        <button
+            class="secondary-btn"
+            onclick="showPage('homePage')">
+
             🏠 HOME
+
         </button>
 
     </div>
@@ -830,11 +978,14 @@ button{
 
 <!-- WALLET -->
 
-<section id="walletPage" class="page">
+<section
+    id="walletPage"
+    class="page">
 
     <div class="section-title">
         💰 Wallet
     </div>
+
 
     <div class="wallet-card">
 
@@ -843,7 +994,11 @@ button{
         </div>
 
         <div class="balance">
-            <span id="walletCoins">0</span>
+
+            <span id="walletCoins">
+                0
+            </span>
+
         </div>
 
         <div class="usd">
@@ -852,15 +1007,26 @@ button{
 
     </div>
 
+
     <div class="wallet-card">
 
-        <h3>FaucetPay Withdrawal</h3>
+        <h3>
+            FaucetPay Withdrawal
+        </h3>
 
-        <p style="font-size:13px;color:#9ca3af">
-            Minimum withdrawal: 2,500 coins
+        <p style="
+            font-size:13px;
+            color:#9ca3af">
+
+            Minimum withdrawal:
+            2,500 coins
+
         </p>
 
-        <label>FaucetPay Email</label>
+
+        <label>
+            FaucetPay Email
+        </label>
 
         <input
             id="faucetEmail"
@@ -868,8 +1034,14 @@ button{
             type="email"
             placeholder="your@email.com">
 
-        <label style="display:block;margin-top:12px">
+
+        <label
+            style="
+                display:block;
+                margin-top:12px">
+
             Coins
+
         </label>
 
         <input
@@ -879,10 +1051,13 @@ button{
             min="2500"
             placeholder="2500">
 
+
         <button
             class="primary-btn green-btn"
             onclick="withdraw()">
+
             💸 REQUEST WITHDRAWAL
+
         </button>
 
     </div>
@@ -892,39 +1067,67 @@ button{
 
 <!-- MORE -->
 
-<section id="morePage" class="page">
+<section
+    id="morePage"
+    class="page">
 
     <div class="section-title">
         🏆 Achievements
     </div>
 
-    <div id="achievements"></div>
+    <div id="achievements">
+    </div>
+
 
     <div class="section-title">
         🏆 Leaderboard
     </div>
 
-    <div id="leaderboard"></div>
+    <div id="leaderboard">
+
+        <div class="rank">
+
+            <span>
+                Loading...
+            </span>
+
+        </div>
+
+    </div>
+
 
     <div class="section-title">
         ℹ️ Account
     </div>
 
+
     <div class="menu-card">
 
-        <div style="font-size:13px;color:#9ca3af">
+        <div style="
+            font-size:13px;
+            color:#9ca3af">
+
             Telegram ID
+
         </div>
 
-        <div id="accountTelegramId"
-             style="font-weight:bold;margin-top:5px">
+        <div
+            id="accountTelegramId"
+            style="
+                font-weight:bold;
+                margin-top:5px">
+
             -
+
         </div>
+
 
         <button
             class="secondary-btn"
             onclick="logout()">
+
             Logout
+
         </button>
 
     </div>
@@ -932,124 +1135,206 @@ button{
 </section>
 
 
-<!-- NAVIGATION -->
+<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
-    <button class="nav-btn active"
-            id="navHome"
-            onclick="showPage('homePage')">
+    <button
+        class="nav-btn active"
+        id="navHome"
+        onclick="showPage('homePage')">
+
         <span>🏠</span>
+
         Home
+
     </button>
 
-    <button class="nav-btn"
-            id="navGame"
-            onclick="openGame()">
+
+    <button
+        class="nav-btn"
+        id="navGame"
+        onclick="openGame()">
+
         <span>🎮</span>
+
         Game
+
     </button>
 
-    <button class="nav-btn"
-            id="navWallet"
-            onclick="showPage('walletPage')">
+
+    <button
+        class="nav-btn"
+        id="navWallet"
+        onclick="showPage('walletPage')">
+
         <span>💰</span>
+
         Wallet
+
     </button>
 
-    <button class="nav-btn"
-            id="navMore"
-            onclick="showPage('morePage')">
+
+    <button
+        class="nav-btn"
+        id="navMore"
+        onclick="showPage('morePage')">
+
         <span>☰</span>
+
         More
+
     </button>
 
 </nav>
 
-<div id="toast" class="toast"></div>
+
+<div
+    id="toast"
+    class="toast">
+
+</div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
-   TELEGRAM
-===================================================== */
+/* =========================================================
+   MEMORY COINS
+   SECURE FRONTEND
+========================================================= */
 
-const tg = window.Telegram?.WebApp;
+
+/* =========================================================
+   TELEGRAM
+========================================================= */
+
+const tg =
+    window.Telegram?.WebApp || null;
+
 
 const API_URL =
     "https://memory-coins-backend.onrender.com";
 
+
 if(tg){
+
     tg.ready();
+
     tg.expand();
+
 }
 
 
-/* =====================================================
+/* =========================================================
    AUTH
-===================================================== */
+========================================================= */
 
 let authToken =
-    localStorage.getItem("memoryCoinsAuthToken") || null;
+    localStorage.getItem(
+        "memoryCoinsAuthToken"
+    ) || null;
 
-let currentUser = null;
+
+let currentUser =
+    null;
 
 
-/* =====================================================
-   LOCAL GAME STATE
-===================================================== */
+/* =========================================================
+   GAME STATE
+========================================================= */
+
+let difficulty =
+    "easy";
+
+
+let activeGameId =
+    null;
+
+
+let activeCompletionToken =
+    null;
+
+
+let gameCards =
+    [];
+
+
+let flippedCards =
+    [];
+
+
+let matchedPairs =
+    0;
+
+
+let moves =
+    0;
+
+
+let gameStarted =
+    false;
+
+
+let gameStartTime =
+    0;
+
+
+let timerInterval =
+    null;
+
+
+let timer =
+    60;
+
+
+let gameRows =
+    2;
+
+
+let gameCols =
+    4;
+
+
+let gamePairs =
+    4;
+
+
+let gameLocked =
+    false;
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
 
 let player = {
+
     coins:0,
+
     todayCoins:0,
+
     gamesPlayed:0,
+
     lives:5,
+
     easyLevel:1,
+
     mediumLevel:1,
+
     hardLevel:1,
+
     dailyStreak:0,
+
     lastDailyClaim:null
-};
-
-let difficulty = "easy";
-
-let gameCards = [];
-let flippedCards = [];
-let matchedPairs = 0;
-let moves = 0;
-let timer = 60;
-let timerInterval = null;
-let gameStarted = false;
-
-const settings = {
-
-    easy:{
-        rows:2,
-        cols:4,
-        reward:10
-    },
-
-    medium:{
-        rows:3,
-        cols:4,
-        reward:12
-    },
-
-    hard:{
-        rows:4,
-        cols:4,
-        reward:15
-    }
 
 };
 
 
-/* =====================================================
+/* =========================================================
    AUTHENTICATE TELEGRAM
-===================================================== */
+========================================================= */
 
 async function authenticateTelegram(){
 
@@ -1066,7 +1351,10 @@ async function authenticateTelegram(){
         return false;
     }
 
-    const initData = tg.initData;
+
+    const initData =
+        tg.initData;
+
 
     if(!initData){
 
@@ -1081,119 +1369,103 @@ async function authenticateTelegram(){
         return false;
     }
 
+
     try{
 
-        const response = await fetch(
-            API_URL + "/api/auth/telegram",
-            {
-                method:"POST",
+        const response =
+            await fetch(
+                API_URL +
+                "/api/auth/telegram",
+                {
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+                    method:"POST",
 
-                body:JSON.stringify({
-                    initData:initData
-                })
-            }
-        );
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
 
-        const data = await response.json();
+                    body:
+                        JSON.stringify({
+                            initData:
+                                initData
+                        })
+                }
+            );
 
-        if(!response.ok || !data.success){
+
+        const data =
+            await response.json();
+
+
+        if(
+            !response.ok ||
+            !data.success
+        ){
 
             throw new Error(
                 data.message ||
-                "Telegram authentication failed"
+                "Telegram authentication failed."
             );
-
         }
 
-        authToken = data.token;
+
+        authToken =
+            data.token;
+
 
         localStorage.setItem(
             "memoryCoinsAuthToken",
             authToken
         );
 
-        currentUser = data.user;
 
-        syncUser(data.user);
+        syncUser(
+            data.user
+        );
 
-        setConnection(true);
+
+        setConnection(
+            true
+        );
+
 
         hideLoading();
 
-        toast("Telegram account connected ✓");
 
         return true;
+
 
     }catch(error){
 
         console.error(
-            "Telegram authentication error:",
+            "Telegram auth:",
             error
         );
 
-        setConnection(false);
+
+        setConnection(
+            false
+        );
+
 
         hideLoading();
 
+
         toast(
-            "Authentication failed. Please try again."
+            error.message ||
+            "Authentication failed."
         );
+
 
         return false;
     }
 }
 
 
-/* =====================================================
-   SYNC SERVER USER
-===================================================== */
-
-function syncUser(user){
-
-    if(!user) return;
-
-    currentUser = user;
-
-    player.coins =
-        Number(user.coins || 0);
-
-    player.todayCoins =
-        Number(user.todayCoins || 0);
-
-    player.gamesPlayed =
-        Number(user.gamesPlayed || 0);
-
-    player.lives =
-        Number(user.lives ?? 5);
-
-    player.easyLevel =
-        Number(user.easyLevel || 1);
-
-    player.mediumLevel =
-        Number(user.mediumLevel || 1);
-
-    player.hardLevel =
-        Number(user.hardLevel || 1);
-
-    player.dailyStreak =
-        Number(user.dailyStreak || 0);
-
-    player.lastDailyClaim =
-        user.lastDailyClaim || null;
-
-    updateUI();
-
-    loadTelegramUser();
-}
-
-
-/* =====================================================
-   API HELPER
-===================================================== */
+/* =========================================================
+   API REQUEST
+========================================================= */
 
 async function apiRequest(
     endpoint,
@@ -1203,653 +1475,1455 @@ async function apiRequest(
     if(!authToken){
 
         throw new Error(
-            "Not authenticated"
+            "Not authenticated."
         );
-
     }
 
-    options.headers = {
 
-        ...(options.headers || {}),
+    const headers = {
 
         "Content-Type":
             "application/json",
 
+        ...(options.headers || {}),
+
         "Authorization":
-            "Bearer " + authToken
+            "Bearer " +
+            authToken
 
     };
 
+
     const response =
         await fetch(
-            API_URL + endpoint,
-            options
+            API_URL +
+            endpoint,
+            {
+                ...options,
+                headers
+            }
         );
+
 
     let data = {};
 
-    try{
-        data = await response.json();
-    }catch(e){}
 
-    if(response.status === 401){
+    try{
+
+        data =
+            await response.json();
+
+    }catch(error){
+
+        data = {};
+
+    }
+
+
+    if(
+        response.status ===
+        401
+    ){
 
         localStorage.removeItem(
             "memoryCoinsAuthToken"
         );
 
-        authToken = null;
+        authToken =
+            null;
+
+        currentUser =
+            null;
 
         throw new Error(
-            "Session expired"
+            "Your session expired."
         );
     }
+
 
     if(!response.ok){
 
         throw new Error(
             data.message ||
             data.error ||
-            "Request failed"
+            "Request failed."
         );
-
     }
+
 
     return data;
 }
 
 
-/* =====================================================
-   TELEGRAM PROFILE
-===================================================== */
+/* =========================================================
+   SYNC USER
+========================================================= */
+
+function syncUser(
+    user
+){
+
+    if(!user)
+        return;
+
+
+    currentUser =
+        user;
+
+
+    player.coins =
+        Number(
+            user.coins || 0
+        );
+
+
+    player.todayCoins =
+        Number(
+            user.todayCoins || 0
+        );
+
+
+    player.gamesPlayed =
+        Number(
+            user.gamesPlayed || 0
+        );
+
+
+    player.lives =
+        Number(
+            user.lives ??
+            5
+        );
+
+
+    player.easyLevel =
+        Number(
+            user.easyLevel ||
+            1
+        );
+
+
+    player.mediumLevel =
+        Number(
+            user.mediumLevel ||
+            1
+        );
+
+
+    player.hardLevel =
+        Number(
+            user.hardLevel ||
+            1
+        );
+
+
+    player.dailyStreak =
+        Number(
+            user.dailyStreak ||
+            0
+        );
+
+
+    player.lastDailyClaim =
+        user.lastDailyClaim ||
+        null;
+
+
+    updateUI();
+
+    loadTelegramUser();
+
+}
+
+
+/* =========================================================
+   LOAD TELEGRAM USER
+========================================================= */
 
 function loadTelegramUser(){
 
-    const user =
-        currentUser ||
+    const telegramUser =
         tg?.initDataUnsafe?.user;
 
-    if(!user) return;
 
-    const name =
-        [
-            user.firstName ||
-            user.first_name ||
-            "",
+    const user =
+        telegramUser ||
+        currentUser;
 
-            user.lastName ||
-            user.last_name ||
-            ""
-        ]
-        .join(" ")
-        .trim();
+
+    if(!user)
+        return;
+
+
+    const firstName =
+        user.firstName ||
+        user.first_name ||
+        "";
+
+
+    const lastName =
+        user.lastName ||
+        user.last_name ||
+        "";
+
 
     const username =
         user.username ||
         "";
 
-    document.getElementById(
-        "username"
-    ).textContent =
+
+    const name =
+        (
+            firstName +
+            " " +
+            lastName
+        ).trim();
+
+
+    const displayName =
         username
-        ? "@" + username
-        : (name || "Telegram User");
+            ? "@" + username
+            : (
+                name ||
+                "Telegram User"
+            );
 
-    document.getElementById(
-        "telegramId"
-    ).textContent =
-        "ID: " + (
-            user.id ||
-            user.telegramId ||
-            "-"
-        );
 
-    document.getElementById(
-        "accountTelegramId"
-    ).textContent =
+    const telegramId =
         user.id ||
         user.telegramId ||
+        user.telegram_id ||
         "-";
 
+
+    setText(
+        "username",
+        displayName
+    );
+
+
+    setText(
+        "telegramId",
+        "ID: " +
+        telegramId
+    );
+
+
+    setText(
+        "accountTelegramId",
+        telegramId
+    );
+
+
     const avatar =
-        document.getElementById("avatar");
+        document.getElementById(
+            "avatar"
+        );
+
 
     const photo =
         user.photo_url ||
         user.photoUrl;
 
-    if(photo){
+
+    if(
+        avatar &&
+        photo
+    ){
 
         avatar.innerHTML =
-            `<img src="${escapeHtml(photo)}"
-             alt="avatar">`;
+            `
+            <img
+                src="${escapeHtml(photo)}"
+                alt="Telegram avatar">
+            `;
 
-    }else{
+    }else if(avatar){
 
-        const first =
+        avatar.textContent =
             (
-                name ||
+                firstName ||
                 username ||
                 "U"
-            )[0].toUpperCase();
-
-        avatar.textContent = first;
-
+            )[0]
+            .toUpperCase();
     }
 }
 
 
-/* =====================================================
+/* =========================================================
    UI
-===================================================== */
+========================================================= */
 
 function updateUI(){
 
-    document.getElementById(
-        "coinBalance"
-    ).textContent =
-        formatNumber(player.coins);
+    setText(
+        "coinBalance",
+        formatNumber(
+            player.coins
+        )
+    );
 
-    document.getElementById(
-        "walletCoins"
-    ).textContent =
-        formatNumber(player.coins);
 
-    document.getElementById(
-        "todayCoins"
-    ).textContent =
-        formatNumber(player.todayCoins);
+    setText(
+        "walletCoins",
+        formatNumber(
+            player.coins
+        )
+    );
 
-    document.getElementById(
-        "gamesPlayed"
-    ).textContent =
-        formatNumber(player.gamesPlayed);
 
-    document.getElementById(
-        "lives"
-    ).textContent =
-        player.lives;
+    setText(
+        "todayCoins",
+        formatNumber(
+            player.todayCoins
+        )
+    );
 
-    document.getElementById(
-        "usdBalance"
-    ).textContent =
-        (player.coins / 10000)
-        .toFixed(4);
+
+    setText(
+        "gamesPlayed",
+        formatNumber(
+            player.gamesPlayed
+        )
+    );
+
+
+    setText(
+        "lives",
+        player.lives
+    );
+
+
+    setText(
+        "usdBalance",
+        (
+            player.coins /
+            10000
+        ).toFixed(4)
+    );
+
 
     updateDailyButton();
 
     renderAchievements();
-
-    renderLeaderboard();
 }
 
 
-/* =====================================================
+/* =========================================================
    NAVIGATION
-===================================================== */
+========================================================= */
 
-function showPage(pageId){
+function showPage(
+    pageId
+){
 
     document
-        .querySelectorAll(".page")
-        .forEach(page=>{
-            page.classList.remove("active");
-        });
+        .querySelectorAll(
+            ".page"
+        )
+        .forEach(
+            page => {
+
+                page.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
 
     const page =
-        document.getElementById(pageId);
+        document.getElementById(
+            pageId
+        );
+
 
     if(page){
-        page.classList.add("active");
+
+        page.classList.add(
+            "active"
+        );
     }
+
 
     document
-        .querySelectorAll(".nav-btn")
-        .forEach(btn=>{
-            btn.classList.remove("active");
-        });
+        .querySelectorAll(
+            ".nav-btn"
+        )
+        .forEach(
+            button => {
 
-    if(pageId === "homePage"){
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    if(
+        pageId ===
+        "homePage"
+    ){
+
         document
-            .getElementById("navHome")
-            .classList.add("active");
+            .getElementById(
+                "navHome"
+            )
+            ?.classList.add(
+                "active"
+            );
     }
 
-    if(pageId === "gamePage"){
+
+    if(
+        pageId ===
+        "gamePage"
+    ){
+
         document
-            .getElementById("navGame")
-            .classList.add("active");
+            .getElementById(
+                "navGame"
+            )
+            ?.classList.add(
+                "active"
+            );
     }
 
-    if(pageId === "walletPage"){
+
+    if(
+        pageId ===
+        "walletPage"
+    ){
+
         document
-            .getElementById("navWallet")
-            .classList.add("active");
+            .getElementById(
+                "navWallet"
+            )
+            ?.classList.add(
+                "active"
+            );
     }
 
-    if(pageId === "morePage"){
+
+    if(
+        pageId ===
+        "morePage"
+    ){
+
         document
-            .getElementById("navMore")
-            .classList.add("active");
+            .getElementById(
+                "navMore"
+            )
+            ?.classList.add(
+                "active"
+            );
+
+        loadLeaderboard();
     }
 }
 
 
-/* =====================================================
-   GAME
-===================================================== */
+/* =========================================================
+   SELECT DIFFICULTY
+========================================================= */
 
-function openGame(){
+function selectDifficulty(
+    level
+){
 
-    if(player.lives <= 0){
+    if(gameStarted){
 
         toast(
-            "No lives available. Please wait for recovery."
+            "Finish the current game first."
         );
 
         return;
     }
 
-    showPage("gamePage");
 
-    startGame();
-}
+    difficulty =
+        level;
 
-
-function selectDifficulty(level){
-
-    difficulty = level;
 
     document
-        .querySelectorAll(".level-btn")
-        .forEach(btn=>{
-            btn.classList.remove("active");
-        });
+        .querySelectorAll(
+            ".level-btn"
+        )
+        .forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
 
     document
         .getElementById(
             level + "Btn"
         )
-        .classList.add("active");
-
-    if(gameStarted){
-
-        startGame();
-
-    }
+        ?.classList.add(
+            "active"
+        );
 }
 
 
-function startGame(){
+/* =========================================================
+   START GAME
+========================================================= */
 
-    clearInterval(timerInterval);
+async function openGame(
+    requestedDifficulty = null
+){
 
-    if(player.lives <= 0){
+    if(requestedDifficulty){
 
-        toast("No lives available.");
+        difficulty =
+            requestedDifficulty;
+    }
 
-        showPage("homePage");
+
+    if(gameStarted){
+
+        showPage(
+            "gamePage"
+        );
 
         return;
     }
 
-    gameStarted = true;
 
-    flippedCards = [];
+    try{
 
-    matchedPairs = 0;
+        /*
+          IMPORTANT:
 
-    moves = 0;
+          The server consumes one life
+          and creates the game session.
+        */
 
-    timer = 60;
+        const result =
+            await apiRequest(
+                "/api/game/start",
+                {
 
-    document.getElementById(
-        "timer"
-    ).textContent = timer;
+                    method:"POST",
 
-    document.getElementById(
-        "moves"
-    ).textContent = moves;
+                    body:
+                        JSON.stringify({
 
-    document.getElementById(
-        "pairsFound"
-    ).textContent = matchedPairs;
+                            difficulty:
+                                difficulty
 
-    const level =
-        getDifficultyLevel();
+                        })
+                }
+            );
 
-    document.getElementById(
-        "currentLevel"
-    ).textContent = level;
 
-    createMemoryGame();
+        if(
+            !result ||
+            !result.success
+        ){
 
-    timerInterval =
-        setInterval(()=>{
+            toast(
+                result?.message ||
+                "Unable to start game."
+            );
 
-            timer--;
+            return;
+        }
 
-            document.getElementById(
-                "timer"
-            ).textContent = timer;
 
-            if(timer <= 0){
+        const game =
+            result.game;
 
-                clearInterval(timerInterval);
 
-                finishGame(false);
+        /*
+          Save secure server session.
+        */
 
-            }
+        activeGameId =
+            game.id;
 
-        },1000);
+
+        activeCompletionToken =
+            game.completionToken;
+
+
+        /*
+          Server controls board.
+        */
+
+        gameRows =
+            Number(
+                game.rows
+            );
+
+
+        gameCols =
+            Number(
+                game.cols
+            );
+
+
+        gamePairs =
+            Number(
+                game.pairs
+            );
+
+
+        difficulty =
+            game.difficulty;
+
+
+        /*
+          Server controls lives.
+        */
+
+        player.lives =
+            Number(
+                result.lives
+            );
+
+
+        /*
+          Server controls level.
+        */
+
+        setText(
+            "currentLevel",
+            game.level
+        );
+
+
+        setText(
+            "lives",
+            player.lives
+        );
+
+
+        /*
+          Reset game state.
+        */
+
+        matchedPairs =
+            0;
+
+        moves =
+            0;
+
+        flippedCards =
+            [];
+
+        gameLocked =
+            false;
+
+        gameStarted =
+            true;
+
+
+        timer =
+            60;
+
+
+        gameStartTime =
+            Date.now();
+
+
+        setText(
+            "timer",
+            timer
+        );
+
+
+        setText(
+            "moves",
+            0
+        );
+
+
+        setText(
+            "pairsFound",
+            0
+        );
+
+
+        createMemoryGame();
+
+
+        showPage(
+            "gamePage"
+        );
+
+
+        startTimer();
+
+
+    }catch(error){
+
+        console.error(
+            "Start game error:",
+            error
+        );
+
+
+        toast(
+            error.message ||
+            "Unable to start game."
+        );
+    }
 }
 
 
-function getDifficultyLevel(){
-
-    if(difficulty === "easy")
-        return player.easyLevel;
-
-    if(difficulty === "medium")
-        return player.mediumLevel;
-
-    return player.hardLevel;
-}
-
-
-/* =====================================================
-   MEMORY GAME
-===================================================== */
+/* =========================================================
+   CREATE MEMORY GAME
+========================================================= */
 
 function createMemoryGame(){
 
-    const config =
-        settings[difficulty];
-
-    const totalCards =
-        config.rows *
-        config.cols;
-
-    const pairs =
-        totalCards / 2;
-
     const symbols = [
-        "🍎","🍌","🍇","🍉",
-        "🍒","🥝","🍓","🍍",
-        "🥭","🍑","🍊","🍋",
-        "🥥","🥕","🌽","🥔"
+
+        "🍎",
+        "🍌",
+        "🍇",
+        "🍉",
+        "🍒",
+        "🥝",
+        "🍓",
+        "🍍",
+        "🥭",
+        "🍑",
+        "🍊",
+        "🍋",
+        "🥥",
+        "🥕",
+        "🌽",
+        "🥔"
+
     ];
 
+
     const selected =
-        symbols.slice(0,pairs);
+        symbols.slice(
+            0,
+            gamePairs
+        );
+
 
     gameCards =
-        [...selected,...selected]
-        .sort(()=>Math.random()-.5);
+        [
+            ...selected,
+            ...selected
+        ]
+        .sort(
+            () =>
+                Math.random() -
+                0.5
+        );
+
 
     const grid =
         document.getElementById(
             "memoryGrid"
         );
 
-    grid.innerHTML = "";
+
+    grid.innerHTML =
+        "";
+
 
     grid.style.gridTemplateColumns =
-        `repeat(${config.cols},1fr)`;
+        `repeat(${gameCols},1fr)`;
+
 
     gameCards.forEach(
-        (symbol,index)=>{
+        (
+            symbol,
+            index
+        ) => {
 
             const card =
                 document.createElement(
                     "button"
                 );
 
+
             card.className =
                 "memory-card";
+
 
             card.dataset.index =
                 index;
 
+
             card.dataset.symbol =
                 symbol;
+
 
             card.textContent =
                 symbol;
 
-            card.onclick =
-                ()=>flipCard(card);
 
-            grid.appendChild(card);
+            card.onclick =
+                () =>
+                    flipCard(
+                        card
+                    );
+
+
+            grid.appendChild(
+                card
+            );
+
         }
     );
 }
 
 
-function flipCard(card){
+/* =========================================================
+   FLIP CARD
+========================================================= */
 
-    if(
-        flippedCards.length >= 2 ||
-        card.classList.contains("flipped") ||
-        card.classList.contains("matched")
-    ){
-        return;
-    }
-
-    card.classList.add("flipped");
-
-    flippedCards.push(card);
-
-    if(flippedCards.length === 2){
-
-        moves++;
-
-        document.getElementById(
-            "moves"
-        ).textContent = moves;
-
-        setTimeout(checkMatch,500);
-
-    }
-}
-
-
-function checkMatch(){
-
-    const [a,b] =
-        flippedCards;
-
-    if(
-        a.dataset.symbol ===
-        b.dataset.symbol
-    ){
-
-        a.classList.add("matched");
-        b.classList.add("matched");
-
-        matchedPairs++;
-
-        document.getElementById(
-            "pairsFound"
-        ).textContent =
-            matchedPairs;
-
-        flippedCards = [];
-
-        const totalPairs =
-            settings[difficulty]
-            .rows *
-            settings[difficulty]
-            .cols / 2;
-
-        if(
-            matchedPairs >= totalPairs
-        ){
-
-            finishGame(true);
-
-        }
-
-    }else{
-
-        a.classList.remove("flipped");
-        b.classList.remove("flipped");
-
-        flippedCards = [];
-
-    }
-}
-
-
-/* =====================================================
-   GAME RESULT
-===================================================== */
-
-async function finishGame(won){
+function flipCard(
+    card
+){
 
     if(!gameStarted)
         return;
 
-    gameStarted = false;
 
-    clearInterval(timerInterval);
+    if(gameLocked)
+        return;
 
-    if(!won){
 
-        document.getElementById(
-            "resultIcon"
-        ).textContent = "😢";
-
-        document.getElementById(
-            "resultTitle"
-        ).textContent =
-            "Time's Up!";
-
-        document.getElementById(
-            "resultReward"
-        ).textContent = "0";
-
-        document.getElementById(
-            "resultText"
-        ).textContent =
-            "Try again and improve your memory.";
-
-        showPage("resultPage");
+    if(
+        flippedCards.length >=
+        2
+    ){
 
         return;
     }
 
-    /*
-      IMPORTANT:
 
-      The reward is NOT added locally here.
+    if(
+        card.classList.contains(
+            "flipped"
+        ) ||
+        card.classList.contains(
+            "matched"
+        )
+    ){
 
-      The production backend should process
-      the completed game and return the
-      authoritative reward.
+        return;
+    }
 
-      This frontend attempts the game endpoint
-      if it exists.
-    */
 
-    try{
+    card.classList.add(
+        "flipped"
+    );
 
-        const response =
-            await apiRequest(
-                "/api/game/complete",
-                {
-                    method:"POST",
 
-                    body:JSON.stringify({
+    flippedCards.push(
+        card
+    );
 
-                        difficulty:
-                            difficulty,
 
-                        level:
-                            getDifficultyLevel(),
+    if(
+        flippedCards.length ===
+        2
+    ){
 
-                        moves:
-                            moves,
+        moves++;
 
-                        durationSeconds:
-                            60 - timer
 
-                    })
-                }
-            );
+        setText(
+            "moves",
+            moves
+        );
 
-        if(response.user){
 
-            syncUser(response.user);
+        gameLocked =
+            true;
 
-        }
 
-        const reward =
-            Number(
-                response.reward ||
-                response.rewardCoins ||
-                0
-            );
-
-        document.getElementById(
-            "resultIcon"
-        ).textContent = "🎉";
-
-        document.getElementById(
-            "resultTitle"
-        ).textContent =
-            "Great Job!";
-
-        document.getElementById(
-            "resultReward"
-        ).textContent =
-            formatNumber(reward);
-
-        document.getElementById(
-            "resultText"
-        ).textContent =
-            "Your reward was added by the server.";
-
-        showPage("resultPage");
-
-    }catch(error){
-
-        console.error(error);
-
-        /*
-          Do NOT credit coins locally.
-
-          This prevents users from modifying
-          localStorage to create unlimited coins.
-        */
-
-        document.getElementById(
-            "resultIcon"
-        ).textContent = "⚠️";
-
-        document.getElementById(
-            "resultTitle"
-        ).textContent =
-            "Game Finished";
-
-        document.getElementById(
-            "resultReward"
-        ).textContent =
-            "0";
-
-        document.getElementById(
-            "resultText"
-        ).textContent =
-            "The server could not record this game. No coins were added.";
-
-        showPage("resultPage");
+        setTimeout(
+            checkMatch,
+            500
+        );
     }
 }
 
 
-/* =====================================================
+/* =========================================================
+   CHECK MATCH
+========================================================= */
+
+function checkMatch(){
+
+    if(
+        flippedCards.length !==
+        2
+    ){
+
+        gameLocked =
+            false;
+
+        return;
+    }
+
+
+    const first =
+        flippedCards[0];
+
+
+    const second =
+        flippedCards[1];
+
+
+    if(
+        first.dataset.symbol ===
+        second.dataset.symbol
+    ){
+
+        first.classList.add(
+            "matched"
+        );
+
+
+        second.classList.add(
+            "matched"
+        );
+
+
+        matchedPairs++;
+
+
+        setText(
+            "pairsFound",
+            matchedPairs
+        );
+
+
+        flippedCards =
+            [];
+
+
+        gameLocked =
+            false;
+
+
+        if(
+            matchedPairs >=
+            gamePairs
+        ){
+
+            finishGame(
+                true
+            );
+        }
+
+
+    }else{
+
+        setTimeout(
+            () => {
+
+                first.classList.remove(
+                    "flipped"
+                );
+
+
+                second.classList.remove(
+                    "flipped"
+                );
+
+
+                flippedCards =
+                    [];
+
+
+                gameLocked =
+                    false;
+
+            },
+            250
+        );
+    }
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timer =
+        60;
+
+
+    setText(
+        "timer",
+        timer
+    );
+
+
+    timerInterval =
+        setInterval(
+            () => {
+
+                if(!gameStarted)
+                    return;
+
+
+                timer--;
+
+
+                setText(
+                    "timer",
+                    timer
+                );
+
+
+                if(
+                    timer <=
+                    0
+                ){
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+
+                    finishGame(
+                        false
+                    );
+                }
+
+            },
+            1000
+        );
+}
+
+
+/* =========================================================
+   COMPLETE GAME
+========================================================= */
+
+async function finishGame(
+    won
+){
+
+    if(!gameStarted)
+        return;
+
+
+    gameStarted =
+        false;
+
+
+    gameLocked =
+        true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    /*
+      Player lost.
+
+      No reward is requested.
+    */
+
+    if(!won){
+
+        activeGameId =
+            null;
+
+
+        activeCompletionToken =
+            null;
+
+
+        setText(
+            "resultIcon",
+            "😢"
+        );
+
+
+        setText(
+            "resultTitle",
+            "Time's Up!"
+        );
+
+
+        setText(
+            "resultReward",
+            "0"
+        );
+
+
+        setText(
+            "resultText",
+            "Try again and improve your memory."
+        );
+
+
+        showPage(
+            "resultPage"
+        );
+
+
+        return;
+    }
+
+
+    /*
+      Security check.
+    */
+
+    if(
+        !activeGameId ||
+        !activeCompletionToken
+    ){
+
+        toast(
+            "Invalid game session."
+        );
+
+        return;
+    }
+
+
+    const durationSeconds =
+        Math.max(
+            1,
+            Math.floor(
+                (
+                    Date.now() -
+                    gameStartTime
+                ) /
+                1000
+            )
+        );
+
+
+    try{
+
+        /*
+          IMPORTANT:
+
+          Do NOT send reward.
+
+          PostgreSQL already knows the reward.
+        */
+
+        const result =
+            await apiRequest(
+                "/api/game/complete",
+                {
+
+                    method:"POST",
+
+                    body:
+                        JSON.stringify({
+
+                            gameId:
+                                activeGameId,
+
+                            completionToken:
+                                activeCompletionToken,
+
+                            moves:
+                                moves,
+
+                            durationSeconds:
+                                durationSeconds
+
+                        })
+                }
+            );
+
+
+        /*
+          Update balance from server.
+        */
+
+        if(
+            result.user
+        ){
+
+            syncUser(
+                result.user
+            );
+
+        }else{
+
+            /*
+              If the backend returns only
+              balance fields, update them.
+            */
+
+            if(
+                typeof result.coins !==
+                "undefined"
+            ){
+
+                player.coins =
+                    Number(
+                        result.coins
+                    );
+            }
+
+
+            if(
+                typeof result.todayCoins !==
+                "undefined"
+            ){
+
+                player.todayCoins =
+                    Number(
+                        result.todayCoins
+                    );
+            }
+
+
+            if(
+                typeof result.gamesPlayed !==
+                "undefined"
+            ){
+
+                player.gamesPlayed =
+                    Number(
+                        result.gamesPlayed
+                    );
+            }
+
+
+            updateUI();
+        }
+
+
+        /*
+          Server decides reward.
+        */
+
+        const reward =
+            Number(
+                result.rewardCoins ??
+                result.reward ??
+                0
+            );
+
+
+        setText(
+            "resultIcon",
+            "🎉"
+        );
+
+
+        setText(
+            "resultTitle",
+            "Great Job!"
+        );
+
+
+        setText(
+            "resultReward",
+            formatNumber(
+                reward
+            )
+        );
+
+
+        setText(
+            "resultText",
+            "Your reward was added by the server."
+        );
+
+
+        /*
+          Clear secure session.
+        */
+
+        activeGameId =
+            null;
+
+
+        activeCompletionToken =
+            null;
+
+
+        await refreshGameStatus();
+
+
+        showPage(
+            "resultPage"
+        );
+
+
+        toast(
+            `+${reward} coins earned!`
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Complete game error:",
+            error
+        );
+
+
+        /*
+          NEVER add coins locally.
+        */
+
+        setText(
+            "resultIcon",
+            "⚠️"
+        );
+
+
+        setText(
+            "resultTitle",
+            "Game Finished"
+        );
+
+
+        setText(
+            "resultReward",
+            "0"
+        );
+
+
+        setText(
+            "resultText",
+            error.message ||
+            "The server could not record this game. No coins were added."
+        );
+
+
+        showPage(
+            "resultPage"
+        );
+    }
+}
+
+
+/* =========================================================
+   LEAVE GAME
+========================================================= */
+
+function leaveGame(){
+
+    if(gameStarted){
+
+        /*
+          We do not pretend the game was completed.
+
+          The life was already consumed by the server.
+        */
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        gameStarted =
+            false;
+
+
+        gameLocked =
+            true;
+
+
+        activeGameId =
+            null;
+
+
+        activeCompletionToken =
+            null;
+    }
+
+
+    showPage(
+        "homePage"
+    );
+}
+
+
+/* =========================================================
+   GAME STATUS
+========================================================= */
+
+async function refreshGameStatus(){
+
+    try{
+
+        const result =
+            await apiRequest(
+                "/api/game/status",
+                {
+                    method:"GET"
+                }
+            );
+
+
+        if(
+            result.user
+        ){
+
+            syncUser(
+                result.user
+            );
+
+            return;
+        }
+
+
+        /*
+          Support direct status response.
+        */
+
+        if(
+            typeof result.lives !==
+            "undefined"
+        ){
+
+            player.lives =
+                Number(
+                    result.lives
+                );
+
+
+            updateUI();
+        }
+
+    }catch(error){
+
+        console.error(
+            "Game status:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
    DAILY BONUS
-===================================================== */
+========================================================= */
 
 function updateDailyButton(){
 
@@ -1858,44 +2932,58 @@ function updateDailyButton(){
             "dailyButton"
         );
 
-    if(!button) return;
 
-    if(!player.lastDailyClaim){
+    if(!button)
+        return;
 
-        button.disabled = false;
+
+    if(
+        !player.lastDailyClaim
+    ){
+
+        button.disabled =
+            false;
+
 
         button.textContent =
             "CLAIM +100";
 
+
         return;
     }
+
 
     const last =
         new Date(
             player.lastDailyClaim
         );
 
+
     const now =
         new Date();
 
-    const sameDay =
+
+    if(
         last.toDateString() ===
-        now.toDateString();
+        now.toDateString()
+    ){
 
-    if(sameDay){
+        button.disabled =
+            true;
 
-        button.disabled = true;
 
         button.textContent =
             "CLAIMED TODAY";
 
+
     }else{
 
-        button.disabled = false;
+        button.disabled =
+            false;
+
 
         button.textContent =
             "CLAIM +100";
-
     }
 }
 
@@ -1904,7 +2992,7 @@ async function claimDailyBonus(){
 
     try{
 
-        const response =
+        const result =
             await apiRequest(
                 "/api/rewards/daily",
                 {
@@ -1912,40 +3000,59 @@ async function claimDailyBonus(){
                 }
             );
 
-        if(response.user){
 
-            syncUser(response.user);
+        if(
+            result.user
+        ){
 
+            syncUser(
+                result.user
+            );
         }
 
+
         toast(
-            "Daily bonus claimed! 🎁"
+            `Daily bonus claimed! +${
+                result.reward ||
+                result.rewardCoins ||
+                100
+            } coins 🎁`
         );
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Daily bonus:",
+            error
+        );
+
 
         toast(
             error.message ||
-            "Daily bonus unavailable."
+            "Daily bonus backend is not ready yet."
         );
     }
 }
 
 
-/* =====================================================
+/* =========================================================
    LUCKY ROLL
-===================================================== */
+========================================================= */
 
-const luckyStorage =
-    "memoryCoinsLuckyRoll";
+const LUCKY_COOLDOWN =
+    5 * 60 * 1000;
+
+
+let luckyRolling =
+    false;
+
 
 function getLuckyLastRoll(){
 
     return Number(
         localStorage.getItem(
-            luckyStorage
+            "memoryCoinsLuckyRoll"
         ) || 0
     );
 }
@@ -1956,156 +3063,223 @@ function canLuckyRoll(){
     const last =
         getLuckyLastRoll();
 
+
     return (
-        Date.now() - last >=
-        5 * 60 * 1000
+        Date.now() -
+        last >=
+        LUCKY_COOLDOWN
     );
 }
 
 
 async function watchLuckyAd(){
 
-    if(!canLuckyRoll()){
+    if(luckyRolling)
+        return;
+
+
+    if(
+        !canLuckyRoll()
+    ){
 
         const remaining =
-            5 * 60 * 1000 -
+            LUCKY_COOLDOWN -
             (
                 Date.now() -
                 getLuckyLastRoll()
             );
 
+
         const minutes =
             Math.ceil(
-                remaining / 60000
+                remaining /
+                60000
             );
+
 
         toast(
             `Lucky Roll available in ${minutes} min`
         );
 
+
         return;
     }
 
-    /*
-      DEMO AD FLOW.
 
-      Replace this function with the real
-      AdsGram rewarded-ad callback later.
+    luckyRolling =
+        true;
 
-      The server should eventually verify
-      the ad reward before granting coins.
-    */
-
-    toast(
-        "Loading rewarded ad..."
-    );
-
-    setTimeout(
-        async ()=>{
-
-            await performLuckyRoll();
-
-        },
-        3000
-    );
-}
-
-
-async function performLuckyRoll(){
-
-    localStorage.setItem(
-        luckyStorage,
-        Date.now().toString()
-    );
-
-    /*
-      Preferred production endpoint:
-
-      POST /api/rewards/lucky-roll
-
-      The SERVER should generate the
-      random number and reward.
-    */
 
     try{
 
-        const response =
+        /*
+          AdsGram integration.
+
+          Replace YOUR_BLOCK_ID with
+          your real AdsGram block ID.
+
+          IMPORTANT:
+          The server should eventually
+          verify the ad event before
+          granting the reward.
+        */
+
+        let adCompleted =
+            false;
+
+
+        if(
+            window.Adsgram
+        ){
+
+            const controller =
+                window.Adsgram.init({
+                    blockId:
+                        "YOUR_BLOCK_ID"
+                });
+
+
+            await controller.show();
+
+
+            adCompleted =
+                true;
+
+        }else{
+
+            toast(
+                "AdsGram is not loaded."
+            );
+
+
+            throw new Error(
+                "AdsGram is not loaded."
+            );
+        }
+
+
+        if(!adCompleted)
+            return;
+
+
+        /*
+          Server generates the number
+          and reward.
+        */
+
+        const result =
             await apiRequest(
                 "/api/rewards/lucky-roll",
                 {
-                    method:"POST"
+
+                    method:"POST",
+
+                    body:
+                        JSON.stringify({
+
+                            adCompleted:
+                                true
+
+                        })
                 }
             );
 
+
+        localStorage.setItem(
+            "memoryCoinsLuckyRoll",
+            Date.now().toString()
+        );
+
+
         const number =
             Number(
-                response.number ||
-                response.roll ||
+                result.number ??
+                result.roll ??
                 0
             );
+
 
         const reward =
             Number(
-                response.reward ||
-                response.rewardCoins ||
+                result.rewardCoins ??
+                result.reward ??
                 0
             );
 
-        document.getElementById(
-            "luckyNumber"
-        ).textContent =
-            number.toLocaleString();
 
-        document.getElementById(
-            "luckyResult"
-        ).textContent =
-            `🎉 +${reward} coins`;
+        setText(
+            "luckyNumber",
+            number.toLocaleString()
+        );
 
-        if(response.user){
 
-            syncUser(response.user);
+        setText(
+            "luckyResult",
+            `🎉 +${formatNumber(reward)} coins`
+        );
 
+
+        if(
+            result.user
+        ){
+
+            syncUser(
+                result.user
+            );
         }
+
+
+        toast(
+            `Lucky Roll: +${formatNumber(reward)} coins!`
+        );
+
 
     }catch(error){
 
-        /*
-          Do not create a client-side
-          monetary reward if backend
-          endpoint is unavailable.
-        */
+        console.error(
+            "Lucky Roll:",
+            error
+        );
 
-        console.error(error);
-
-        document.getElementById(
-            "luckyResult"
-        ).textContent =
-            "Server reward unavailable.";
 
         toast(
-            "Lucky Roll server endpoint is not ready."
+            error.message ||
+            "Lucky Roll is unavailable."
         );
+
+
+    }finally{
+
+        luckyRolling =
+            false;
     }
 }
 
 
-/* =====================================================
+/* =========================================================
    WITHDRAW
-===================================================== */
+========================================================= */
 
 async function withdraw(){
 
     const email =
-        document.getElementById(
-            "faucetEmail"
-        ).value.trim();
+        document
+            .getElementById(
+                "faucetEmail"
+            )
+            ?.value
+            .trim();
+
 
     const amount =
         Number(
-            document.getElementById(
-                "withdrawAmount"
-            ).value
+            document
+                .getElementById(
+                    "withdrawAmount"
+                )
+                ?.value
         );
+
 
     if(!email){
 
@@ -2116,7 +3290,11 @@ async function withdraw(){
         return;
     }
 
-    if(!amount || amount < 2500){
+
+    if(
+        !amount ||
+        amount < 2500
+    ){
 
         toast(
             "Minimum withdrawal is 2,500 coins."
@@ -2125,7 +3303,11 @@ async function withdraw(){
         return;
     }
 
-    if(amount > player.coins){
+
+    if(
+        amount >
+        player.coins
+    ){
 
         toast(
             "Insufficient balance."
@@ -2134,58 +3316,80 @@ async function withdraw(){
         return;
     }
 
+
     try{
 
-        const response =
+        const result =
             await apiRequest(
                 "/api/withdrawals",
                 {
+
                     method:"POST",
 
-                    body:JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        provider:
-                            "faucetpay",
+                            provider:
+                                "faucetpay",
 
-                        amountCoins:
-                            amount,
+                            amountCoins:
+                                amount,
 
-                        faucetpayEmail:
-                            email
+                            faucetpayEmail:
+                                email
 
-                    })
+                        })
                 }
             );
 
-        if(response.user){
 
-            syncUser(response.user);
+        if(
+            result.user
+        ){
 
+            syncUser(
+                result.user
+            );
         }
 
+
         toast(
-            "Withdrawal request submitted."
+            "Withdrawal request submitted ✓"
         );
 
-        document.getElementById(
-            "withdrawAmount"
-        ).value = "";
+
+        const input =
+            document.getElementById(
+                "withdrawAmount"
+            );
+
+
+        if(input){
+
+            input.value =
+                "";
+        }
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Withdrawal:",
+            error
+        );
+
 
         toast(
             error.message ||
-            "Withdrawal request failed."
+            "Withdrawal backend is not ready yet."
         );
     }
 }
 
 
-/* =====================================================
+/* =========================================================
    ACHIEVEMENTS
-===================================================== */
+========================================================= */
 
 function renderAchievements(){
 
@@ -2194,162 +3398,255 @@ function renderAchievements(){
             "achievements"
         );
 
-    if(!container) return;
+
+    if(!container)
+        return;
+
 
     const achievements = [
 
         {
             icon:"🎮",
+
             name:"First Game",
-            description:"Complete your first game.",
+
+            description:
+                "Complete your first game.",
+
             unlocked:
                 player.gamesPlayed >= 1
         },
 
+
         {
             icon:"🔥",
+
             name:"5 Games",
-            description:"Complete 5 games.",
+
+            description:
+                "Complete 5 games.",
+
             unlocked:
                 player.gamesPlayed >= 5
         },
 
+
         {
             icon:"🧠",
+
             name:"Memory Master",
-            description:"Finish a game in under 30 seconds.",
+
+            description:
+                "Finish a game under 30 seconds.",
+
             unlocked:false
         },
 
+
         {
             icon:"💰",
+
             name:"Coin Collector",
-            description:"Reach 10,000 coins.",
+
+            description:
+                "Reach 10,000 coins.",
+
             unlocked:
                 player.coins >= 10000
         }
 
     ];
 
+
     container.innerHTML =
-        achievements.map(a=>`
+        achievements
+            .map(
+                achievement => `
 
-            <div class="achievement ${
-                a.unlocked ? "" : "locked"
-            }">
+                <div class="
+                    achievement
+                    ${
+                        achievement.unlocked
+                        ? ""
+                        : "locked"
+                    }
+                ">
 
-                <div class="achievement-icon">
-                    ${a.icon}
-                </div>
+                    <div class="achievement-icon">
 
-                <div>
+                        ${achievement.icon}
 
-                    <div style="font-weight:bold">
-                        ${a.name}
                     </div>
 
-                    <div style="
-                        font-size:12px;
-                        color:#9ca3af;
-                        margin-top:3px">
-                        ${a.description}
+
+                    <div>
+
+                        <div
+                            style="font-weight:bold">
+
+                            ${
+                                achievement.name
+                            }
+
+                        </div>
+
+
+                        <div
+                            style="
+                                font-size:12px;
+                                color:#9ca3af;
+                                margin-top:3px">
+
+                            ${
+                                achievement.description
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="margin-left:auto">
+
+                        ${
+                            achievement.unlocked
+                            ? "✅"
+                            : "🔒"
+                        }
+
                     </div>
 
                 </div>
-
-                <div style="margin-left:auto">
-                    ${a.unlocked ? "✅" : "🔒"}
-                </div>
-
-            </div>
-
-        `).join("");
+            `
+            )
+            .join("");
 }
 
 
-/* =====================================================
+/* =========================================================
    LEADERBOARD
-===================================================== */
+========================================================= */
 
-async function renderLeaderboard(){
+async function loadLeaderboard(){
 
     const container =
         document.getElementById(
             "leaderboard"
         );
 
-    if(!container) return;
 
-    /*
-      The endpoint can be added to backend:
+    if(!container)
+        return;
 
-      GET /api/leaderboard
-    */
 
     try{
 
-        const response =
+        const result =
             await apiRequest(
-                "/api/leaderboard"
+                "/api/leaderboard",
+                {
+                    method:"GET"
+                }
             );
 
+
         const users =
-            response.users ||
-            response.leaderboard ||
+            result.leaderboard ||
+            result.users ||
             [];
 
-        if(!users.length){
+
+        if(
+            !users.length
+        ){
 
             container.innerHTML = `
+
                 <div class="rank">
-                    <span>No leaderboard data yet.</span>
+
+                    <span>
+                        No leaderboard data yet.
+                    </span>
+
                 </div>
+
             `;
 
             return;
         }
 
+
         container.innerHTML =
-            users.slice(0,20)
-            .map((user,index)=>`
+            users
+                .slice(0,20)
+                .map(
+                    (
+                        user,
+                        index
+                    ) => `
 
-                <div class="rank">
+                    <div class="rank">
 
-                    <div>
-                        <span>
-                            #${index + 1}
-                        </span>
+                        <div>
 
-                        <span
-                            class="rank-name"
-                            style="margin-left:8px">
-                            ${escapeHtml(
-                                user.username ||
-                                user.firstName ||
-                                "Player"
-                            )}
-                        </span>
+                            <span>
+                                #${index + 1}
+                            </span>
+
+                            <span
+                                class="rank-name"
+                                style="
+                                    margin-left:8px">
+
+                                ${
+                                    escapeHtml(
+                                        user.username ||
+                                        user.firstName ||
+                                        "Player"
+                                    )
+                                }
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="rank-coins">
+
+                            ${
+                                formatNumber(
+                                    user.coins ||
+                                    0
+                                )
+                            }
+
+                            🪙
+
+                        </div>
+
                     </div>
 
-                    <div class="rank-coins">
-                        ${formatNumber(
-                            user.coins || 0
-                        )} 🪙
-                    </div>
+                `
+                )
+                .join("");
 
-                </div>
-
-            `)
-            .join("");
 
     }catch(error){
+
+        console.error(
+            "Leaderboard:",
+            error
+        );
+
 
         container.innerHTML = `
 
             <div class="rank">
 
                 <span>
-                    Leaderboard unavailable
+                    Leaderboard backend is not ready yet.
                 </span>
 
             </div>
@@ -2359,9 +3656,9 @@ async function renderLeaderboard(){
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 function logout(){
 
@@ -2369,99 +3666,170 @@ function logout(){
         "memoryCoinsAuthToken"
     );
 
-    authToken = null;
 
-    currentUser = null;
+    authToken =
+        null;
+
+
+    currentUser =
+        null;
+
 
     toast(
         "Session cleared."
     );
 
+
     setTimeout(
-        ()=>{
+        () => {
+
             location.reload();
+
         },
         700
     );
 }
 
 
-/* =====================================================
+/* =========================================================
    HELPERS
-===================================================== */
+========================================================= */
 
-function formatNumber(number){
+function setText(
+    id,
+    value
+){
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if(element){
+
+        element.textContent =
+            value;
+    }
+}
+
+
+function formatNumber(
+    value
+){
 
     return Number(
-        number || 0
+        value || 0
     ).toLocaleString();
 }
 
 
-function escapeHtml(value){
+function escapeHtml(
+    value
+){
 
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    return String(
+        value
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
 
 
-function toast(message){
+function toast(
+    message
+){
 
     const element =
         document.getElementById(
             "toast"
         );
 
+
+    if(!element)
+        return;
+
+
     element.textContent =
         message;
 
-    element.classList.add("show");
 
-    clearTimeout(
-        window.toastTimer
+    element.classList.add(
+        "show"
     );
 
-    window.toastTimer =
+
+    clearTimeout(
+        window.memoryToastTimer
+    );
+
+
+    window.memoryToastTimer =
         setTimeout(
-            ()=>{
+            () => {
+
                 element.classList.remove(
                     "show"
                 );
+
             },
-            2500
+            3000
         );
 }
 
 
-function setConnection(online){
+function setConnection(
+    online
+){
 
     const element =
         document.getElementById(
             "connectionStatus"
         );
 
+
+    if(!element)
+        return;
+
+
     if(online){
 
         element.textContent =
             "Online";
 
+
         element.classList.add(
             "online"
         );
+
 
     }else{
 
         element.textContent =
             "Offline";
 
+
         element.classList.remove(
             "online"
         );
-
     }
 }
 
@@ -2473,28 +3841,84 @@ function hideLoading(){
             "loadingScreen"
         );
 
-    loading.style.display =
-        "none";
+
+    if(loading){
+
+        loading.style.display =
+            "none";
+    }
 }
 
 
-/* =====================================================
+/* =========================================================
    INITIALIZE
-===================================================== */
+========================================================= */
 
 async function initializeApp(){
 
-    setConnection(false);
+    setConnection(
+        false
+    );
+
 
     loadTelegramUser();
 
+
     updateUI();
 
-    await authenticateTelegram();
 
+    const authenticated =
+        await authenticateTelegram();
+
+
+    if(!authenticated)
+        return;
+
+
+    await refreshGameStatus();
+
+
+    updateUI();
+
+
+    loadLeaderboard();
 }
 
+
+/* =========================================================
+   START APP
+========================================================= */
+
 initializeApp();
+
+
+/* =========================================================
+   GLOBAL FUNCTIONS
+========================================================= */
+
+window.openGame =
+    openGame;
+
+window.selectDifficulty =
+    selectDifficulty;
+
+window.showPage =
+    showPage;
+
+window.claimDailyBonus =
+    claimDailyBonus;
+
+window.watchLuckyAd =
+    watchLuckyAd;
+
+window.withdraw =
+    withdraw;
+
+window.logout =
+    logout;
+
+window.leaveGame =
+    leaveGame;
 
 </script>
 
