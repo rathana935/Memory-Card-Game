@@ -74,12 +74,14 @@ button:disabled{
 }
 
 .safe-top{
-    height:env(safe-area-inset-top, 0px);
+    height:env(safe-area-inset-top,0px);
 }
 
 .safe-bottom{
-    height:env(safe-area-inset-bottom, 0px);
+    height:env(safe-area-inset-bottom,0px);
 }
+
+/* LOADING */
 
 #loadingScreen,
 #authErrorScreen{
@@ -139,9 +141,7 @@ button:disabled{
 }
 
 @keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
+    to{transform:rotate(360deg);}
 }
 
 .error-icon{
@@ -177,6 +177,8 @@ button:disabled{
     background:#263449;
     color:#cbd5e1;
 }
+
+/* HEADER */
 
 .topbar{
     padding:16px 16px 8px;
@@ -228,6 +230,8 @@ button:disabled{
     box-shadow:0 0 10px #22c55e;
 }
 
+/* PAGES */
+
 .page{
     display:none;
     padding:12px 16px 100px;
@@ -248,6 +252,8 @@ button:disabled{
         transform:translateY(0);
     }
 }
+
+/* PROFILE */
 
 .profile-card{
     display:flex;
@@ -293,6 +299,8 @@ button:disabled{
     font-size:10px;
     font-weight:800;
 }
+
+/* BALANCE */
 
 .balance-card{
     padding:20px;
@@ -350,6 +358,8 @@ button:disabled{
     margin-top:3px;
 }
 
+/* SECTION */
+
 .section-title{
     display:flex;
     align-items:center;
@@ -367,6 +377,8 @@ button:disabled{
     font-size:11px;
 }
 
+/* PLAY */
+
 .play-button{
     width:100%;
     padding:17px;
@@ -381,6 +393,8 @@ button:disabled{
 .play-button:active{
     transform:scale(.98);
 }
+
+/* DAILY */
 
 .daily-card{
     display:flex;
@@ -427,10 +441,11 @@ button:disabled{
     font-size:11px;
 }
 
+/* LUCKY */
+
 .lucky-card{
     padding:17px;
-    background:
-        linear-gradient(135deg,#312e81,#4c1d95);
+    background:linear-gradient(135deg,#312e81,#4c1d95);
     border-radius:18px;
     border:1px solid #5b21b6;
 }
@@ -466,6 +481,8 @@ button:disabled{
     color:#4c1d95;
     font-weight:900;
 }
+
+/* GAME */
 
 .game-header{
     display:flex;
@@ -557,6 +574,8 @@ button:disabled{
     transition:width .3s linear;
 }
 
+/* MEMORY */
+
 .memory-board{
     display:grid;
     gap:8px;
@@ -624,6 +643,8 @@ button:disabled{
     pointer-events:none;
 }
 
+/* WALLET */
+
 .wallet-card{
     background:#182235;
     border:1px solid #273449;
@@ -681,6 +702,8 @@ button:disabled{
     line-height:1.5;
 }
 
+/* LEADERBOARD */
+
 .leaderboard{
     display:flex;
     flex-direction:column;
@@ -728,6 +751,8 @@ button:disabled{
     font-weight:900;
 }
 
+/* ACHIEVEMENTS */
+
 .achievement-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -760,6 +785,8 @@ button:disabled{
     font-size:10px;
     margin-top:3px;
 }
+
+/* MORE */
 
 .menu-item{
     display:flex;
@@ -797,6 +824,8 @@ button:disabled{
     margin-top:3px;
 }
 
+/* NAV */
+
 .bottom-nav{
     position:fixed;
     left:50%;
@@ -830,6 +859,8 @@ button:disabled{
 .nav-button.active{
     color:#a78bfa;
 }
+
+/* MODAL */
 
 .modal{
     position:fixed;
@@ -894,6 +925,8 @@ button:disabled{
     background:#263449;
 }
 
+/* TOAST */
+
 #toast{
     position:fixed;
     left:50%;
@@ -917,6 +950,8 @@ button:disabled{
     opacity:1;
     transform:translateX(-50%) translateY(0);
 }
+
+/* RESULT */
 
 .result-icon{
     font-size:55px;
@@ -990,22 +1025,13 @@ Telegram Login Required
 Open Memory Coins from your Telegram Mini App.
 </div>
 
-<div
-id="authErrorDetails"
-class="error-details hidden"
-></div>
+<div id="authErrorDetails" class="error-details hidden"></div>
 
-<button
-class="auth-button"
-id="retryAuthButton"
->
+<button class="auth-button" id="retryAuthButton">
 🔄 RETRY AUTHENTICATION
 </button>
 
-<button
-class="auth-button secondary"
-id="clearSessionButton"
->
+<button class="auth-button secondary" id="clearSessionButton">
 🧹 CLEAR SESSION & RETRY
 </button>
 
@@ -1025,6 +1051,7 @@ id="clearSessionButton"
 </div>
 
 <div>
+
 <div class="brand-title">
 Memory Coins
 </div>
@@ -1032,6 +1059,7 @@ Memory Coins
 <div class="brand-sub">
 Play • Match • Earn
 </div>
+
 </div>
 
 </div>
@@ -1047,10 +1075,9 @@ Telegram
 </header>
 
 
-<section
-id="homePage"
-class="page active"
->
+<!-- HOME -->
+
+<section id="homePage" class="page active">
 
 <div class="profile-card">
 
@@ -1060,26 +1087,17 @@ class="avatar hidden"
 alt="Telegram profile"
 >
 
-<div
-id="profileAvatar"
-class="avatar"
->
+<div id="profileAvatar" class="avatar">
 ?
 </div>
 
 <div>
 
-<div
-id="profileName"
-class="profile-name"
->
+<div id="profileName" class="profile-name">
 Telegram User
 </div>
 
-<div
-id="profileUsername"
-class="profile-username"
->
+<div id="profileUsername" class="profile-username">
 Connecting...
 </div>
 
@@ -1119,50 +1137,47 @@ COINS
 <div class="stats-grid">
 
 <div class="stat">
-<div
-id="todayCoins"
-class="stat-value"
->
+
+<div id="todayCoins" class="stat-value">
 0
 </div>
+
 <div class="stat-label">
 TODAY
 </div>
+
 </div>
 
 <div class="stat">
-<div
-id="gamesPlayed"
-class="stat-value"
->
+
+<div id="gamesPlayed" class="stat-value">
 0
 </div>
+
 <div class="stat-label">
 GAMES
 </div>
+
 </div>
 
 <div class="stat">
-<div
-id="lives"
-class="stat-value"
->
+
+<div id="lives" class="stat-value">
 0
 </div>
+
 <div class="stat-label">
 LIVES
 </div>
-</div>
 
 </div>
 
 </div>
 
+</div>
 
-<button
-id="homePlayButton"
-class="play-button"
->
+
+<button id="homePlayButton" class="play-button">
 🎮 PLAY MEMORY GAME
 </button>
 
@@ -1192,19 +1207,13 @@ Daily Bonus
 Daily Reward
 </div>
 
-<div
-id="dailyDescription"
-class="daily-description"
->
+<div id="dailyDescription" class="daily-description">
 Claim your daily bonus.
 </div>
 
 </div>
 
-<button
-id="dailyClaimButton"
-class="claim-button"
->
+<button id="dailyClaimButton" class="claim-button">
 CLAIM
 </button>
 
@@ -1240,19 +1249,13 @@ Watch an ad to unlock your roll.
 
 </div>
 
-<div
-id="luckyTimer"
-class="lucky-timer"
->
+<div id="luckyTimer" class="lucky-timer">
 READY
 </div>
 
 </div>
 
-<button
-id="luckyButton"
-class="lucky-button"
->
+<button id="luckyButton" class="lucky-button">
 🎬 WATCH AD & ROLL
 </button>
 
@@ -1261,17 +1264,13 @@ class="lucky-button"
 </section>
 
 
-<section
-id="gamePage"
-class="page"
->
+<!-- GAME -->
+
+<section id="gamePage" class="page">
 
 <div class="game-header">
 
-<button
-id="gameBackButton"
-class="back-button"
->
+<button id="gameBackButton" class="back-button">
 ←
 </button>
 
@@ -1279,10 +1278,7 @@ class="back-button"
 Memory Game
 </div>
 
-<div
-id="gameCoins"
-class="game-coins"
->
+<div id="gameCoins" class="game-coins">
 +10
 </div>
 
@@ -1291,28 +1287,19 @@ class="game-coins"
 
 <div class="level-tabs">
 
-<button
-class="level-button active"
-data-level="easy"
->
+<button class="level-button active" data-level="easy">
 EASY
 <br>
 +10
 </button>
 
-<button
-class="level-button"
-data-level="medium"
->
+<button class="level-button" data-level="medium">
 MEDIUM
 <br>
 +12
 </button>
 
-<button
-class="level-button"
-data-level="hard"
->
+<button class="level-button" data-level="hard">
 HARD
 <br>
 +15
@@ -1364,68 +1351,43 @@ SECONDS
 
 <div class="progress-wrap">
 
-<div
-id="gameProgress"
-class="progress-bar"
-></div>
+<div id="gameProgress" class="progress-bar"></div>
 
 </div>
 
 
-<div
-id="memoryBoard"
-class="memory-board easy"
-></div>
+<div id="memoryBoard" class="memory-board easy"></div>
 
 </section>
 
 
-<section
-id="resultPage"
-class="page"
->
+<!-- RESULT -->
+
+<section id="resultPage" class="page">
 
 <div class="wallet-card">
 
-<div
-id="resultIcon"
-class="result-icon"
->
+<div id="resultIcon" class="result-icon">
 🎉
 </div>
 
-<div
-id="resultTitle"
-class="result-title"
->
+<div id="resultTitle" class="result-title">
 Game Complete!
 </div>
 
-<div
-id="resultReward"
-class="result-reward"
->
+<div id="resultReward" class="result-reward">
 +10 COINS
 </div>
 
-<div
-id="resultText"
-class="result-text"
->
+<div id="resultText" class="result-text">
 Your reward has been added to your account.
 </div>
 
-<button
-id="resultHomeButton"
-class="play-button"
->
+<button id="resultHomeButton" class="play-button">
 🏠 BACK HOME
 </button>
 
-<button
-id="resultPlayAgainButton"
-class="withdraw-button"
->
+<button id="resultPlayAgainButton" class="withdraw-button">
 🎮 PLAY AGAIN
 </button>
 
@@ -1434,12 +1396,12 @@ class="withdraw-button"
 </section>
 
 
-<section
-id="walletPage"
-class="page"
->
+<!-- WALLET -->
+
+<section id="walletPage" class="page">
 
 <div class="section-title">
+
 <h3>
 Wallet
 </h3>
@@ -1447,6 +1409,7 @@ Wallet
 <span>
 FaucetPay
 </span>
+
 </div>
 
 
@@ -1457,10 +1420,13 @@ AVAILABLE BALANCE
 </div>
 
 <div class="wallet-balance">
+
 <span id="walletCoins">
 0
 </span>
+
 coins
+
 </div>
 
 <div class="wallet-usd">
@@ -1495,10 +1461,7 @@ placeholder="Minimum 2500"
 >
 
 
-<button
-id="withdrawButton"
-class="withdraw-button"
->
+<button id="withdrawButton" class="withdraw-button">
 💸 REQUEST WITHDRAWAL
 </button>
 
@@ -1513,10 +1476,9 @@ Withdrawals are processed by the backend.
 </section>
 
 
-<section
-id="morePage"
-class="page"
->
+<!-- MORE -->
+
+<section id="morePage" class="page">
 
 <div class="section-title">
 
@@ -1526,10 +1488,7 @@ Achievements
 
 </div>
 
-<div
-id="achievementGrid"
-class="achievement-grid"
-></div>
+<div id="achievementGrid" class="achievement-grid"></div>
 
 
 <div class="section-title">
@@ -1544,20 +1503,21 @@ Top players
 
 </div>
 
-<div
-id="leaderboard"
-class="leaderboard"
->
+<div id="leaderboard" class="leaderboard">
+
 <div class="leader">
 Loading leaderboard...
 </div>
+
 </div>
 
 
 <div class="section-title">
+
 <h3>
 Account
 </h3>
+
 </div>
 
 
@@ -1632,44 +1592,44 @@ Minimum Withdrawal
 
 <nav class="bottom-nav">
 
-<button
-class="nav-button active"
-data-page="homePage"
->
+<button class="nav-button active" data-page="homePage">
+
 <span class="nav-icon">
 🏠
 </span>
+
 Home
+
 </button>
 
-<button
-class="nav-button"
-data-page="gamePage"
->
+<button class="nav-button" data-page="gamePage">
+
 <span class="nav-icon">
 🎮
 </span>
+
 Play
+
 </button>
 
-<button
-class="nav-button"
-data-page="walletPage"
->
+<button class="nav-button" data-page="walletPage">
+
 <span class="nav-icon">
 💰
 </span>
+
 Wallet
+
 </button>
 
-<button
-class="nav-button"
-data-page="morePage"
->
+<button class="nav-button" data-page="morePage">
+
 <span class="nav-icon">
 ☰
 </span>
+
 More
+
 </button>
 
 </nav>
@@ -1677,36 +1637,21 @@ More
 </main>
 
 
-<div
-id="modal"
-class="modal"
->
+<div id="modal" class="modal">
 
 <div class="modal-box">
 
-<div
-id="modalTitle"
-class="modal-title"
->
+<div id="modalTitle" class="modal-title">
 Message
 </div>
 
-<div
-id="modalMessage"
-class="modal-message"
-></div>
+<div id="modalMessage" class="modal-message"></div>
 
-<button
-id="modalOk"
-class="modal-button"
->
+<button id="modalOk" class="modal-button">
 OK
 </button>
 
-<button
-id="modalCancel"
-class="modal-button secondary hidden"
->
+<button id="modalCancel" class="modal-button secondary hidden">
 CANCEL
 </button>
 
@@ -1733,6 +1678,7 @@ const API_URL =
     "https://memory-coins-backend.onrender.com";
 
 const API = {
+
     AUTH:
         API_URL + "/api/auth/telegram",
 
@@ -1756,6 +1702,7 @@ const API = {
 
     LEADERBOARD:
         API_URL + "/api/leaderboard"
+
 };
 
 const STORAGE_TOKEN =
@@ -1809,6 +1756,7 @@ function initializeTelegram(){
             "Telegram initialization warning:",
             error
         );
+
     }
 }
 
@@ -1907,9 +1855,7 @@ function showToast(message){
     showToast.timer =
         setTimeout(() => {
 
-            toast.classList.remove(
-                "show"
-            );
+            toast.classList.remove("show");
 
         },2800);
 }
@@ -1918,7 +1864,7 @@ function showToast(message){
 function showModal(
     title,
     message,
-    options = {}
+    options={}
 ){
 
     modalTitle.textContent =
@@ -1939,6 +1885,7 @@ function showModal(
 
     modalCancel.textContent =
         options.cancelText || "CANCEL";
+
 
     return new Promise(resolve => {
 
@@ -1961,13 +1908,16 @@ function showModal(
             resolve(result);
         }
 
+
         function okHandler(){
             cleanup(true);
         }
 
+
         function cancelHandler(){
             cleanup(false);
         }
+
 
         modalOk.addEventListener(
             "click",
@@ -1980,6 +1930,7 @@ function showModal(
         );
 
     });
+
 }
 
 
@@ -1987,6 +1938,7 @@ function setLoadingText(text){
 
     loadingText.textContent =
         text;
+
 }
 
 
@@ -1994,6 +1946,7 @@ function formatCoins(value){
 
     return Number(value || 0)
         .toLocaleString();
+
 }
 
 
@@ -2003,6 +1956,7 @@ function coinsToUsd(coins){
         Number(coins || 0) /
         EXCHANGE_RATE
     ).toFixed(2);
+
 }
 
 
@@ -2019,6 +1973,7 @@ function getInitials(name){
         .map(x => x[0])
         .join("")
         .toUpperCase();
+
 }
 
 
@@ -2028,7 +1983,7 @@ function getInitials(name){
 
 function showAuthError(
     message,
-    details = ""
+    details=""
 ){
 
     loadingScreen.classList.add(
@@ -2045,6 +2000,7 @@ function showAuthError(
 
     authErrorMessage.textContent =
         message;
+
 
     if(details){
 
@@ -2063,7 +2019,9 @@ function showAuthError(
         authErrorDetails.classList.add(
             "hidden"
         );
+
     }
+
 }
 
 
@@ -2078,21 +2036,26 @@ async function authenticateTelegram(){
     const initData =
         tg.initData;
 
+
     if(!initData){
 
         throw new Error(
             "Telegram initData is empty. This page must be opened inside your Telegram Mini App."
         );
+
     }
+
 
     setLoadingText(
         "Authenticating your Telegram account..."
     );
 
+
     const response =
         await fetch(
             API.AUTH,
             {
+
                 method:"POST",
 
                 headers:{
@@ -2103,11 +2066,13 @@ async function authenticateTelegram(){
                 body:JSON.stringify({
                     initData:initData
                 })
+
             }
         );
 
 
-    let data = {};
+    let data={};
+
 
     try{
 
@@ -2116,19 +2081,19 @@ async function authenticateTelegram(){
 
     }catch{
 
-        data = {};
+        data={};
 
     }
 
 
     if(!response.ok){
 
-        const message =
+        throw new Error(
             data.error ||
             data.message ||
-            `Authentication failed (${response.status})`;
+            `Authentication failed (${response.status})`
+        );
 
-        throw new Error(message);
     }
 
 
@@ -2139,6 +2104,7 @@ async function authenticateTelegram(){
             data.message ||
             "Telegram authentication failed."
         );
+
     }
 
 
@@ -2147,6 +2113,7 @@ async function authenticateTelegram(){
         throw new Error(
             "Authentication succeeded but the backend did not return a session token."
         );
+
     }
 
 
@@ -2165,19 +2132,22 @@ async function authenticateTelegram(){
         syncUser(
             data.user
         );
+
     }
 
+
     return true;
+
 }
 
 
 /* =========================================================
-   API
+   API REQUEST
 ========================================================= */
 
 async function apiRequest(
     url,
-    options = {}
+    options={}
 ){
 
     if(!authToken){
@@ -2185,15 +2155,20 @@ async function apiRequest(
         throw new Error(
             "Authentication session is missing."
         );
+
     }
 
 
     const headers = {
+
         ...(options.headers || {}),
+
         "Authorization":
             "Bearer " + authToken,
+
         "Content-Type":
             "application/json"
+
     };
 
 
@@ -2207,7 +2182,8 @@ async function apiRequest(
         );
 
 
-    let data = {};
+    let data={};
+
 
     try{
 
@@ -2216,7 +2192,7 @@ async function apiRequest(
 
     }catch{
 
-        data = {};
+        data={};
 
     }
 
@@ -2227,11 +2203,13 @@ async function apiRequest(
             STORAGE_TOKEN
         );
 
-        authToken = null;
+        authToken =
+            null;
 
         throw new Error(
             "Your Telegram session has expired. Please reopen the Mini App."
         );
+
     }
 
 
@@ -2242,10 +2220,12 @@ async function apiRequest(
             data.message ||
             "Request failed."
         );
+
     }
 
 
     return data;
+
 }
 
 
@@ -2255,9 +2235,11 @@ async function apiRequest(
 
 function syncUser(user){
 
-    currentUser = user;
+    currentUser =
+        user;
 
     updateUI();
+
 }
 
 
@@ -2376,6 +2358,7 @@ function updateUI(){
         avatarImage.classList.add(
             "hidden"
         );
+
     }
 
 
@@ -2424,6 +2407,7 @@ function updateUI(){
     updateDailyUI();
 
     updateAchievements();
+
 }
 
 
@@ -2450,6 +2434,7 @@ function updateDailyUI(){
             true;
 
         return;
+
     }
 
 
@@ -2485,7 +2470,9 @@ function updateDailyUI(){
                 "Daily bonus already claimed.";
 
             return;
+
         }
+
     }
 
 
@@ -2497,6 +2484,7 @@ function updateDailyUI(){
 
     description.textContent =
         "Claim +100 coins once every day.";
+
 }
 
 
@@ -2541,28 +2529,28 @@ async function claimDaily(){
                 result.user
             );
 
-        }else if(result.coins !== undefined){
+        }else if(
+            result.coins !== undefined
+        ){
 
             currentUser.coins =
                 Number(
                     result.coins
                 );
 
-            if(result.todayCoins !== undefined){
-                currentUser.todayCoins =
-                    Number(result.todayCoins);
-            }
-
             updateUI();
+
         }
 
 
         button.textContent =
             "CLAIMED";
 
+
         showToast(
             `🎁 +${DAILY_REWARD} coins`
         );
+
 
     }catch(error){
 
@@ -2575,7 +2563,9 @@ async function claimDaily(){
         showToast(
             error.message
         );
+
     }
+
 }
 
 
@@ -2613,6 +2603,7 @@ const LEVELS = {
 
 
 const SYMBOLS = [
+
     "🍎",
     "🍊",
     "🍋",
@@ -2629,17 +2620,18 @@ const SYMBOLS = [
     "🍟",
     "🌮",
     "🍩"
+
 ];
 
 
 /* =========================================================
    START GAME
-   IMPORTANT:
-   Backend expects "difficulty", not "level".
+   IMPORTANT FIX:
+   BACKEND EXPECTS "difficulty"
 ========================================================= */
 
 async function startGame(
-    level = currentLevel
+    level=currentLevel
 ){
 
     const config =
@@ -2653,16 +2645,7 @@ async function startGame(
         );
 
         return;
-    }
 
-
-    if(currentGame){
-
-        showToast(
-            "Finish the current game first."
-        );
-
-        return;
     }
 
 
@@ -2674,91 +2657,89 @@ async function startGame(
 
 
         /*
-            IMPORTANT FIX:
-
-            The backend route expects:
-
-                { difficulty: "easy" }
-
-            NOT:
-
-                { level: "easy" }
-        */
+         * IMPORTANT:
+         *
+         * The backend expects:
+         *
+         * {
+         *     difficulty: "easy"
+         * }
+         *
+         * NOT:
+         *
+         * {
+         *     level: "easy"
+         * }
+         */
 
         const result =
             await apiRequest(
                 API.GAME_START,
                 {
+
                     method:"POST",
 
                     body:JSON.stringify({
-                        difficulty: level
+
+                        difficulty:
+                            level
+
                     })
+
                 }
             );
 
-
-        /*
-            Support both:
-
-            {
-                success:true,
-                game:{...}
-            }
-
-            and a direct game response.
-        */
 
         const game =
             result.game ||
             result;
 
 
-        const gameId =
-            game.id ||
-            game.gameId;
-
-
-        const completionToken =
-            game.completionToken ||
-            game.completion_token ||
-            game.token;
-
-
-        if(!gameId){
-
-            throw new Error(
-                "The backend did not return a game ID."
-            );
-        }
-
-
-        if(!completionToken){
-
-            throw new Error(
-                "The backend did not return a completion token."
-            );
-        }
-
-
         currentGame = {
 
             id:
-                gameId,
+                game.id ||
+                game.gameId,
 
             completionToken:
-                completionToken,
+                game.completionToken ||
+                game.completion_token ||
+                result.completionToken ||
+                result.token,
+
+            level:
+                level,
 
             difficulty:
+                game.difficulty ||
                 level,
 
             reward:
                 Number(
                     game.reward ??
+                    result.reward ??
                     config.reward
                 )
 
         };
+
+
+        if(!currentGame.id){
+
+            throw new Error(
+                "The backend did not return a game ID."
+            );
+
+        }
+
+
+        if(!currentGame.completionToken){
+
+            throw new Error(
+                "The backend did not return a completion token."
+            );
+
+        }
 
 
         currentLevel =
@@ -2782,7 +2763,9 @@ async function startGame(
 
 
         document
-            .querySelectorAll(".level-button")
+            .querySelectorAll(
+                ".level-button"
+            )
             .forEach(button => {
 
                 button.classList.toggle(
@@ -2811,15 +2794,22 @@ async function startGame(
 
     }catch(error){
 
+        console.error(
+            "START GAME ERROR:",
+            error
+        );
+
         showToast(
             error.message
         );
+
     }
+
 }
 
 
 /* =========================================================
-   GAME BOARD
+   BOARD
 ========================================================= */
 
 function setupGameBoard(level){
@@ -2853,7 +2843,8 @@ function setupGameBoard(level){
     const cards =
         [...selectedSymbols,...selectedSymbols]
             .sort(
-                () => Math.random() - .5
+                () =>
+                    Math.random() - .5
             );
 
 
@@ -2879,6 +2870,7 @@ function setupGameBoard(level){
 
 
             card.innerHTML = `
+
                 <div class="card-inner">
 
                     <div class="card-face card-front"></div>
@@ -2888,6 +2880,7 @@ function setupGameBoard(level){
                     </div>
 
                 </div>
+
             `;
 
 
@@ -2903,23 +2896,24 @@ function setupGameBoard(level){
 
         }
     );
+
 }
 
 
 /* =========================================================
-   FLIP CARD
+   FLIP
 ========================================================= */
 
 function flipCard(card){
 
     if(
         lockBoard ||
-        !currentGame ||
         card.classList.contains("flipped") ||
         card.classList.contains("matched")
     ){
 
         return;
+
     }
 
 
@@ -2934,6 +2928,7 @@ function flipCard(card){
             card;
 
         return;
+
     }
 
 
@@ -2945,8 +2940,8 @@ function flipCard(card){
 
     updateGameUI();
 
-
     checkMatch();
+
 }
 
 
@@ -2980,7 +2975,9 @@ function checkMatch(){
 
             matchedPairs++;
 
+
             resetCards();
+
 
             updateGameUI();
 
@@ -2995,6 +2992,7 @@ function checkMatch(){
             ){
 
                 completeGame();
+
             }
 
         },350);
@@ -3012,17 +3010,20 @@ function checkMatch(){
                 "flipped"
             );
 
+
             resetCards();
 
             updateGameUI();
 
         },700);
+
     }
+
 }
 
 
 /* =========================================================
-   RESET CARDS
+   RESET
 ========================================================= */
 
 function resetCards(){
@@ -3035,11 +3036,12 @@ function resetCards(){
 
     lockBoard =
         false;
+
 }
 
 
 /* =========================================================
-   GAME TIMER
+   TIMER
 ========================================================= */
 
 function startGameTimer(){
@@ -3077,6 +3079,7 @@ function startGameTimer(){
             }
 
         },1000);
+
 }
 
 
@@ -3099,6 +3102,7 @@ function updateGameTimer(){
         "gameProgress"
     ).style.width =
         percent + "%";
+
 }
 
 
@@ -3128,13 +3132,14 @@ function updateGameUI(){
             currentGame?.reward ??
             LEVELS[currentLevel].reward
         );
+
 }
 
 
 /* =========================================================
-   GAME COMPLETE
-   IMPORTANT:
-   Backend expects "durationSeconds", not "duration".
+   COMPLETE GAME
+   IMPORTANT FIX:
+   BACKEND EXPECTS "durationSeconds"
 ========================================================= */
 
 async function completeGame(){
@@ -3142,10 +3147,6 @@ async function completeGame(){
     if(!currentGame){
         return;
     }
-
-
-    const completedGame =
-        currentGame;
 
 
     clearInterval(
@@ -3162,39 +3163,36 @@ async function completeGame(){
         const durationSeconds =
             Math.max(
                 0,
-                Math.min(
-                    86400,
-                    60 - gameSeconds
-                )
+                60 - gameSeconds
             );
 
 
         /*
-            IMPORTANT FIX:
-
-            The backend expects:
-
-                durationSeconds
-
-            NOT:
-
-                duration
-        */
-
+         * IMPORTANT:
+         *
+         * Backend expects:
+         *
+         * durationSeconds
+         *
+         * NOT:
+         *
+         * duration
+         */
 
         const result =
             await apiRequest(
                 API.GAME_COMPLETE,
                 {
+
                     method:"POST",
 
                     body:JSON.stringify({
 
                         gameId:
-                            completedGame.id,
+                            currentGame.id,
 
                         completionToken:
-                            completedGame.completionToken,
+                            currentGame.completionToken,
 
                         moves:
                             moves,
@@ -3203,18 +3201,15 @@ async function completeGame(){
                             durationSeconds
 
                     })
+
                 }
             );
 
 
         /*
-            IMPORTANT:
-
-            Never calculate or submit the reward
-            from the frontend.
-
-            The backend is authoritative.
-        */
+         * Reward is determined by
+         * the backend.
+         */
 
         if(result.user){
 
@@ -3246,22 +3241,25 @@ async function completeGame(){
 
     }catch(error){
 
+        console.error(
+            "COMPLETE GAME ERROR:",
+            error
+        );
+
+
         showResult(
             false,
             0,
             error.message
         );
 
-        /*
-            Do not silently pretend the game
-            succeeded if the backend rejected it.
-        */
     }
+
 }
 
 
 /* =========================================================
-   GAME TIMEOUT
+   TIMEOUT
 ========================================================= */
 
 async function timeoutGame(){
@@ -3284,6 +3282,7 @@ async function timeoutGame(){
 
     currentGame =
         null;
+
 }
 
 
@@ -3294,7 +3293,7 @@ async function timeoutGame(){
 function showResult(
     success,
     reward,
-    message = ""
+    message=""
 ){
 
     document.getElementById(
@@ -3337,6 +3336,7 @@ function showResult(
     showPage(
         "resultPage"
     );
+
 }
 
 
@@ -3366,6 +3366,7 @@ async function refreshGameStatus(){
             syncUser(
                 result.user
             );
+
         }
 
     }catch(error){
@@ -3375,11 +3376,8 @@ async function refreshGameStatus(){
             error
         );
 
-        /*
-            Do not block the whole app if the
-            optional status endpoint is unavailable.
-        */
     }
+
 }
 
 
@@ -3420,6 +3418,7 @@ async function loadLeaderboard(){
                  </div>`;
 
             return;
+
         }
 
 
@@ -3458,7 +3457,9 @@ async function loadLeaderboard(){
                     </div>
 
                     <div class="leader-avatar">
-                        ${getInitials(name)}
+                        ${escapeHtml(
+                            getInitials(name)
+                        )}
                     </div>
 
                     <div class="leader-name">
@@ -3467,10 +3468,7 @@ async function loadLeaderboard(){
 
                     <div class="leader-coins">
                         ${formatCoins(
-                            user.coins ||
-                            user.totalCoins ||
-                            user.total_coins ||
-                            0
+                            user.coins || 0
                         )}
                     </div>
 
@@ -3492,11 +3490,14 @@ async function loadLeaderboard(){
                 Unable to load leaderboard.
              </div>`;
 
+
         console.warn(
             "Leaderboard error:",
             error
         );
+
     }
+
 }
 
 
@@ -3545,42 +3546,48 @@ function updateAchievements(){
             icon:"🎮",
             name:"First Game",
             description:"Complete your first game.",
-            unlocked:games >= 1
+            unlocked:
+                games >= 1
         },
 
         {
             icon:"🧠",
             name:"Memory Starter",
             description:"Complete 10 games.",
-            unlocked:games >= 10
+            unlocked:
+                games >= 10
         },
 
         {
             icon:"🏆",
             name:"Memory Master",
             description:"Complete 100 games.",
-            unlocked:games >= 100
+            unlocked:
+                games >= 100
         },
 
         {
             icon:"💰",
             name:"Coin Collector",
             description:"Earn 1,000 coins.",
-            unlocked:coins >= 1000
+            unlocked:
+                coins >= 1000
         },
 
         {
             icon:"💎",
             name:"Coin Hunter",
             description:"Earn 10,000 coins.",
-            unlocked:coins >= 10000
+            unlocked:
+                coins >= 10000
         },
 
         {
             icon:"🔥",
             name:"Dedicated",
             description:"Keep playing every day.",
-            unlocked:streak >= 7
+            unlocked:
+                streak >= 7
         }
 
     ];
@@ -3631,6 +3638,7 @@ function updateAchievements(){
 
         }
     );
+
 }
 
 
@@ -3649,9 +3657,11 @@ function getLuckyEnd(){
             "memory_coins_lucky_end"
         );
 
+
     return Number(
         value || 0
     );
+
 }
 
 
@@ -3661,6 +3671,7 @@ function updateLuckyUI(){
         document.getElementById(
             "luckyButton"
         );
+
 
     const timer =
         document.getElementById(
@@ -3689,6 +3700,7 @@ function updateLuckyUI(){
             "🎬 WATCH AD & ROLL";
 
         return;
+
     }
 
 
@@ -3718,6 +3730,7 @@ function updateLuckyUI(){
 
     button.textContent =
         "🔒 LOCKED";
+
 }
 
 
@@ -3736,21 +3749,20 @@ function startLuckyTimer(){
             updateLuckyUI,
             1000
         );
+
 }
 
 
+/*
+ * No fake advertisement completion.
+ */
+
 async function showLuckyAd(){
 
-    /*
-        No fake ad completion.
-
-        Configure the real AdsGram integration
-        before enabling Lucky Roll rewards.
-    */
-
     throw new Error(
-        "Lucky Roll advertising is not configured yet. Configure your production ad provider before enabling this reward."
+        "Lucky Roll advertising is not configured yet. Configure the production ad provider before enabling this reward."
     );
+
 }
 
 
@@ -3786,13 +3798,14 @@ async function luckyRoll(){
             syncUser(
                 result.user
             );
+
         }
 
 
         const reward =
             Number(
-                result.reward ??
-                result.coins ??
+                result.reward ||
+                result.coins ||
                 0
             );
 
@@ -3820,7 +3833,9 @@ async function luckyRoll(){
         showToast(
             error.message
         );
+
     }
+
 }
 
 
@@ -3857,6 +3872,7 @@ async function requestWithdrawal(){
         );
 
         return;
+
     }
 
 
@@ -3867,6 +3883,7 @@ async function requestWithdrawal(){
         );
 
         return;
+
     }
 
 
@@ -3880,6 +3897,7 @@ async function requestWithdrawal(){
         );
 
         return;
+
     }
 
 
@@ -3890,6 +3908,7 @@ async function requestWithdrawal(){
         );
 
         return;
+
     }
 
 
@@ -3925,31 +3944,31 @@ async function requestWithdrawal(){
 
     try{
 
-        /*
-            NOTE:
-
-            Your current backend withdrawal route
-            must accept these exact field names.
-
-            If it expects provider/faucetpayEmail/
-            amountCoins, we will align this next.
-        */
-
         const result =
             await apiRequest(
                 API.WITHDRAW,
                 {
+
                     method:"POST",
 
                     body:JSON.stringify({
 
-                        method:"faucetpay",
+                        /*
+                         * Backend withdrawal route
+                         * expects provider/details.
+                         */
 
-                        email:email,
+                        provider:
+                            "faucetpay",
 
-                        amount:amount
+                        faucetpayEmail:
+                            email,
+
+                        amountCoins:
+                            amount
 
                     })
+
                 }
             );
 
@@ -3959,6 +3978,7 @@ async function requestWithdrawal(){
             syncUser(
                 result.user
             );
+
         }
 
 
@@ -3987,7 +4007,9 @@ async function requestWithdrawal(){
 
         button.textContent =
             "💸 REQUEST WITHDRAWAL";
+
     }
+
 }
 
 
@@ -4026,6 +4048,7 @@ function showPage(pageId){
         loadLeaderboard();
 
     }
+
 }
 
 
@@ -4041,6 +4064,7 @@ function escapeHtml(value){
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
+
 }
 
 
@@ -4065,35 +4089,55 @@ function setupTelegramBackButton(){
 
                 if(
                     document
-                        .getElementById("gamePage")
-                        .classList.contains("active")
+                        .getElementById(
+                            "gamePage"
+                        )
+                        .classList.contains(
+                            "active"
+                        )
                 ){
 
-                    showPage("homePage");
+                    showPage(
+                        "homePage"
+                    );
 
                     return;
+
                 }
 
 
                 if(
                     document
-                        .getElementById("walletPage")
-                        .classList.contains("active")
+                        .getElementById(
+                            "walletPage"
+                        )
+                        .classList.contains(
+                            "active"
+                        )
                 ){
 
-                    showPage("homePage");
+                    showPage(
+                        "homePage"
+                    );
 
                     return;
+
                 }
 
 
                 if(
                     document
-                        .getElementById("morePage")
-                        .classList.contains("active")
+                        .getElementById(
+                            "morePage"
+                        )
+                        .classList.contains(
+                            "active"
+                        )
                 ){
 
-                    showPage("homePage");
+                    showPage(
+                        "homePage"
+                    );
 
                 }
 
@@ -4101,11 +4145,12 @@ function setupTelegramBackButton(){
         );
 
     }
+
 }
 
 
 /* =========================================================
-   AUTH INIT
+   INITIALIZE APP
 ========================================================= */
 
 async function initializeApp(){
@@ -4138,6 +4183,7 @@ async function initializeApp(){
             throw new Error(
                 "Telegram authentication data is missing. Open Memory Coins from your Telegram Mini App button/menu."
             );
+
         }
 
 
@@ -4180,7 +4226,7 @@ async function initializeApp(){
     }catch(error){
 
         console.error(
-            "Memory Coins authentication error:",
+            "Memory Coins initialization error:",
             error
         );
 
@@ -4188,17 +4234,19 @@ async function initializeApp(){
         showAuthError(
             error.message ||
             "Telegram authentication failed.",
-            "URL: " +
+            "API: " +
             API.AUTH +
             "\n\n" +
             "This app requires a real Telegram Mini App session."
         );
+
     }
+
 }
 
 
 /* =========================================================
-   RETRY AUTH
+   RETRY
 ========================================================= */
 
 retryAuthButton.addEventListener(
@@ -4247,15 +4295,14 @@ document
                     button.dataset.page;
 
 
-                if(
-                    page === "gamePage"
-                ){
+                if(page === "gamePage"){
 
                     startGame(
                         currentLevel
                     );
 
                     return;
+
                 }
 
 
@@ -4360,6 +4407,7 @@ document
                     );
 
                     return;
+
                 }
 
 
@@ -4395,7 +4443,7 @@ document
 
 
 /* =========================================================
-   RESULT BUTTONS
+   RESULT
 ========================================================= */
 
 document
@@ -4484,6 +4532,7 @@ document.addEventListener(
 
     }
 );
+
 </script>
 
 </body>
