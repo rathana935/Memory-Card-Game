@@ -11,7 +11,6 @@
 <meta name="theme-color" content="#111827">
 <meta name="color-scheme" content="dark">
 
-<!-- Telegram Mini App SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
 
 <title>Memory Coins</title>
@@ -64,10 +63,6 @@ button:disabled{
     display:none !important;
 }
 
-/* =========================
-   APP
-========================= */
-
 #app{
     width:100%;
     max-width:520px;
@@ -85,10 +80,6 @@ button:disabled{
 .safe-bottom{
     height:env(safe-area-inset-bottom, 0px);
 }
-
-/* =========================
-   LOADING
-========================= */
 
 #loadingScreen,
 #authErrorScreen{
@@ -187,10 +178,6 @@ button:disabled{
     color:#cbd5e1;
 }
 
-/* =========================
-   HEADER
-========================= */
-
 .topbar{
     padding:16px 16px 8px;
     display:flex;
@@ -241,10 +228,6 @@ button:disabled{
     box-shadow:0 0 10px #22c55e;
 }
 
-/* =========================
-   PAGES
-========================= */
-
 .page{
     display:none;
     padding:12px 16px 100px;
@@ -265,10 +248,6 @@ button:disabled{
         transform:translateY(0);
     }
 }
-
-/* =========================
-   PROFILE
-========================= */
 
 .profile-card{
     display:flex;
@@ -314,10 +293,6 @@ button:disabled{
     font-size:10px;
     font-weight:800;
 }
-
-/* =========================
-   BALANCE
-========================= */
 
 .balance-card{
     padding:20px;
@@ -375,10 +350,6 @@ button:disabled{
     margin-top:3px;
 }
 
-/* =========================
-   SECTION
-========================= */
-
 .section-title{
     display:flex;
     align-items:center;
@@ -396,10 +367,6 @@ button:disabled{
     font-size:11px;
 }
 
-/* =========================
-   PLAY
-========================= */
-
 .play-button{
     width:100%;
     padding:17px;
@@ -414,10 +381,6 @@ button:disabled{
 .play-button:active{
     transform:scale(.98);
 }
-
-/* =========================
-   DAILY
-========================= */
 
 .daily-card{
     display:flex;
@@ -464,10 +427,6 @@ button:disabled{
     font-size:11px;
 }
 
-/* =========================
-   LUCKY
-========================= */
-
 .lucky-card{
     padding:17px;
     background:
@@ -507,10 +466,6 @@ button:disabled{
     color:#4c1d95;
     font-weight:900;
 }
-
-/* =========================
-   GAME
-========================= */
 
 .game-header{
     display:flex;
@@ -602,24 +557,14 @@ button:disabled{
     transition:width .3s linear;
 }
 
-/* =========================
-   MEMORY BOARD
-========================= */
-
 .memory-board{
     display:grid;
     gap:8px;
     width:100%;
 }
 
-.memory-board.easy{
-    grid-template-columns:repeat(4,1fr);
-}
-
-.memory-board.medium{
-    grid-template-columns:repeat(4,1fr);
-}
-
+.memory-board.easy,
+.memory-board.medium,
 .memory-board.hard{
     grid-template-columns:repeat(4,1fr);
 }
@@ -679,10 +624,6 @@ button:disabled{
     pointer-events:none;
 }
 
-/* =========================
-   WALLET
-========================= */
-
 .wallet-card{
     background:#182235;
     border:1px solid #273449;
@@ -740,10 +681,6 @@ button:disabled{
     line-height:1.5;
 }
 
-/* =========================
-   LEADERBOARD
-========================= */
-
 .leaderboard{
     display:flex;
     flex-direction:column;
@@ -791,10 +728,6 @@ button:disabled{
     font-weight:900;
 }
 
-/* =========================
-   ACHIEVEMENTS
-========================= */
-
 .achievement-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -827,10 +760,6 @@ button:disabled{
     font-size:10px;
     margin-top:3px;
 }
-
-/* =========================
-   MORE
-========================= */
 
 .menu-item{
     display:flex;
@@ -868,10 +797,6 @@ button:disabled{
     margin-top:3px;
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
-
 .bottom-nav{
     position:fixed;
     left:50%;
@@ -905,10 +830,6 @@ button:disabled{
 .nav-button.active{
     color:#a78bfa;
 }
-
-/* =========================
-   MODALS
-========================= */
 
 .modal{
     position:fixed;
@@ -973,10 +894,6 @@ button:disabled{
     background:#263449;
 }
 
-/* =========================
-   TOAST
-========================= */
-
 #toast{
     position:fixed;
     left:50%;
@@ -1000,10 +917,6 @@ button:disabled{
     opacity:1;
     transform:translateX(-50%) translateY(0);
 }
-
-/* =========================
-   RESULT
-========================= */
 
 .result-icon{
     font-size:55px;
@@ -1038,814 +951,773 @@ button:disabled{
 
 <div id="app">
 
-    <div class="safe-top"></div>
+<div class="safe-top"></div>
 
-    <!-- =========================
-         LOADING
-    ========================== -->
+<section id="loadingScreen">
 
-    <section id="loadingScreen">
+<div class="loading-box">
 
-        <div class="loading-box">
+<div class="logo">🧠</div>
 
-            <div class="logo">🧠</div>
+<div class="loading-title">
+Memory Coins
+</div>
 
-            <div class="loading-title">
-                Memory Coins
-            </div>
+<div class="loading-text" id="loadingText">
+Connecting to Telegram...
+</div>
 
-            <div class="loading-text" id="loadingText">
-                Connecting to Telegram...
-            </div>
+<div class="spinner"></div>
 
-            <div class="spinner"></div>
+</div>
 
-        </div>
+</section>
 
-    </section>
 
+<section id="authErrorScreen" class="hidden">
 
-    <!-- =========================
-         AUTH ERROR
-    ========================== -->
+<div class="auth-box">
 
-    <section id="authErrorScreen" class="hidden">
+<div class="error-icon">
+⚠️
+</div>
 
-        <div class="auth-box">
+<div class="auth-title">
+Telegram Login Required
+</div>
 
-            <div class="error-icon">
-                ⚠️
-            </div>
+<div class="auth-text" id="authErrorMessage">
+Open Memory Coins from your Telegram Mini App.
+</div>
 
-            <div class="auth-title">
-                Telegram Login Required
-            </div>
+<div
+id="authErrorDetails"
+class="error-details hidden"
+></div>
 
-            <div class="auth-text" id="authErrorMessage">
-                Open Memory Coins from your Telegram Mini App.
-            </div>
+<button
+class="auth-button"
+id="retryAuthButton"
+>
+🔄 RETRY AUTHENTICATION
+</button>
 
-            <div
-                id="authErrorDetails"
-                class="error-details hidden"
-            ></div>
+<button
+class="auth-button secondary"
+id="clearSessionButton"
+>
+🧹 CLEAR SESSION & RETRY
+</button>
 
-            <button
-                class="auth-button"
-                id="retryAuthButton"
-            >
-                🔄 RETRY AUTHENTICATION
-            </button>
+</div>
 
-            <button
-                class="auth-button secondary"
-                id="clearSessionButton"
-            >
-                🧹 CLEAR SESSION & RETRY
-            </button>
+</section>
 
-        </div>
 
-    </section>
+<main id="mainApp" class="hidden">
 
+<header class="topbar">
 
-    <!-- =========================
-         MAIN APP
-    ========================== -->
+<div class="brand">
 
-    <main id="mainApp" class="hidden">
+<div class="brand-icon">
+🧠
+</div>
 
-        <!-- HEADER -->
+<div>
+<div class="brand-title">
+Memory Coins
+</div>
 
-        <header class="topbar">
+<div class="brand-sub">
+Play • Match • Earn
+</div>
+</div>
 
-            <div class="brand">
+</div>
 
-                <div class="brand-icon">
-                    🧠
-                </div>
+<div class="connection">
 
-                <div>
-                    <div class="brand-title">
-                        Memory Coins
-                    </div>
+<span class="connection-dot"></span>
 
-                    <div class="brand-sub">
-                        Play • Match • Earn
-                    </div>
-                </div>
+Telegram
 
-            </div>
+</div>
 
-            <div class="connection">
+</header>
 
-                <span class="connection-dot"></span>
 
-                Telegram
+<section
+id="homePage"
+class="page active"
+>
 
-            </div>
-
-        </header>
+<div class="profile-card">
+
+<img
+id="profileAvatarImage"
+class="avatar hidden"
+alt="Telegram profile"
+>
+
+<div
+id="profileAvatar"
+class="avatar"
+>
+?
+</div>
+
+<div>
+
+<div
+id="profileName"
+class="profile-name"
+>
+Telegram User
+</div>
+
+<div
+id="profileUsername"
+class="profile-username"
+>
+Connecting...
+</div>
 
-
-        <!-- =========================
-             HOME
-        ========================== -->
-
-        <section
-            id="homePage"
-            class="page active"
-        >
-
-            <div class="profile-card">
-
-                <img
-                    id="profileAvatarImage"
-                    class="avatar hidden"
-                    alt="Telegram profile"
-                >
-
-                <div
-                    id="profileAvatar"
-                    class="avatar"
-                >
-                    ?
-                </div>
-
-                <div>
+</div>
+
+<div class="telegram-badge">
+VERIFIED
+</div>
 
-                    <div
-                        id="profileName"
-                        class="profile-name"
-                    >
-                        Telegram User
-                    </div>
-
-                    <div
-                        id="profileUsername"
-                        class="profile-username"
-                    >
-                        Connecting...
-                    </div>
+</div>
 
-                </div>
 
-                <div class="telegram-badge">
-                    VERIFIED
-                </div>
+<div class="balance-card">
 
-            </div>
+<div class="balance-label">
+YOUR BALANCE
+</div>
+
+<div class="balance">
 
+<span id="coinBalance">
+0
+</span>
 
-            <div class="balance-card">
+<span class="balance-unit">
+COINS
+</span>
+
+</div>
+
+<div class="usd-value">
+≈ $<span id="usdBalance">0.00</span>
+&nbsp; • &nbsp;
+10,000 coins = $1
+</div>
 
-                <div class="balance-label">
-                    YOUR BALANCE
-                </div>
+<div class="stats-grid">
 
-                <div class="balance">
-                    <span id="coinBalance">
-                        0
-                    </span>
+<div class="stat">
+<div
+id="todayCoins"
+class="stat-value"
+>
+0
+</div>
+<div class="stat-label">
+TODAY
+</div>
+</div>
 
-                    <span class="balance-unit">
-                        COINS
-                    </span>
-                </div>
+<div class="stat">
+<div
+id="gamesPlayed"
+class="stat-value"
+>
+0
+</div>
+<div class="stat-label">
+GAMES
+</div>
+</div>
 
-                <div class="usd-value">
-                    ≈ $<span id="usdBalance">0.00</span>
-                    &nbsp; • &nbsp;
-                    10,000 coins = $1
-                </div>
+<div class="stat">
+<div
+id="lives"
+class="stat-value"
+>
+0
+</div>
+<div class="stat-label">
+LIVES
+</div>
+</div>
 
+</div>
 
-                <div class="stats-grid">
+</div>
 
-                    <div class="stat">
-                        <div
-                            id="todayCoins"
-                            class="stat-value"
-                        >
-                            0
-                        </div>
-                        <div class="stat-label">
-                            TODAY
-                        </div>
-                    </div>
 
-                    <div class="stat">
-                        <div
-                            id="gamesPlayed"
-                            class="stat-value"
-                        >
-                            0
-                        </div>
-                        <div class="stat-label">
-                            GAMES
-                        </div>
-                    </div>
+<button
+id="homePlayButton"
+class="play-button"
+>
+🎮 PLAY MEMORY GAME
+</button>
 
-                    <div class="stat">
-                        <div
-                            id="lives"
-                            class="stat-value"
-                        >
-                            0
-                        </div>
-                        <div class="stat-label">
-                            LIVES
-                        </div>
-                    </div>
 
-                </div>
+<div class="section-title">
 
-            </div>
+<h3>
+Daily Bonus
+</h3>
 
+<span>
++100 coins
+</span>
 
-            <button
-                id="homePlayButton"
-                class="play-button"
-            >
-                🎮 PLAY MEMORY GAME
-            </button>
+</div>
 
 
-            <div class="section-title">
+<div class="daily-card">
 
-                <h3>
-                    Daily Bonus
-                </h3>
+<div class="daily-icon">
+🎁
+</div>
 
-                <span>
-                    +100 coins
-                </span>
+<div class="daily-content">
 
-            </div>
+<div class="daily-title">
+Daily Reward
+</div>
 
+<div
+id="dailyDescription"
+class="daily-description"
+>
+Claim your daily bonus.
+</div>
 
-            <div class="daily-card">
+</div>
 
-                <div class="daily-icon">
-                    🎁
-                </div>
+<button
+id="dailyClaimButton"
+class="claim-button"
+>
+CLAIM
+</button>
 
-                <div class="daily-content">
+</div>
 
-                    <div class="daily-title">
-                        Daily Reward
-                    </div>
 
-                    <div
-                        id="dailyDescription"
-                        class="daily-description"
-                    >
-                        Claim your daily bonus.
-                    </div>
+<div class="section-title">
 
-                </div>
+<h3>
+Lucky Roll
+</h3>
 
-                <button
-                    id="dailyClaimButton"
-                    class="claim-button"
-                >
-                    CLAIM
-                </button>
+<span>
+Every 5 minutes
+</span>
 
-            </div>
+</div>
 
 
-            <div class="section-title">
+<div class="lucky-card">
 
-                <h3>
-                    Lucky Roll
-                </h3>
+<div class="lucky-top">
 
-                <span>
-                    Every 5 minutes
-                </span>
+<div>
 
-            </div>
+<div class="lucky-title">
+🎰 Lucky Roll
+</div>
 
+<div class="lucky-desc">
+Watch an ad to unlock your roll.
+</div>
 
-            <div class="lucky-card">
+</div>
 
-                <div class="lucky-top">
+<div
+id="luckyTimer"
+class="lucky-timer"
+>
+READY
+</div>
 
-                    <div>
+</div>
 
-                        <div class="lucky-title">
-                            🎰 Lucky Roll
-                        </div>
+<button
+id="luckyButton"
+class="lucky-button"
+>
+🎬 WATCH AD & ROLL
+</button>
 
-                        <div class="lucky-desc">
-                            Watch an ad to unlock your roll.
-                        </div>
+</div>
 
-                    </div>
+</section>
 
-                    <div
-                        id="luckyTimer"
-                        class="lucky-timer"
-                    >
-                        READY
-                    </div>
 
-                </div>
+<section
+id="gamePage"
+class="page"
+>
 
-                <button
-                    id="luckyButton"
-                    class="lucky-button"
-                >
-                    🎬 WATCH AD & ROLL
-                </button>
+<div class="game-header">
 
-            </div>
+<button
+id="gameBackButton"
+class="back-button"
+>
+←
+</button>
 
-        </section>
+<div class="game-title">
+Memory Game
+</div>
 
+<div
+id="gameCoins"
+class="game-coins"
+>
++10
+</div>
 
-        <!-- =========================
-             GAME
-        ========================== -->
+</div>
 
-        <section
-            id="gamePage"
-            class="page"
-        >
 
-            <div class="game-header">
+<div class="level-tabs">
 
-                <button
-                    id="gameBackButton"
-                    class="back-button"
-                >
-                    ←
-                </button>
+<button
+class="level-button active"
+data-level="easy"
+>
+EASY
+<br>
++10
+</button>
 
-                <div class="game-title">
-                    Memory Game
-                </div>
+<button
+class="level-button"
+data-level="medium"
+>
+MEDIUM
+<br>
++12
+</button>
 
-                <div
-                    id="gameCoins"
-                    class="game-coins"
-                >
-                    +10
-                </div>
+<button
+class="level-button"
+data-level="hard"
+>
+HARD
+<br>
++15
+</button>
 
-            </div>
+</div>
 
 
-            <div class="level-tabs">
+<div class="game-info">
 
-                <button
-                    class="level-button active"
-                    data-level="easy"
-                >
-                    EASY
-                    <br>
-                    +10
-                </button>
+<div class="game-stat">
 
-                <button
-                    class="level-button"
-                    data-level="medium"
-                >
-                    MEDIUM
-                    <br>
-                    +12
-                </button>
+<strong id="moves">
+0
+</strong>
 
-                <button
-                    class="level-button"
-                    data-level="hard"
-                >
-                    HARD
-                    <br>
-                    +15
-                </button>
+<span>
+MOVES
+</span>
 
-            </div>
+</div>
 
+<div class="game-stat">
 
-            <div class="game-info">
+<strong id="matched">
+0
+</strong>
 
-                <div class="game-stat">
+<span>
+MATCHED
+</span>
 
-                    <strong id="moves">
-                        0
-                    </strong>
+</div>
 
-                    <span>
-                        MOVES
-                    </span>
+<div class="game-stat">
 
-                </div>
+<strong id="gameTimer">
+60
+</strong>
 
-                <div class="game-stat">
+<span>
+SECONDS
+</span>
 
-                    <strong id="matched">
-                        0
-                    </strong>
+</div>
 
-                    <span>
-                        MATCHED
-                    </span>
+</div>
 
-                </div>
 
-                <div class="game-stat">
+<div class="progress-wrap">
 
-                    <strong id="gameTimer">
-                        60
-                    </strong>
+<div
+id="gameProgress"
+class="progress-bar"
+></div>
 
-                    <span>
-                        SECONDS
-                    </span>
+</div>
 
-                </div>
 
-            </div>
+<div
+id="memoryBoard"
+class="memory-board easy"
+></div>
 
+</section>
 
-            <div class="progress-wrap">
 
-                <div
-                    id="gameProgress"
-                    class="progress-bar"
-                ></div>
+<section
+id="resultPage"
+class="page"
+>
 
-            </div>
+<div class="wallet-card">
 
+<div
+id="resultIcon"
+class="result-icon"
+>
+🎉
+</div>
 
-            <div
-                id="memoryBoard"
-                class="memory-board easy"
-            ></div>
+<div
+id="resultTitle"
+class="result-title"
+>
+Game Complete!
+</div>
 
-        </section>
+<div
+id="resultReward"
+class="result-reward"
+>
++10 COINS
+</div>
 
+<div
+id="resultText"
+class="result-text"
+>
+Your reward has been added to your account.
+</div>
 
-        <!-- =========================
-             RESULT
-        ========================== -->
+<button
+id="resultHomeButton"
+class="play-button"
+>
+🏠 BACK HOME
+</button>
 
-        <section
-            id="resultPage"
-            class="page"
-        >
+<button
+id="resultPlayAgainButton"
+class="withdraw-button"
+>
+🎮 PLAY AGAIN
+</button>
 
-            <div class="wallet-card">
+</div>
 
-                <div
-                    id="resultIcon"
-                    class="result-icon"
-                >
-                    🎉
-                </div>
+</section>
 
-                <div
-                    id="resultTitle"
-                    class="result-title"
-                >
-                    Game Complete!
-                </div>
 
-                <div
-                    id="resultReward"
-                    class="result-reward"
-                >
-                    +10 COINS
-                </div>
+<section
+id="walletPage"
+class="page"
+>
 
-                <div
-                    id="resultText"
-                    class="result-text"
-                >
-                    Your reward has been added to your account.
-                </div>
+<div class="section-title">
+<h3>
+Wallet
+</h3>
 
-                <button
-                    id="resultHomeButton"
-                    class="play-button"
-                >
-                    🏠 BACK HOME
-                </button>
+<span>
+FaucetPay
+</span>
+</div>
 
-                <button
-                    id="resultPlayAgainButton"
-                    class="withdraw-button"
-                >
-                    🎮 PLAY AGAIN
-                </button>
 
-            </div>
+<div class="wallet-card">
 
-        </section>
+<div class="balance-label">
+AVAILABLE BALANCE
+</div>
 
+<div class="wallet-balance">
+<span id="walletCoins">
+0
+</span>
+coins
+</div>
 
-        <!-- =========================
-             WALLET
-        ========================== -->
+<div class="wallet-usd">
+≈ $<span id="walletUsd">0.00</span>
+</div>
 
-        <section
-            id="walletPage"
-            class="page"
-        >
 
-            <div class="section-title">
-                <h3>
-                    Wallet
-                </h3>
+<label class="input-label">
+FaucetPay Email
+</label>
 
-                <span>
-                    FaucetPay
-                </span>
-            </div>
+<input
+id="faucetPayEmail"
+class="input"
+type="email"
+placeholder="your@email.com"
+autocomplete="email"
+>
 
 
-            <div class="wallet-card">
+<label class="input-label">
+Withdrawal Amount (coins)
+</label>
 
-                <div class="balance-label">
-                    AVAILABLE BALANCE
-                </div>
+<input
+id="withdrawAmount"
+class="input"
+type="number"
+min="2500"
+step="1"
+placeholder="Minimum 2500"
+>
 
-                <div class="wallet-balance">
-                    <span id="walletCoins">
-                        0
-                    </span>
-                    coins
-                </div>
 
-                <div class="wallet-usd">
-                    ≈ $<span id="walletUsd">0.00</span>
-                </div>
+<button
+id="withdrawButton"
+class="withdraw-button"
+>
+💸 REQUEST WITHDRAWAL
+</button>
 
+<div class="withdraw-info">
+Minimum withdrawal: 2,500 coins.
+Exchange rate: 10,000 coins = $1.
+Withdrawals are processed by the backend.
+</div>
 
-                <label class="input-label">
-                    FaucetPay Email
-                </label>
+</div>
 
-                <input
-                    id="faucetPayEmail"
-                    class="input"
-                    type="email"
-                    placeholder="your@email.com"
-                    autocomplete="email"
-                >
+</section>
 
 
-                <label class="input-label">
-                    Withdrawal Amount (coins)
-                </label>
+<section
+id="morePage"
+class="page"
+>
 
-                <input
-                    id="withdrawAmount"
-                    class="input"
-                    type="number"
-                    min="2500"
-                    step="1"
-                    placeholder="Minimum 2500"
-                >
+<div class="section-title">
 
+<h3>
+Achievements
+</h3>
 
-                <button
-                    id="withdrawButton"
-                    class="withdraw-button"
-                >
-                    💸 REQUEST WITHDRAWAL
-                </button>
+</div>
 
-                <div class="withdraw-info">
-                    Minimum withdrawal: 2,500 coins.
-                    Exchange rate: 10,000 coins = $1.
-                    Withdrawals are processed by the backend.
-                </div>
+<div
+id="achievementGrid"
+class="achievement-grid"
+></div>
 
-            </div>
 
-        </section>
+<div class="section-title">
 
+<h3>
+Leaderboard
+</h3>
 
-        <!-- =========================
-             MORE
-        ========================== -->
+<span>
+Top players
+</span>
 
-        <section
-            id="morePage"
-            class="page"
-        >
+</div>
 
-            <div class="section-title">
+<div
+id="leaderboard"
+class="leaderboard"
+>
+<div class="leader">
+Loading leaderboard...
+</div>
+</div>
 
-                <h3>
-                    Achievements
-                </h3>
 
-            </div>
+<div class="section-title">
+<h3>
+Account
+</h3>
+</div>
 
-            <div
-                id="achievementGrid"
-                class="achievement-grid"
-            ></div>
 
+<div class="menu-item">
 
-            <div class="section-title">
+<div class="menu-icon">
+🔐
+</div>
 
-                <h3>
-                    Leaderboard
-                </h3>
+<div class="menu-text">
 
-                <span>
-                    Top players
-                </span>
+<div class="menu-title">
+Telegram Authentication
+</div>
 
-            </div>
+<div class="menu-description">
+Your account is authenticated by Telegram.
+</div>
 
-            <div
-                id="leaderboard"
-                class="leaderboard"
-            >
-                <div class="leader">
-                    Loading leaderboard...
-                </div>
-            </div>
+</div>
 
+<div>
+✅
+</div>
 
-            <div class="section-title">
-                <h3>
-                    Account
-                </h3>
-            </div>
+</div>
 
 
-            <div class="menu-item">
+<div class="menu-item">
 
-                <div class="menu-icon">
-                    🔐
-                </div>
+<div class="menu-icon">
+💰
+</div>
 
-                <div class="menu-text">
+<div class="menu-text">
 
-                    <div class="menu-title">
-                        Telegram Authentication
-                    </div>
+<div class="menu-title">
+Exchange Rate
+</div>
 
-                    <div class="menu-description">
-                        Your account is authenticated by Telegram.
-                    </div>
+<div class="menu-description">
+10,000 coins = $1
+</div>
 
-                </div>
+</div>
 
-                <div>
-                    ✅
-                </div>
+</div>
 
-            </div>
 
+<div class="menu-item">
 
-            <div class="menu-item">
+<div class="menu-icon">
+💳
+</div>
 
-                <div class="menu-icon">
-                    💰
-                </div>
+<div class="menu-text">
 
-                <div class="menu-text">
+<div class="menu-title">
+Minimum Withdrawal
+</div>
 
-                    <div class="menu-title">
-                        Exchange Rate
-                    </div>
+<div class="menu-description">
+2,500 coins
+</div>
 
-                    <div class="menu-description">
-                        10,000 coins = $1
-                    </div>
+</div>
 
-                </div>
+</div>
 
-            </div>
+</section>
 
 
-            <div class="menu-item">
+<nav class="bottom-nav">
 
-                <div class="menu-icon">
-                    💳
-                </div>
+<button
+class="nav-button active"
+data-page="homePage"
+>
+<span class="nav-icon">
+🏠
+</span>
+Home
+</button>
 
-                <div class="menu-text">
+<button
+class="nav-button"
+data-page="gamePage"
+>
+<span class="nav-icon">
+🎮
+</span>
+Play
+</button>
 
-                    <div class="menu-title">
-                        Minimum Withdrawal
-                    </div>
+<button
+class="nav-button"
+data-page="walletPage"
+>
+<span class="nav-icon">
+💰
+</span>
+Wallet
+</button>
 
-                    <div class="menu-description">
-                        2,500 coins
-                    </div>
+<button
+class="nav-button"
+data-page="morePage"
+>
+<span class="nav-icon">
+☰
+</span>
+More
+</button>
 
-                </div>
+</nav>
 
-            </div>
+</main>
 
-        </section>
 
+<div
+id="modal"
+class="modal"
+>
 
-        <!-- =========================
-             BOTTOM NAV
-        ========================== -->
+<div class="modal-box">
 
-        <nav class="bottom-nav">
+<div
+id="modalTitle"
+class="modal-title"
+>
+Message
+</div>
 
-            <button
-                class="nav-button active"
-                data-page="homePage"
-            >
-                <span class="nav-icon">
-                    🏠
-                </span>
-                Home
-            </button>
+<div
+id="modalMessage"
+class="modal-message"
+></div>
 
-            <button
-                class="nav-button"
-                data-page="gamePage"
-            >
-                <span class="nav-icon">
-                    🎮
-                </span>
-                Play
-            </button>
+<button
+id="modalOk"
+class="modal-button"
+>
+OK
+</button>
 
-            <button
-                class="nav-button"
-                data-page="walletPage"
-            >
-                <span class="nav-icon">
-                    💰
-                </span>
-                Wallet
-            </button>
+<button
+id="modalCancel"
+class="modal-button secondary hidden"
+>
+CANCEL
+</button>
 
-            <button
-                class="nav-button"
-                data-page="morePage"
-            >
-                <span class="nav-icon">
-                    ☰
-                </span>
-                More
-            </button>
+</div>
 
-        </nav>
+</div>
 
-    </main>
 
+<div id="toast"></div>
 
-    <!-- =========================
-         MODAL
-    ========================== -->
-
-    <div
-        id="modal"
-        class="modal"
-    >
-
-        <div class="modal-box">
-
-            <div
-                id="modalTitle"
-                class="modal-title"
-            >
-                Message
-            </div>
-
-            <div
-                id="modalMessage"
-                class="modal-message"
-            ></div>
-
-            <button
-                id="modalOk"
-                class="modal-button"
-            >
-                OK
-            </button>
-
-            <button
-                id="modalCancel"
-                class="modal-button secondary hidden"
-            >
-                CANCEL
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div id="toast"></div>
-
-    <div class="safe-bottom"></div>
+<div class="safe-bottom"></div>
 
 </div>
 
@@ -1854,7 +1726,7 @@ button:disabled{
 "use strict";
 
 /* =========================================================
-   PRODUCTION CONFIGURATION
+   CONFIG
 ========================================================= */
 
 const API_URL =
@@ -1886,18 +1758,14 @@ const API = {
         API_URL + "/api/leaderboard"
 };
 
-
 const STORAGE_TOKEN =
     "memory_coins_auth_token";
-
 
 const EXCHANGE_RATE =
     10000;
 
-
 const MIN_WITHDRAW =
     2500;
-
 
 const DAILY_REWARD =
     100;
@@ -1914,29 +1782,17 @@ const tg =
         : null;
 
 
-/*
-    IMPORTANT:
-
-    This application intentionally has NO demo mode.
-
-    If Telegram is not providing initData,
-    authentication stops.
-
-    This prevents a browser user from being
-    treated as an authenticated Telegram user.
-*/
-
 function initializeTelegram(){
 
     if(!tg){
 
         throw new Error(
-            "Telegram WebApp SDK is unavailable. " +
-            "Open Memory Coins from inside Telegram."
+            "Telegram WebApp SDK is unavailable. Open Memory Coins from inside Telegram."
         );
     }
 
     try{
+
         tg.ready();
 
         if(typeof tg.expand === "function"){
@@ -2041,7 +1897,8 @@ const modalCancel =
 
 function showToast(message){
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
     toast.classList.add("show");
 
@@ -2049,8 +1906,12 @@ function showToast(message){
 
     showToast.timer =
         setTimeout(() => {
-            toast.classList.remove("show");
-        }, 2800);
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },2800);
 }
 
 
@@ -2083,7 +1944,9 @@ function showModal(
 
         function cleanup(result){
 
-            modal.classList.remove("show");
+            modal.classList.remove(
+                "show"
+            );
 
             modalOk.removeEventListener(
                 "click",
@@ -2212,35 +2075,19 @@ async function authenticateTelegram(){
 
     initializeTelegram();
 
-    /*
-        Telegram's raw signed authentication
-        payload.
-    */
-
     const initData =
         tg.initData;
 
     if(!initData){
 
         throw new Error(
-            "Telegram initData is empty. " +
-            "This page must be opened inside your Telegram Mini App."
+            "Telegram initData is empty. This page must be opened inside your Telegram Mini App."
         );
     }
-
 
     setLoadingText(
         "Authenticating your Telegram account..."
     );
-
-
-    /*
-        Send ONLY the raw initData to your
-        trusted backend.
-
-        The backend validates the Telegram
-        signature using TELEGRAM_BOT_TOKEN.
-    */
 
     const response =
         await fetch(
@@ -2263,10 +2110,14 @@ async function authenticateTelegram(){
     let data = {};
 
     try{
+
         data =
             await response.json();
+
     }catch{
+
         data = {};
+
     }
 
 
@@ -2399,7 +2250,7 @@ async function apiRequest(
 
 
 /* =========================================================
-   USER SYNC
+   USER
 ========================================================= */
 
 function syncUser(user){
@@ -2409,10 +2260,6 @@ function syncUser(user){
     updateUI();
 }
 
-
-/* =========================================================
-   UI
-========================================================= */
 
 function updateUI(){
 
@@ -2435,8 +2282,7 @@ function updateUI(){
 
 
     const fullName =
-        `${firstName} ${lastName}`
-            .trim();
+        `${firstName} ${lastName}`.trim();
 
 
     const username =
@@ -2453,13 +2299,17 @@ function updateUI(){
 
     const todayCoins =
         Number(
-            currentUser.todayCoins || 0
+            currentUser.todayCoins ??
+            currentUser.today_coins ??
+            0
         );
 
 
     const gamesPlayed =
         Number(
-            currentUser.gamesPlayed || 0
+            currentUser.gamesPlayed ??
+            currentUser.games_played ??
+            0
         );
 
 
@@ -2604,7 +2454,8 @@ function updateDailyUI(){
 
 
     const lastClaim =
-        currentUser.lastDailyClaim;
+        currentUser.lastDailyClaim ||
+        currentUser.last_daily_claim;
 
 
     if(lastClaim){
@@ -2660,6 +2511,7 @@ async function claimDaily(){
             "dailyClaimButton"
         );
 
+
     if(button.disabled){
         return;
     }
@@ -2695,6 +2547,11 @@ async function claimDaily(){
                 Number(
                     result.coins
                 );
+
+            if(result.todayCoins !== undefined){
+                currentUser.todayCoins =
+                    Number(result.todayCoins);
+            }
 
             updateUI();
         }
@@ -2777,6 +2634,8 @@ const SYMBOLS = [
 
 /* =========================================================
    START GAME
+   IMPORTANT:
+   Backend expects "difficulty", not "level".
 ========================================================= */
 
 async function startGame(
@@ -2787,6 +2646,26 @@ async function startGame(
         LEVELS[level];
 
 
+    if(!config){
+
+        showToast(
+            "Invalid game level."
+        );
+
+        return;
+    }
+
+
+    if(currentGame){
+
+        showToast(
+            "Finish the current game first."
+        );
+
+        return;
+    }
+
+
     try{
 
         setLoadingText(
@@ -2795,8 +2674,15 @@ async function startGame(
 
 
         /*
-            The backend creates the actual game
-            and determines the server-side reward.
+            IMPORTANT FIX:
+
+            The backend route expects:
+
+                { difficulty: "easy" }
+
+            NOT:
+
+                { level: "easy" }
         */
 
         const result =
@@ -2806,43 +2692,73 @@ async function startGame(
                     method:"POST",
 
                     body:JSON.stringify({
-                        level:level
+                        difficulty: level
                     })
                 }
             );
 
 
-        currentGame = {
+        /*
+            Support both:
 
-            id:
-                result.game?.id ||
-                result.gameId ||
-                result.id,
+            {
+                success:true,
+                game:{...}
+            }
 
-            completionToken:
-                result.game?.completionToken ||
-                result.completionToken ||
-                result.token,
+            and a direct game response.
+        */
 
-            level:
-                level,
-
-            reward:
-                Number(
-                    result.game?.reward ||
-                    result.reward ||
-                    config.reward
-                )
-
-        };
+        const game =
+            result.game ||
+            result;
 
 
-        if(!currentGame.id){
+        const gameId =
+            game.id ||
+            game.gameId;
+
+
+        const completionToken =
+            game.completionToken ||
+            game.completion_token ||
+            game.token;
+
+
+        if(!gameId){
 
             throw new Error(
                 "The backend did not return a game ID."
             );
         }
+
+
+        if(!completionToken){
+
+            throw new Error(
+                "The backend did not return a completion token."
+            );
+        }
+
+
+        currentGame = {
+
+            id:
+                gameId,
+
+            completionToken:
+                completionToken,
+
+            difficulty:
+                level,
+
+            reward:
+                Number(
+                    game.reward ??
+                    config.reward
+                )
+
+        };
 
 
         currentLevel =
@@ -2863,6 +2779,18 @@ async function startGame(
 
         lockBoard =
             false;
+
+
+        document
+            .querySelectorAll(".level-button")
+            .forEach(button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.level === level
+                );
+
+            });
 
 
         showPage(
@@ -2916,15 +2844,14 @@ function setupGameBoard(level){
 
 
     const selectedSymbols =
-        SYMBOLS
-            .slice(
-                0,
-                config.pairs
-            );
+        SYMBOLS.slice(
+            0,
+            config.pairs
+        );
 
 
     const cards =
-        [...selectedSymbols, ...selectedSymbols]
+        [...selectedSymbols,...selectedSymbols]
             .sort(
                 () => Math.random() - .5
             );
@@ -2987,9 +2914,11 @@ function flipCard(card){
 
     if(
         lockBoard ||
+        !currentGame ||
         card.classList.contains("flipped") ||
         card.classList.contains("matched")
     ){
+
         return;
     }
 
@@ -3196,7 +3125,7 @@ function updateGameUI(){
     ).textContent =
         "+" +
         (
-            currentGame?.reward ||
+            currentGame?.reward ??
             LEVELS[currentLevel].reward
         );
 }
@@ -3204,6 +3133,8 @@ function updateGameUI(){
 
 /* =========================================================
    GAME COMPLETE
+   IMPORTANT:
+   Backend expects "durationSeconds", not "duration".
 ========================================================= */
 
 async function completeGame(){
@@ -3211,6 +3142,10 @@ async function completeGame(){
     if(!currentGame){
         return;
     }
+
+
+    const completedGame =
+        currentGame;
 
 
     clearInterval(
@@ -3224,8 +3159,27 @@ async function completeGame(){
 
     try{
 
-        const duration =
-            60 - gameSeconds;
+        const durationSeconds =
+            Math.max(
+                0,
+                Math.min(
+                    86400,
+                    60 - gameSeconds
+                )
+            );
+
+
+        /*
+            IMPORTANT FIX:
+
+            The backend expects:
+
+                durationSeconds
+
+            NOT:
+
+                duration
+        */
 
 
         const result =
@@ -3237,16 +3191,16 @@ async function completeGame(){
                     body:JSON.stringify({
 
                         gameId:
-                            currentGame.id,
+                            completedGame.id,
 
                         completionToken:
-                            currentGame.completionToken,
+                            completedGame.completionToken,
 
                         moves:
                             moves,
 
-                        duration:
-                            duration
+                        durationSeconds:
+                            durationSeconds
 
                     })
                 }
@@ -3256,12 +3210,11 @@ async function completeGame(){
         /*
             IMPORTANT:
 
-            Reward comes from backend.
+            Never calculate or submit the reward
+            from the frontend.
 
-            The frontend does NOT decide
-            how many coins are actually awarded.
+            The backend is authoritative.
         */
-
 
         if(result.user){
 
@@ -3274,9 +3227,9 @@ async function completeGame(){
 
         const reward =
             Number(
-                result.reward ||
-                result.coinsEarned ||
-                result.game?.reward ||
+                result.reward ??
+                result.coinsEarned ??
+                result.game?.reward ??
                 0
             );
 
@@ -3298,6 +3251,11 @@ async function completeGame(){
             0,
             error.message
         );
+
+        /*
+            Do not silently pretend the game
+            succeeded if the backend rejected it.
+        */
     }
 }
 
@@ -3412,22 +3370,15 @@ async function refreshGameStatus(){
 
     }catch(error){
 
-        /*
-            Authentication succeeded, but
-            game status failed.
-
-            Keep the authenticated app available
-            and show the actual backend error.
-        */
-
         console.warn(
             "Game status error:",
             error
         );
 
-        showToast(
-            error.message
-        );
+        /*
+            Do not block the whole app if the
+            optional status endpoint is unavailable.
+        */
     }
 }
 
@@ -3494,6 +3445,7 @@ async function loadLeaderboard(){
                         ? "@" + user.username
                         : (
                             user.firstName ||
+                            user.first_name ||
                             user.name ||
                             "Telegram User"
                         );
@@ -3515,7 +3467,10 @@ async function loadLeaderboard(){
 
                     <div class="leader-coins">
                         ${formatCoins(
-                            user.coins || 0
+                            user.coins ||
+                            user.totalCoins ||
+                            user.total_coins ||
+                            0
                         )}
                     </div>
 
@@ -3564,13 +3519,23 @@ function updateAchievements(){
 
     const games =
         Number(
-            currentUser.gamesPlayed || 0
+            currentUser.gamesPlayed ??
+            currentUser.games_played ??
+            0
         );
 
 
     const coins =
         Number(
             currentUser.coins || 0
+        );
+
+
+    const streak =
+        Number(
+            currentUser.dailyStreak ??
+            currentUser.daily_streak ??
+            0
         );
 
 
@@ -3615,10 +3580,7 @@ function updateAchievements(){
             icon:"🔥",
             name:"Dedicated",
             description:"Keep playing every day.",
-            unlocked:
-                Number(
-                    currentUser.dailyStreak || 0
-                ) >= 7
+            unlocked:streak >= 7
         }
 
     ];
@@ -3777,24 +3739,13 @@ function startLuckyTimer(){
 }
 
 
-/*
-    Production note:
-
-    Replace showLuckyAd() with your actual
-    approved AdsGram implementation once your
-    AdsGram block ID / SDK configuration is ready.
-
-    The backend remains responsible for deciding
-    whether the lucky reward is actually valid.
-*/
-
 async function showLuckyAd(){
 
     /*
         No fake ad completion.
 
-        We intentionally refuse to award the
-        reward if no real ad provider is configured.
+        Configure the real AdsGram integration
+        before enabling Lucky Roll rewards.
     */
 
     throw new Error(
@@ -3818,12 +3769,6 @@ async function luckyRoll(){
 
     try{
 
-        /*
-            REAL AD ONLY.
-
-            No fake "watched ad" state.
-        */
-
         await showLuckyAd();
 
 
@@ -3846,8 +3791,8 @@ async function luckyRoll(){
 
         const reward =
             Number(
-                result.reward ||
-                result.coins ||
+                result.reward ??
+                result.coins ??
                 0
             );
 
@@ -3980,6 +3925,16 @@ async function requestWithdrawal(){
 
     try{
 
+        /*
+            NOTE:
+
+            Your current backend withdrawal route
+            must accept these exact field names.
+
+            If it expects provider/faucetpayEmail/
+            amountCoins, we will align this next.
+        */
+
         const result =
             await apiRequest(
                 API.WITHDRAW,
@@ -4110,17 +4065,11 @@ function setupTelegramBackButton(){
 
                 if(
                     document
-                        .getElementById(
-                            "gamePage"
-                        )
-                        .classList.contains(
-                            "active"
-                        )
+                        .getElementById("gamePage")
+                        .classList.contains("active")
                 ){
 
-                    showPage(
-                        "homePage"
-                    );
+                    showPage("homePage");
 
                     return;
                 }
@@ -4128,17 +4077,11 @@ function setupTelegramBackButton(){
 
                 if(
                     document
-                        .getElementById(
-                            "walletPage"
-                        )
-                        .classList.contains(
-                            "active"
-                        )
+                        .getElementById("walletPage")
+                        .classList.contains("active")
                 ){
 
-                    showPage(
-                        "homePage"
-                    );
+                    showPage("homePage");
 
                     return;
                 }
@@ -4146,17 +4089,11 @@ function setupTelegramBackButton(){
 
                 if(
                     document
-                        .getElementById(
-                            "morePage"
-                        )
-                        .classList.contains(
-                            "active"
-                        )
+                        .getElementById("morePage")
+                        .classList.contains("active")
                 ){
 
-                    showPage(
-                        "homePage"
-                    );
+                    showPage("homePage");
 
                 }
 
@@ -4193,31 +4130,16 @@ async function initializeApp(){
         );
 
 
-        /*
-            REAL TELEGRAM ONLY
-        */
-
         initializeTelegram();
 
-
-        /*
-            Never authenticate using
-            initDataUnsafe.
-        */
 
         if(!tg.initData){
 
             throw new Error(
-                "Telegram authentication data is missing. " +
-                "Open Memory Coins from your Telegram Mini App button/menu."
+                "Telegram authentication data is missing. Open Memory Coins from your Telegram Mini App button/menu."
             );
         }
 
-
-        /*
-            Authenticate against your
-            production backend.
-        */
 
         await authenticateTelegram();
 
