@@ -1341,7 +1341,6 @@ async function authenticateTelegram(){
     if(!tg){
 
         setConnection(false);
-
         hideLoading();
 
         toast(
@@ -1352,14 +1351,12 @@ async function authenticateTelegram(){
     }
 
 
-    const initData =
-        tg.initData;
+    const initData = tg.initData;
 
 
     if(!initData){
 
         setConnection(false);
-
         hideLoading();
 
         toast(
@@ -1372,30 +1369,23 @@ async function authenticateTelegram(){
 
     try{
 
-        const response =
-            await fetch(
-                API_URL +
-                "/api/auth/telegram",
-                {
+        const response = await fetch(
+            API_URL + "/api/auth/telegram",
+            {
+                method:"POST",
 
-                    method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
 
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            initData:
-                                initData
-                        })
-                }
-            );
+                body:JSON.stringify({
+                    initData:initData
+                })
+            }
+        );
 
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
 
         if(
@@ -1403,15 +1393,21 @@ async function authenticateTelegram(){
             !data.success
         ){
 
+            /*
+            IMPORTANT:
+            Your backend uses "error",
+            not "message".
+            */
+
             throw new Error(
+                data.error ||
                 data.message ||
                 "Telegram authentication failed."
             );
         }
 
 
-        authToken =
-            data.token;
+        authToken = data.token;
 
 
         localStorage.setItem(
@@ -1420,14 +1416,10 @@ async function authenticateTelegram(){
         );
 
 
-        syncUser(
-            data.user
-        );
+        syncUser(data.user);
 
 
-        setConnection(
-            true
-        );
+        setConnection(true);
 
 
         hideLoading();
@@ -1439,29 +1431,32 @@ async function authenticateTelegram(){
     }catch(error){
 
         console.error(
-            "Telegram auth:",
+            "Telegram auth error:",
             error
         );
 
 
-        setConnection(
-            false
-        );
-
+        setConnection(false);
 
         hideLoading();
 
 
+        /*
+        Show the REAL backend error.
+        */
+
         toast(
-            error.message ||
-            "Authentication failed."
+            "Auth error: " +
+            (
+                error.message ||
+                "Authentication failed."
+            )
         );
 
 
         return false;
     }
 }
-
 
 /* =========================================================
    API REQUEST
