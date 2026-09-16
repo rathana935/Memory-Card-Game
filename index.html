@@ -1551,9 +1551,6 @@ button:disabled{
                         <option value="faucetpay">
                             FaucetPay
                         </option>
-                        <option value="aba">
-                            ABA Bank
-                        </option>
                     </select>
 
                 </div>
@@ -1574,50 +1571,6 @@ button:disabled{
                         type="email"
                         placeholder="your@email.com"
                     >
-
-                </div>
-
-
-                <div
-                    id="abaFields"
-                    style="display:none"
-                >
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            ABA Account Name
-                        </label>
-
-                        <input
-                            id="abaAccountName"
-                            class="form-input"
-                            type="text"
-                            placeholder="Account name"
-                        >
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            ABA Account Number
-                        </label>
-
-                        <input
-                            id="abaAccountNumber"
-                            class="form-input"
-                            type="text"
-                            placeholder="Account number"
-                        >
-
-                    </div>
-
-                    <div class="withdraw-info">
-                        ABA withdrawals are created as pending
-                        until an actual ABA payout integration/admin
-                        process is available.
-                    </div>
 
                 </div>
 
@@ -1780,7 +1733,7 @@ button:disabled{
             </div>
 
             <div class="page-subtitle">
-                Earn 250 coins for each successful referral.
+                Earn 250 coins for each successful referral. The backend verifies successful referrals and credits the reward.
             </div>
 
             <div class="card-box">
@@ -2977,7 +2930,8 @@ async function showRewardedAd(){
 
                             if(
                                 rewarded ||
-                                result?.done !== false
+                                result?.done === true ||
+                                result?.status === "success"
                             ){
 
                                 resolve(
@@ -3395,21 +3349,11 @@ async function startGame(
         );
 
 
-        if(
-            currentUser &&
-            currentUser.lives !== undefined
-        ){
-
-            currentUser.lives =
-                Math.max(
-                    0,
-                    Number(
-                        currentUser.lives
-                    ) - 1
-                );
-
+        if(result.lives !== undefined){
+            currentUser.lives = Number(result.lives);
             updateUserUI();
-
+        }else{
+            await refreshRewardStatus();
         }
 
     }catch(error){
@@ -4146,102 +4090,52 @@ function playAgain(){
    LUCKY ROLL
 ========================================================= */
 
-function updateLuckyCountdown(
-    data
-){
+function updateLuckyCountdown(data){
 
-    const element =
-        document.getElementById(
-            "luckyCooldown"
-        );
+    const element = document.getElementById("luckyCooldown");
+    const button = document.getElementById("luckyBtn");
 
-    if(!element){
+    if(!element || !button) return;
 
-        return;
+    const nextRoll = data?.luckyNextAt || data?.lucky_next_at || null;
 
-    }
-
-
-    const nextRoll =
-        data?.luckyNextAt ||
-        data?.lucky_next_at ||
-        null;
-
+    clearInterval(luckyTimer);
 
     if(!nextRoll){
-
-        element.textContent =
-            "Watch an ad to roll.";
-
+        element.textContent = "Watch an ad to roll.";
+        button.disabled = false;
         return;
-
     }
-
-
-    clearInterval(
-        luckyTimer
-    );
-
 
     function tick(){
 
-        const remaining =
-            Math.max(
-                0,
-                new Date(
-                    nextRoll
-                ).getTime() -
-                Date.now()
-            );
-
-
-        if(remaining <= 0){
-
-            element.textContent =
-                "Ready! Watch an ad.";
-
-            clearInterval(
-                luckyTimer
-            );
-
-            return;
-
-        }
-
-
-        const totalSeconds =
-            Math.ceil(
-                remaining / 1000
-            );
-
-        const minutes =
-            Math.floor(
-                totalSeconds / 60
-            );
-
-        const seconds =
-            totalSeconds % 60;
-
-
-        element.textContent =
-            `Next roll in ${
-                String(minutes).padStart(2,"0")
-            }:${
-                String(seconds).padStart(2,"0")
-            }`;
-
-    }
-
-
-    tick();
-
-    luckyTimer =
-        setInterval(
-            tick,
-            1000
+        const remaining = Math.max(
+            0,
+            new Date(nextRoll).getTime() - Date.now()
         );
 
+        if(remaining <= 0){
+            element.textContent = "Ready! Watch an ad.";
+            button.disabled = false;
+            clearInterval(luckyTimer);
+            return;
+        }
+
+        button.disabled = true;
+
+        const totalSeconds = Math.ceil(remaining / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        element.textContent = `Next roll in ${
+            String(minutes).padStart(2,"0")
+        }:${String(seconds).padStart(2,"0")}`;
+    }
+
+    tick();
+    luckyTimer = setInterval(tick,1000);
 }
+
 
 
 async function watchLuckyAd(){
@@ -4623,216 +4517,91 @@ function renderPodium(
    WALLET
 ========================================================= */
 
-document
-    .getElementById(
-        "withdrawProvider"
-    )
-    .addEventListener(
-        "change",
-        function(){
-
-            const isFaucet =
-                this.value ===
-                "faucetpay";
-
-
-            document.getElementById(
-                "faucetpayFields"
-            ).style.display =
-                isFaucet
-                    ? "block"
-                    : "none";
-
-
-            document.getElementById(
-                "abaFields"
-            ).style.display =
-                isFaucet
-                    ? "none"
-                    : "block";
-
-        }
-    );
-
 
 async function requestWithdrawal(){
 
-    const amount =
-        Number(
-            document.getElementById(
-                "withdrawAmount"
-            ).value
-        );
+    const amount = Number(
+        document.getElementById("withdrawAmount").value
+    );
 
-
-    const provider =
-        document.getElementById(
-            "withdrawProvider"
-        ).value;
-
-
-    if(
-        !Number.isInteger(amount) ||
-        amount < MIN_WITHDRAW
-    ){
-
-        showToast(
-            "Minimum withdrawal is 2,500 coins."
-        );
-
+    if(!Number.isInteger(amount) || amount < MIN_WITHDRAW){
+        showToast("Minimum withdrawal is 2,500 coins.");
         return;
-
     }
 
-
-    if(
-        amount >
-        Number(
-            currentUser?.coins || 0
-        )
-    ){
-
-        showToast(
-            "Insufficient balance."
-        );
-
+    if(amount > Number(currentUser?.coins || 0)){
+        showToast("Insufficient balance.");
         return;
-
     }
 
+    const email = document
+        .getElementById("faucetpayEmail")
+        .value
+        .trim()
+        .toLowerCase();
 
-    const body = {
-
-        amountCoins:
-            amount,
-
-        provider
-
-    };
-
-
-    if(provider === "faucetpay"){
-
-        const email =
-            document.getElementById(
-                "faucetpayEmail"
-            ).value.trim();
-
-
-        if(!email){
-
-            showToast(
-                "Enter your FaucetPay email."
-            );
-
-            return;
-
-        }
-
-
-        body.faucetpayEmail =
-            email;
-
-    }else{
-
-        const accountName =
-            document.getElementById(
-                "abaAccountName"
-            ).value.trim();
-
-        const accountNumber =
-            document.getElementById(
-                "abaAccountNumber"
-            ).value.trim();
-
-
-        if(
-            !accountName ||
-            !accountNumber
-        ){
-
-            showToast(
-                "Enter your ABA account details."
-            );
-
-            return;
-
-        }
-
-
-        body.abaAccountName =
-            accountName;
-
-        body.abaAccountNumber =
-            accountNumber;
-
+    if(!email){
+        showToast("Enter your FaucetPay email.");
+        return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailRegex.test(email)){
+        showToast("Enter a valid FaucetPay email.");
+        return;
+    }
+
+    const button = document.querySelector(
+        '#page-wallet .primary-btn[onclick="requestWithdrawal()"]'
+    );
+
+    if(button) button.disabled = true;
 
     try{
 
-        const result =
-            await api(
-                "/api/withdrawals",
-                {
-                    method:"POST",
-                    body:JSON.stringify(body)
-                }
-            );
+        const result = await api(
+            "/api/withdrawals",
+            {
+                method:"POST",
+                body:JSON.stringify({
+                    amountCoins: amount,
+                    provider: "faucetpay",
+                    faucetpayEmail: email
+                })
+            }
+        );
 
-
-        const data =
-            result.data ||
-            result;
-
+        const data = result.data || result;
 
         if(data.balance !== undefined){
-
-            currentUser.coins =
-                Number(
-                    data.balance
-                );
-
+            currentUser.coins = Number(data.balance);
         }else{
-
-            currentUser.coins =
-                Math.max(
-                    0,
-                    Number(
-                        currentUser.coins
-                    ) -
-                    amount
-                );
-
+            currentUser.coins = Math.max(
+                0,
+                Number(currentUser.coins || 0) - amount
+            );
         }
-
 
         updateUserUI();
 
+        document.getElementById("withdrawAmount").value = "";
+        document.getElementById("faucetpayEmail").value = "";
 
-        document.getElementById(
-            "withdrawAmount"
-        ).value =
-            "";
+        showToast("FaucetPay withdrawal request created.");
 
-
-        showToast(
-            "Withdrawal request created."
-        );
-
-
-        loadWithdrawals();
-
+        await loadWithdrawals();
 
     }catch(error){
 
-        showToast(
-            error.message
-        );
+        console.error("Withdrawal:", error);
+        showToast(error.message);
 
+    }finally{
+        if(button) button.disabled = false;
     }
-
 }
+
 
 
 async function loadWithdrawals(){
