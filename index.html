@@ -1139,12 +1139,7 @@ button:disabled{
 
                     </div>
 
-                    <button
-                        class="small-button"
-                        onclick="watchLifeAd()"
-                    >
-                        +1 Life
-                    </button>
+
 
                 </div>
 
@@ -2281,47 +2276,63 @@ function showPage(page){
 
 async function authenticate(){
 
+    /*
+     * The Mini App must be opened from Telegram.
+     */
     if(!tg){
-
         throw new Error(
             "Please open this app inside Telegram."
         );
-
     }
 
+    /*
+     * Always use Telegram's signed initData.
+     * Never use tg.initDataUnsafe for authentication.
+     */
     const initData =
-        tg.initData;
+        typeof tg.initData === "string"
+            ? tg.initData.trim()
+            : "";
 
     if(!initData){
-
         throw new Error(
-            "Telegram authentication data is missing."
+            "Telegram authentication data is missing. Please reopen the Mini App from Telegram."
         );
-
     }
+
+    console.log(
+        "Telegram initData prepared:",
+        {
+            length: initData.length,
+            telegramWebApp: true
+        }
+    );
 
     const result =
         await api(
             "/api/auth/telegram",
             {
-                method:"POST",
-                body:JSON.stringify({
-                    initData
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    initData: initData
                 })
             }
         );
 
     authToken =
         result.token ||
+        result.accessToken ||
         result.authToken ||
-        result.sessionToken;
+        result.sessionToken ||
+        null;
 
     if(!authToken){
-
         throw new Error(
             "Authentication token was not returned by the server."
         );
-
     }
 
     currentUser =
@@ -2330,11 +2341,31 @@ async function authenticate(){
         result.data ||
         null;
 
+    if(!currentUser){
+        throw new Error(
+            "Authenticated user information was not returned by the server."
+        );
+    }
+
     localStorage.setItem(
         "memory_card_auth_token",
         authToken
     );
 
+    try{
+        updateUserUI();
+    }catch(error){
+        console.warn(
+            "Unable to update user UI:",
+            error
+        );
+    }
+
+    return {
+        success: true,
+        token: authToken,
+        user: currentUser
+    };
 }
 
 
@@ -2967,109 +2998,6 @@ function sleep(ms){
 
 
 /* =========================================================
-   WATCH LIFE AD
-========================================================= */
-
-async function watchLifeAd(){
-
-    try{
-
-        if(
-            Number(currentUser?.lives || 0) >=
-            MAX_LIVES
-        ){
-
-            showToast(
-                "Your lives are already full."
-            );
-
-            return;
-
-        }
-
-        showToast(
-            "Preparing rewarded ad..."
-        );
-
-        currentAdIntent =
-            await createAdIntent(
-                "life"
-            );
-
-        await showRewardedAd();
-
-        showToast(
-            "Ad completed. Confirming reward..."
-        );
-
-        const verified =
-            await waitForVerifiedAd(
-                "life",
-                15000
-            );
-
-        if(!verified){
-
-            throw new Error(
-                "Ad completed, but the server has not received the reward yet. Please try again shortly."
-            );
-
-        }
-
-        const result =
-            await api(
-                "/api/rewards/life",
-                {
-                    method:"POST",
-                    body:JSON.stringify({})
-                }
-            );
-
-        const data =
-            result.data ||
-            result;
-
-        if(data.lives !== undefined){
-
-            currentUser.lives =
-                Number(data.lives);
-
-        }else{
-
-            currentUser.lives =
-                Math.min(
-                    MAX_LIVES,
-                    Number(
-                        currentUser.lives || 0
-                    ) + 1
-                );
-
-        }
-
-        updateUserUI();
-
-        showToast(
-            "+1 Life!"
-        );
-
-        await refreshRewardStatus();
-
-    }catch(error){
-
-        console.error(
-            error
-        );
-
-        showToast(
-            error.message
-        );
-
-    }
-
-}
-
-
-/* =========================================================
    GAME START
 ========================================================= */
 
@@ -3095,7 +3023,7 @@ async function startGame(
 
             showModal(
                 "No Lives",
-                "You have no lives available. Watch a rewarded ad to get +1 Life, or wait for your next life to recover."
+                "You have no lives available. Please wait for your next life to recover."
             );
 
             return;
@@ -3274,7 +3202,7 @@ async function startGame(
 
             showModal(
                 "No Lives",
-                "You do not have enough lives. Watch an ad to get +1 Life."
+                "You do not have enough lives. Please wait for your next life to recover."
             );
 
         }else if(
