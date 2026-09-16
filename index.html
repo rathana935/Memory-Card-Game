@@ -1158,38 +1158,98 @@ button:disabled{
             <div class="level-list">
 
                 <div class="level-card">
+
                     <div class="level-info">
-                        <div class="level-name">🟢 Easy</div>
-                        <div class="level-detail">4 × 4 cards • 8 pairs • 100 levels</div>
-                        <div class="level-reward">+10 coins</div>
+
+                        <div class="level-name">
+                            🟢 Easy
+                        </div>
+
+                        <div class="level-detail">
+                            4 × 4 cards • 100 levels
+                        </div>
+
+                        <div class="level-reward">
+                            +10 coins
+                        </div>
+
                     </div>
-                    <button class="primary-btn" onclick="startGame('easy')">
+
+                    <button
+                        class="primary-btn"
+                        onclick="startGame('easy')"
+                    >
                         Play
                     </button>
+
                 </div>
+
 
                 <div class="level-card">
+
                     <div class="level-info">
-                        <div class="level-name">🔵 Hard</div>
-                        <div class="level-detail">4 × 6 cards • 12 pairs • 100 levels</div>
-                        <div class="level-reward">+12 coins</div>
+
+                        <div class="level-name">
+                            🔵 Hard
+                        </div>
+
+                        <div class="level-detail">
+                            4 × 6 cards • 100 levels
+                        </div>
+
+                        <div class="level-reward">
+                            +12 coins
+                        </div>
+
                     </div>
-                    <button class="primary-btn" onclick="startGame('hard')">
+
+                    <button
+                        class="primary-btn"
+                        onclick="startGame('hard')"
+                    >
                         Play
                     </button>
+
                 </div>
+
 
                 <div class="level-card">
+
                     <div class="level-info">
-                        <div class="level-name">🔴 Difficult</div>
-                        <div class="level-detail">6 × 6 cards • 18 pairs • 100 levels</div>
-                        <div class="level-reward">+15 coins</div>
+
+                        <div class="level-name">
+                            🔴 Difficult
+                        </div>
+
+                        <div class="level-detail">
+                            6 × 6 cards • 100 levels
+                        </div>
+
+                        <div class="level-reward">
+                            +15 coins
+                        </div>
+
                     </div>
-                    <button class="primary-btn" onclick="startGame('difficult')">
+
+                    <button
+                        class="primary-btn"
+                        onclick="startGame('difficult')"
+                    >
                         Play
                     </button>
+
                 </div>
 
+            </div>
+
+            <div class="card-box" style="margin-top:14px">
+                <div class="section-title" style="margin-top:0">
+                    🧠 About Memory Coins
+                </div>
+                <div class="withdraw-meta" style="line-height:1.7">
+                    A Telegram memory-card game with server-verified puzzles, level progression, lives, daily rewards, referrals, leaderboard, achievements and a FaucetPay withdrawal workflow.
+                    Rewarded AdsGram ads are optional gameplay bonuses only.
+                </div>
             </div>
 
         </section>
@@ -1258,6 +1318,7 @@ button:disabled{
                 <div class="ad-desc">
                     Watch a rewarded AdsGram advertisement completely
                     to receive one additional life.
+                    <br><strong>Optional:</strong> you can continue playing without watching an ad.
                 </div>
 
                 <button
@@ -1338,6 +1399,31 @@ button:disabled{
                     <strong>2,500 coins</strong><br>
                     FaucetPay withdrawals are processed by the
                     backend payout worker.
+                </div>
+
+                <div class="card-box" style="padding:14px;margin-bottom:14px;background:#ffffff">
+                    <div class="section-title" style="margin-top:0">
+                        💸 Public Payout Proof
+                    </div>
+                    <div class="withdraw-meta" style="line-height:1.6;margin-bottom:10px">
+                        Completed payouts shown here come directly from the server's paid withdrawal records.
+                        Email addresses are masked for privacy.
+                    </div>
+                    <a
+                        href="https://t.me/IQTestKH"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="primary-btn"
+                        style="display:block;text-align:center;text-decoration:none;margin-bottom:12px"
+                    >
+                        📢 View Payment Channel
+                    </a>
+                    <div class="withdraw-meta" style="line-height:1.5;margin-bottom:10px">
+                        Verified completed payouts are also published publicly in our payment channel.
+                    </div>
+                    <div id="payoutProofList">
+                        Loading payout proofs...
+                    </div>
                 </div>
 
 
@@ -1513,6 +1599,10 @@ button:disabled{
 
 
                 <div class="result-buttons">
+
+                    <div class="ad-desc" style="margin-bottom:8px">
+                        Optional rewarded ad. Watching is not required to continue the game.
+                    </div>
 
                     <button
                         id="doubleRewardBtn"
@@ -1785,6 +1875,10 @@ const API_URL =
 const ADSGRAM_BLOCK_ID =
     "48148";
 
+// Public channel used to publish real, completed payout proofs.
+const PAYOUT_CHANNEL_URL =
+    "https://t.me/IQTestKH";
+
 const COINS_PER_USD =
     10000;
 
@@ -1892,6 +1986,19 @@ let currentAdIntent = null;
 let adPollingTimer = null;
 
 let leaderboardPeriod = "weekly";
+
+
+function getUnlockedLevel(difficulty){
+
+    const values = {
+        easy: currentUser?.easy_level ?? currentUser?.easyLevel ?? 1,
+        hard: currentUser?.medium_level ?? currentUser?.mediumLevel ?? 1,
+        difficult: currentUser?.hard_level ?? currentUser?.hardLevel ?? 1
+    };
+
+    return Math.max(1, Number(values[difficulty] || 1));
+
+}
 
 
 const LEVELS = {
@@ -2153,6 +2260,10 @@ function showPage(page){
 
         renderAchievements();
 
+    }
+
+    if(page === "wallet"){
+        loadPayoutProofs();
     }
 
     if(page === "referral"){
@@ -2962,36 +3073,6 @@ async function watchLifeAd(){
    GAME START
 ========================================================= */
 
-function getUnlockedLevel(difficulty){
-
-    if(!currentUser){
-        return 1;
-    }
-
-    const values = {
-        easy:
-            currentUser.easy_level ??
-            currentUser.easyLevel ??
-            1,
-
-        hard:
-            currentUser.medium_level ??
-            currentUser.mediumLevel ??
-            1,
-
-        difficult:
-            currentUser.hard_level ??
-            currentUser.hardLevel ??
-            1
-    };
-
-    const level = Number(values[difficulty]);
-
-    return Number.isInteger(level) && level >= 1
-        ? Math.min(level, LEVELS[difficulty].maxLevels)
-        : 1;
-}
-
 async function startGame(
     difficulty
 ){
@@ -3028,10 +3109,7 @@ async function startGame(
                     method:"POST",
                     body:JSON.stringify({
                         difficulty,
-                        level:
-                            getUnlockedLevel(
-                                difficulty
-                            )
+                        level: getUnlockedLevel(difficulty)
                     })
                 }
             );
@@ -3508,29 +3586,35 @@ function checkMatch(){
 async function completeGame(){
 
     if(!currentGame){
+
         return;
+
     }
+
 
     const expectedPairs =
-        LEVELS[currentLevel].pairs;
+        LEVELS[
+            currentLevel
+        ].pairs;
 
-    if(
-        matchedPairProof.length !== expectedPairs
-    ){
-        showToast("Puzzle proof is incomplete.");
-        return;
-    }
 
     /*
-     * Backend contract:
-     * matchedPairs   -> integer
-     * matchedIndexes -> flat card-index array
+     * Prevent INVALID_PUZZLE_PROOF
      */
-    const matchedIndexes =
-        matchedPairProof.flatMap(pair => [
-            Number(pair[0]),
-            Number(pair[1])
-        ]);
+
+    if(
+        matchedPairProof.length !==
+        expectedPairs
+    ){
+
+        showToast(
+            "Puzzle proof is incomplete."
+        );
+
+        return;
+
+    }
+
 
     const durationSeconds =
         Math.max(
@@ -3543,6 +3627,7 @@ async function completeGame(){
             )
         );
 
+
     try{
 
         const result =
@@ -3550,7 +3635,6 @@ async function completeGame(){
                 "/api/game/complete",
                 {
                     method:"POST",
-
                     body:JSON.stringify({
 
                         gameId:
@@ -3565,40 +3649,28 @@ async function completeGame(){
                         durationSeconds:
                             durationSeconds,
 
+                        /*
+                         * CRITICAL FIX
+                         */
                         matchedPairs:
                             matchedPairProof.length,
 
                         matchedIndexes:
-                            matchedIndexes
+                            matchedPairProof.flatMap(pair => [
+                                Number(pair[0]),
+                                Number(pair[1])
+                            ])
 
                     })
                 }
             );
 
-        /*
-         * /api/game/complete returns the
-         * service result at the top level.
-         */
+
         const data =
+            result.game ||
             result.data ||
             result;
 
-        const rewardCoins =
-            Number(
-                data.reward ??
-                data.rewardCoins ??
-                data.reward_coins ??
-                currentGame.rewardCoins ??
-                0
-            );
-
-        const balance =
-            Number(
-                data.coins ??
-                data.balance ??
-                currentUser?.coins ??
-                0
-            );
 
         currentResult = {
 
@@ -3606,10 +3678,18 @@ async function completeGame(){
                 currentGame.id,
 
             rewardCoins:
-                rewardCoins,
+                Number(
+                    data.rewardCoins ??
+                    data.reward_coins ??
+                    currentGame.rewardCoins
+                ),
 
             baseReward:
-                rewardCoins,
+                Number(
+                    data.baseReward ??
+                    data.base_reward ??
+                    currentGame.rewardCoins
+                ),
 
             doubleRewardAvailable:
                 data.doubleRewardAvailable ??
@@ -3617,60 +3697,51 @@ async function completeGame(){
                 true,
 
             balance:
-                balance,
-
-            moves:
-                moves,
-
-            durationSeconds:
-                durationSeconds,
-
-            completedLevel:
                 Number(
-                    data.completedLevel ??
-                    currentGame.level ??
-                    1
+                    data.balance ??
+                    currentUser.coins ??
+                    0
                 ),
 
-            nextLevel:
-                Number(
-                    data.nextLevel ??
-                    currentGame.level ??
-                    1
-                )
+            moves,
+            durationSeconds
 
         };
 
+
         currentUser.coins =
-            balance;
+            currentResult.balance;
 
-        if(data.lives !== undefined){
-            currentUser.lives =
-                Number(data.lives);
+
+        if(
+            data.todayCoins !== undefined
+        ){
+
+            currentUser.today_coins =
+                Number(
+                    data.todayCoins
+                );
+
         }
 
-        if(data.nextLevel !== undefined){
+        if(
+            data.gamesPlayed !== undefined
+        ){
 
-            const nextLevel =
-                Number(data.nextLevel);
+            currentUser.games_played =
+                Number(
+                    data.gamesPlayed
+                );
 
-            if(currentLevel === "easy"){
-                currentUser.easy_level =
-                    nextLevel;
-            }else if(currentLevel === "hard"){
-                currentUser.medium_level =
-                    nextLevel;
-            }else if(currentLevel === "difficult"){
-                currentUser.hard_level =
-                    nextLevel;
-            }
         }
+
 
         updateUserUI();
 
         showResult(
             currentResult
         );
+
 
     }catch(error){
 
@@ -4222,23 +4293,15 @@ async function requestWithdrawal(){
             }
         );
 
-        /*
-         * The withdrawal endpoint returns the
-         * withdrawal record, not an authoritative
-         * post-withdrawal balance.
-         *
-         * Reload /api/auth/me so the UI always
-         * reflects PostgreSQL.
-         */
+        const data = result.data || result;
+
         await loadMe();
+        updateUserUI();
 
         document.getElementById("withdrawAmount").value = "";
         document.getElementById("faucetpayEmail").value = "";
 
-        showToast(
-            result.message ||
-            "FaucetPay withdrawal request created."
-        );
+        showToast("FaucetPay withdrawal request created.");
 
         await loadWithdrawals();
 
@@ -4252,6 +4315,66 @@ async function requestWithdrawal(){
     }
 }
 
+
+
+async function loadPayoutProofs(){
+
+    const container = document.getElementById("payoutProofList");
+
+    if(!container) return;
+
+    container.innerHTML = "Loading payout proofs...";
+
+    try{
+
+        const result = await api("/api/payout-proofs?limit=20", {
+            method:"GET"
+        });
+
+        const data = result.data || result;
+        const payouts = Array.isArray(data.payouts) ? data.payouts : [];
+
+        if(!payouts.length){
+            container.innerHTML = `
+                <div class="withdraw-meta">
+                    No completed public payouts are available yet.
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = "";
+
+        payouts.forEach(payout => {
+            const item = document.createElement("div");
+            item.className = "withdraw-item";
+            item.innerHTML = `
+                <div>
+                    <div class="withdraw-amount">
+                        $${Number(payout.amountUsd || 0).toFixed(2)}
+                    </div>
+                    <div class="withdraw-meta">
+                        ${escapeHtml(payout.recipient || "Verified recipient")}<br>
+                        ${escapeHtml(formatDate(payout.paidAt || payout.requestedAt))}
+                    </div>
+                </div>
+                <div style="text-align:right">
+                    <div class="status done">PAID</div>
+                    <div class="withdraw-meta">
+                        ${escapeHtml(payout.providerTransactionId || "Verified")}
+                    </div>
+                </div>`;
+            container.appendChild(item);
+        });
+
+    }catch(error){
+        console.error("Payout proofs:", error);
+        container.innerHTML = `
+            <div class="withdraw-meta">
+                Payout proof is temporarily unavailable.
+            </div>`;
+    }
+
+}
 
 
 async function loadWithdrawals(){
@@ -4380,59 +4503,63 @@ async function loadReferrals(){
                 "/api/referrals"
             );
 
+
         const data =
             result.data ||
             result;
 
-        const referral =
-            data.referral ||
-            {};
 
         const link =
-            referral.link ||
-            referral.referralLink ||
-            referral.referral_link ||
+            data.referralLink ||
+            data.referral_link ||
             "";
+
 
         document.getElementById(
             "referralLink"
         ).value =
             link;
 
+
         document.getElementById(
             "refCount"
         ).textContent =
             formatNumber(
-                referral.count ??
-                referral.referralCount ??
-                referral.referral_count ??
+                data.referralCount ??
+                data.referral_count ??
+                data.count ??
                 0
             );
+
 
         document.getElementById(
             "refEarned"
         ).textContent =
             formatNumber(
-                referral.totalEarned ??
-                referral.total_earned ??
+                data.totalEarned ??
+                data.total_earned ??
                 0
             );
+
 
         const history =
             data.referrals ||
             data.history ||
             [];
 
+
         const container =
             document.getElementById(
                 "referralHistory"
             );
 
+
         container.innerHTML =
             "";
 
+
         history.forEach(
-            referralItem => {
+            referral => {
 
                 const div =
                     document.createElement(
@@ -4442,19 +4569,6 @@ async function loadReferrals(){
                 div.className =
                     "achievement";
 
-                const name =
-                    referralItem.username ||
-                    referralItem.firstName ||
-                    referralItem.first_name ||
-                    "Friend";
-
-                const reward =
-                    Number(
-                        referralItem.rewardCoins ??
-                        referralItem.reward_coins ??
-                        0
-                    );
-
                 div.innerHTML = `
                     <div class="achievement-icon">
                         👤
@@ -4462,19 +4576,20 @@ async function loadReferrals(){
 
                     <div class="achievement-info">
                         <div class="achievement-name">
-                            ${escapeHtml(name)}
+                            ${escapeHtml(
+                                referral.username ||
+                                referral.first_name ||
+                                "Friend"
+                            )}
                         </div>
 
                         <div class="achievement-desc">
-                            ${escapeHtml(
-                                referralItem.status ||
-                                "Referral"
-                            )}
+                            Successful referral
                         </div>
                     </div>
 
                     <div class="achievement-status done">
-                        +${formatNumber(reward)}
+                        +250
                     </div>
                 `;
 
@@ -4485,25 +4600,13 @@ async function loadReferrals(){
             }
         );
 
+
     }catch(error){
 
         console.error(
             "Referrals:",
             error
         );
-
-        const container =
-            document.getElementById(
-                "referralHistory"
-            );
-
-        if(container){
-            container.innerHTML =
-                `<div class="card-box"
-                      style="color:#dc2626">
-                    ${escapeHtml(error.message)}
-                 </div>`;
-        }
 
     }
 
