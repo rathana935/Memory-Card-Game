@@ -436,49 +436,6 @@ button:disabled{
 }
 
 /* =========================================================
-   LUCKY ROLL
-========================================================= */
-
-.lucky-box{
-    background:linear-gradient(135deg,#4c1d95,#7e22ce);
-    color:white;
-    border-radius:20px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 10px 25px rgba(126,34,206,.25);
-}
-
-.lucky-number{
-    font-size:44px;
-    font-weight:950;
-    margin:14px 0;
-}
-
-.lucky-reward{
-    font-size:18px;
-    font-weight:900;
-    color:#facc15;
-    min-height:25px;
-}
-
-.lucky-info{
-    font-size:11px;
-    color:#ddd6fe;
-    line-height:1.6;
-    margin:12px 0 15px;
-}
-
-.lucky-btn{
-    width:100%;
-    border:0;
-    border-radius:12px;
-    padding:13px;
-    background:#facc15;
-    color:#111827;
-    font-weight:950;
-}
-
-/* =========================================================
    REFERRAL
 ========================================================= */
 
@@ -1363,25 +1320,6 @@ button:disabled{
             </div>
 
 
-            <div class="ad-card">
-
-                <div class="ad-title">
-                    🎰 Lucky Roll
-                </div>
-
-                <div class="ad-desc">
-                    Watch a rewarded advertisement to unlock one
-                    Lucky Roll every 5 minutes.
-                </div>
-
-                <button
-                    class="ad-btn orange"
-                    onclick="openLuckyPage()"
-                >
-                    Open Lucky Roll
-                </button>
-
-            </div>
 
         </section>
 
@@ -1423,73 +1361,6 @@ button:disabled{
             <div id="podium" class="podium"></div>
 
             <div id="leaderboardList"></div>
-
-        </section>
-
-
-        <!-- =================================================
-             LUCKY
-        ================================================== -->
-
-        <section id="page-lucky" class="page">
-
-            <div class="page-title">
-                Lucky Roll
-            </div>
-
-            <div class="page-subtitle">
-                Watch an ad, then roll 1–99,999.
-            </div>
-
-            <div class="lucky-box">
-
-                <div>
-                    🎰
-                </div>
-
-                <div
-                    id="luckyNumber"
-                    class="lucky-number"
-                >
-                    ?
-                </div>
-
-                <div
-                    id="luckyReward"
-                    class="lucky-reward"
-                >
-                    Ready?
-                </div>
-
-                <div class="lucky-info">
-                    1–89,999 = +5<br>
-                    90,000–94,999 = +8<br>
-                    95,000–99,499 = +12<br>
-                    99,500–99,996 = +18<br>
-                    99,997–99,998 = +82<br>
-                    99,999 = +10,000 🎉
-                </div>
-
-                <button
-                    id="luckyBtn"
-                    class="lucky-btn"
-                    onclick="watchLuckyAd()"
-                >
-                    📺 Watch Ad & Roll
-                </button>
-
-                <div
-                    id="luckyCooldown"
-                    style="
-                        margin-top:10px;
-                        font-size:11px;
-                        color:#ddd6fe;
-                    "
-                >
-                    Checking...
-                </div>
-
-            </div>
 
         </section>
 
@@ -1887,15 +1758,6 @@ button:disabled{
 
     <button
         class="nav-item"
-        data-page="lucky"
-        onclick="showPage('lucky')"
-    >
-        <span class="nav-icon">🎰</span>
-        Lucky
-    </button>
-
-    <button
-        class="nav-item"
         data-page="wallet"
         onclick="showPage('wallet')"
     >
@@ -2073,8 +1935,6 @@ let matchedPairProof = [];
 let gameTimer = null;
 
 let lifeTimer = null;
-
-let luckyTimer = null;
 
 let currentResult = null;
 
@@ -2352,19 +2212,6 @@ function showPage(page){
 
     }
 
-    if(page === "lucky"){
-
-        refreshRewardStatus();
-
-    }
-
-}
-
-
-function openLuckyPage(){
-
-    showPage("lucky");
-
 }
 
 
@@ -2607,10 +2454,6 @@ async function refreshRewardStatus(){
         updateUserUI();
 
         updateLifeCountdown(
-            data
-        );
-
-        updateLuckyCountdown(
             data
         );
 
@@ -4087,195 +3930,6 @@ function playAgain(){
 
 
 /* =========================================================
-   LUCKY ROLL
-========================================================= */
-
-function updateLuckyCountdown(data){
-
-    const element = document.getElementById("luckyCooldown");
-    const button = document.getElementById("luckyBtn");
-
-    if(!element || !button) return;
-
-    const nextRoll = data?.luckyNextAt || data?.lucky_next_at || null;
-
-    clearInterval(luckyTimer);
-
-    if(!nextRoll){
-        element.textContent = "Watch an ad to roll.";
-        button.disabled = false;
-        return;
-    }
-
-    function tick(){
-
-        const remaining = Math.max(
-            0,
-            new Date(nextRoll).getTime() - Date.now()
-        );
-
-        if(remaining <= 0){
-            element.textContent = "Ready! Watch an ad.";
-            button.disabled = false;
-            clearInterval(luckyTimer);
-            return;
-        }
-
-        button.disabled = true;
-
-        const totalSeconds = Math.ceil(remaining / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-
-        element.textContent = `Next roll in ${
-            String(minutes).padStart(2,"0")
-        }:${String(seconds).padStart(2,"0")}`;
-    }
-
-    tick();
-    luckyTimer = setInterval(tick,1000);
-}
-
-
-
-async function watchLuckyAd(){
-
-    const button =
-        document.getElementById(
-            "luckyBtn"
-        );
-
-    button.disabled =
-        true;
-
-
-    try{
-
-        currentAdIntent =
-            await createAdIntent(
-                "lucky_roll"
-            );
-
-
-        await showRewardedAd();
-
-
-        showToast(
-            "Ad completed. Confirming reward..."
-        );
-
-
-        const verified =
-            await waitForVerifiedAd(
-                "lucky_roll",
-                15000
-            );
-
-
-        if(!verified){
-
-            throw new Error(
-                "The server has not received the ad reward yet. Please try again shortly."
-            );
-
-        }
-
-
-        const result =
-            await api(
-                "/api/rewards/lucky-roll",
-                {
-                    method:"POST"
-                }
-            );
-
-
-        const data =
-            result.data ||
-            result;
-
-
-        const number =
-            Number(
-                data.rollNumber ??
-                data.roll_number ??
-                data.number ??
-                0
-            );
-
-
-        const reward =
-            Number(
-                data.rewardCoins ??
-                data.reward_coins ??
-                0
-            );
-
-
-        const balance =
-            Number(
-                data.balance ??
-                currentUser.coins
-            );
-
-
-        currentUser.coins =
-            balance;
-
-
-        document.getElementById(
-            "luckyNumber"
-        ).textContent =
-            formatNumber(
-                number
-            );
-
-
-        document.getElementById(
-            "luckyReward"
-        ).textContent =
-            "+" +
-            formatNumber(
-                reward
-            ) +
-            " coins";
-
-
-        updateUserUI();
-
-
-        showToast(
-            "Lucky Roll: +" +
-            formatNumber(reward) +
-            " coins!"
-        );
-
-
-        await refreshRewardStatus();
-
-
-    }catch(error){
-
-        console.error(
-            "Lucky roll:",
-            error
-        );
-
-        showToast(
-            error.message
-        );
-
-    }finally{
-
-        button.disabled =
-            false;
-
-    }
-
-}
-
-
-/* =========================================================
    LEADERBOARD
 ========================================================= */
 
@@ -5117,7 +4771,6 @@ function updateTelegramBackButton(){
         currentPage === "wallet" ||
         currentPage === "rank" ||
         currentPage === "bonus" ||
-        currentPage === "lucky" ||
         currentPage === "achievements" ||
         currentPage === "referral";
 
