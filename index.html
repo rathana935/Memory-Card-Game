@@ -717,12 +717,12 @@ button:disabled{
     grid-template-columns:repeat(4,1fr);
 }
 
-.memory-board.medium{
-    grid-template-columns:repeat(4,1fr);
+.memory-board.hard{
+    grid-template-columns:repeat(6,1fr);
 }
 
-.memory-board.hard{
-    grid-template-columns:repeat(4,1fr);
+.memory-board.difficult{
+    grid-template-columns:repeat(6,1fr);
 }
 
 .card{
@@ -1166,7 +1166,7 @@ button:disabled{
                         </div>
 
                         <div class="level-detail">
-                            2 × 4 cards • 100 levels
+                            6 × 6 cards • 100 levels
                         </div>
 
                         <div class="level-reward">
@@ -1190,11 +1190,11 @@ button:disabled{
                     <div class="level-info">
 
                         <div class="level-name">
-                            🔵 Medium
+                            🔵 Hard
                         </div>
 
                         <div class="level-detail">
-                            3 × 4 cards • 100 levels
+                            4 × 6 cards • 100 levels
                         </div>
 
                         <div class="level-reward">
@@ -1205,7 +1205,7 @@ button:disabled{
 
                     <button
                         class="primary-btn"
-                        onclick="startGame('medium')"
+                        onclick="startGame('difficult')"
                     >
                         Play
                     </button>
@@ -1218,7 +1218,7 @@ button:disabled{
                     <div class="level-info">
 
                         <div class="level-name">
-                            🔴 Hard
+                            🔴 Difficult
                         </div>
 
                         <div class="level-detail">
@@ -1841,8 +1841,7 @@ const COINS_PER_USD =
 const MIN_WITHDRAW =
     2500;
 
-const MAX_LIVES =
-    5;
+const MAX_LIVES = 5;
 
 
 /* =========================================================
@@ -1947,28 +1946,28 @@ let leaderboardPeriod = "weekly";
 
 const LEVELS = {
 
-    easy:{
-        rows:2,
-        cols:4,
-        pairs:4,
-        reward:10,
-        maxLevels:100
+    easy: {
+        rows: 4,
+        cols: 4,
+        pairs: 8,
+        reward: 10,
+        maxLevels: 100
     },
 
-    medium:{
-        rows:3,
-        cols:4,
-        pairs:6,
-        reward:12,
-        maxLevels:100
+    hard: {
+        rows: 4,
+        cols: 6,
+        pairs: 12,
+        reward: 12,
+        maxLevels: 100
     },
 
-    hard:{
-        rows:4,
-        cols:4,
-        pairs:8,
-        reward:15,
-        maxLevels:100
+    difficult: {
+        rows: 6,
+        cols: 6,
+        pairs: 18,
+        reward: 15,
+        maxLevels: 100
     }
 
 };
