@@ -1158,86 +1158,36 @@ button:disabled{
             <div class="level-list">
 
                 <div class="level-card">
-
                     <div class="level-info">
-
-                        <div class="level-name">
-                            🟢 Easy
-                        </div>
-
-                        <div class="level-detail">
-                            6 × 6 cards • 100 levels
-                        </div>
-
-                        <div class="level-reward">
-                            +10 coins
-                        </div>
-
+                        <div class="level-name">🟢 Easy</div>
+                        <div class="level-detail">4 × 4 cards • 8 pairs • 100 levels</div>
+                        <div class="level-reward">+10 coins</div>
                     </div>
-
-                    <button
-                        class="primary-btn"
-                        onclick="startGame('easy')"
-                    >
+                    <button class="primary-btn" onclick="startGame('easy')">
                         Play
                     </button>
-
                 </div>
 
-
                 <div class="level-card">
-
                     <div class="level-info">
-
-                        <div class="level-name">
-                            🔵 Hard
-                        </div>
-
-                        <div class="level-detail">
-                            4 × 6 cards • 100 levels
-                        </div>
-
-                        <div class="level-reward">
-                            +12 coins
-                        </div>
-
+                        <div class="level-name">🔵 Hard</div>
+                        <div class="level-detail">4 × 6 cards • 12 pairs • 100 levels</div>
+                        <div class="level-reward">+12 coins</div>
                     </div>
-
-                    <button
-                        class="primary-btn"
-                        onclick="startGame('difficult')"
-                    >
+                    <button class="primary-btn" onclick="startGame('hard')">
                         Play
                     </button>
-
                 </div>
 
-
                 <div class="level-card">
-
                     <div class="level-info">
-
-                        <div class="level-name">
-                            🔴 Difficult
-                        </div>
-
-                        <div class="level-detail">
-                            4 × 4 cards • 100 levels
-                        </div>
-
-                        <div class="level-reward">
-                            +15 coins
-                        </div>
-
+                        <div class="level-name">🔴 Difficult</div>
+                        <div class="level-detail">6 × 6 cards • 18 pairs • 100 levels</div>
+                        <div class="level-reward">+15 coins</div>
                     </div>
-
-                    <button
-                        class="primary-btn"
-                        onclick="startGame('hard')"
-                    >
+                    <button class="primary-btn" onclick="startGame('difficult')">
                         Play
                     </button>
-
                 </div>
 
             </div>
@@ -3012,6 +2962,36 @@ async function watchLifeAd(){
    GAME START
 ========================================================= */
 
+function getUnlockedLevel(difficulty){
+
+    if(!currentUser){
+        return 1;
+    }
+
+    const values = {
+        easy:
+            currentUser.easy_level ??
+            currentUser.easyLevel ??
+            1,
+
+        hard:
+            currentUser.medium_level ??
+            currentUser.mediumLevel ??
+            1,
+
+        difficult:
+            currentUser.hard_level ??
+            currentUser.hardLevel ??
+            1
+    };
+
+    const level = Number(values[difficulty]);
+
+    return Number.isInteger(level) && level >= 1
+        ? Math.min(level, LEVELS[difficulty].maxLevels)
+        : 1;
+}
+
 async function startGame(
     difficulty
 ){
@@ -3047,7 +3027,11 @@ async function startGame(
                 {
                     method:"POST",
                     body:JSON.stringify({
-                        difficulty
+                        difficulty,
+                        level:
+                            getUnlockedLevel(
+                                difficulty
+                            )
                     })
                 }
             );
@@ -3524,35 +3508,29 @@ function checkMatch(){
 async function completeGame(){
 
     if(!currentGame){
-
         return;
-
     }
-
 
     const expectedPairs =
-        LEVELS[
-            currentLevel
-        ].pairs;
-
-
-    /*
-     * Prevent INVALID_PUZZLE_PROOF
-     */
+        LEVELS[currentLevel].pairs;
 
     if(
-        matchedPairProof.length !==
-        expectedPairs
+        matchedPairProof.length !== expectedPairs
     ){
-
-        showToast(
-            "Puzzle proof is incomplete."
-        );
-
+        showToast("Puzzle proof is incomplete.");
         return;
-
     }
 
+    /*
+     * Backend contract:
+     * matchedPairs   -> integer
+     * matchedIndexes -> flat card-index array
+     */
+    const matchedIndexes =
+        matchedPairProof.flatMap(pair => [
+            Number(pair[0]),
+            Number(pair[1])
+        ]);
 
     const durationSeconds =
         Math.max(
@@ -3565,7 +3543,6 @@ async function completeGame(){
             )
         );
 
-
     try{
 
         const result =
@@ -3573,6 +3550,7 @@ async function completeGame(){
                 "/api/game/complete",
                 {
                     method:"POST",
+
                     body:JSON.stringify({
 
                         gameId:
@@ -3587,22 +3565,40 @@ async function completeGame(){
                         durationSeconds:
                             durationSeconds,
 
-                        /*
-                         * CRITICAL FIX
-                         */
                         matchedPairs:
-                            matchedPairProof
+                            matchedPairProof.length,
+
+                        matchedIndexes:
+                            matchedIndexes
 
                     })
                 }
             );
 
-
+        /*
+         * /api/game/complete returns the
+         * service result at the top level.
+         */
         const data =
-            result.game ||
             result.data ||
             result;
 
+        const rewardCoins =
+            Number(
+                data.reward ??
+                data.rewardCoins ??
+                data.reward_coins ??
+                currentGame.rewardCoins ??
+                0
+            );
+
+        const balance =
+            Number(
+                data.coins ??
+                data.balance ??
+                currentUser?.coins ??
+                0
+            );
 
         currentResult = {
 
@@ -3610,18 +3606,10 @@ async function completeGame(){
                 currentGame.id,
 
             rewardCoins:
-                Number(
-                    data.rewardCoins ??
-                    data.reward_coins ??
-                    currentGame.rewardCoins
-                ),
+                rewardCoins,
 
             baseReward:
-                Number(
-                    data.baseReward ??
-                    data.base_reward ??
-                    currentGame.rewardCoins
-                ),
+                rewardCoins,
 
             doubleRewardAvailable:
                 data.doubleRewardAvailable ??
@@ -3629,51 +3617,60 @@ async function completeGame(){
                 true,
 
             balance:
+                balance,
+
+            moves:
+                moves,
+
+            durationSeconds:
+                durationSeconds,
+
+            completedLevel:
                 Number(
-                    data.balance ??
-                    currentUser.coins ??
-                    0
+                    data.completedLevel ??
+                    currentGame.level ??
+                    1
                 ),
 
-            moves,
-            durationSeconds
+            nextLevel:
+                Number(
+                    data.nextLevel ??
+                    currentGame.level ??
+                    1
+                )
 
         };
 
-
         currentUser.coins =
-            currentResult.balance;
+            balance;
 
-
-        if(
-            data.todayCoins !== undefined
-        ){
-
-            currentUser.today_coins =
-                Number(
-                    data.todayCoins
-                );
-
+        if(data.lives !== undefined){
+            currentUser.lives =
+                Number(data.lives);
         }
 
-        if(
-            data.gamesPlayed !== undefined
-        ){
+        if(data.nextLevel !== undefined){
 
-            currentUser.games_played =
-                Number(
-                    data.gamesPlayed
-                );
+            const nextLevel =
+                Number(data.nextLevel);
 
+            if(currentLevel === "easy"){
+                currentUser.easy_level =
+                    nextLevel;
+            }else if(currentLevel === "hard"){
+                currentUser.medium_level =
+                    nextLevel;
+            }else if(currentLevel === "difficult"){
+                currentUser.hard_level =
+                    nextLevel;
+            }
         }
-
 
         updateUserUI();
 
         showResult(
             currentResult
         );
-
 
     }catch(error){
 
@@ -4225,23 +4222,23 @@ async function requestWithdrawal(){
             }
         );
 
-        const data = result.data || result;
-
-        if(data.balance !== undefined){
-            currentUser.coins = Number(data.balance);
-        }else{
-            currentUser.coins = Math.max(
-                0,
-                Number(currentUser.coins || 0) - amount
-            );
-        }
-
-        updateUserUI();
+        /*
+         * The withdrawal endpoint returns the
+         * withdrawal record, not an authoritative
+         * post-withdrawal balance.
+         *
+         * Reload /api/auth/me so the UI always
+         * reflects PostgreSQL.
+         */
+        await loadMe();
 
         document.getElementById("withdrawAmount").value = "";
         document.getElementById("faucetpayEmail").value = "";
 
-        showToast("FaucetPay withdrawal request created.");
+        showToast(
+            result.message ||
+            "FaucetPay withdrawal request created."
+        );
 
         await loadWithdrawals();
 
@@ -4383,63 +4380,59 @@ async function loadReferrals(){
                 "/api/referrals"
             );
 
-
         const data =
             result.data ||
             result;
 
+        const referral =
+            data.referral ||
+            {};
 
         const link =
-            data.referralLink ||
-            data.referral_link ||
+            referral.link ||
+            referral.referralLink ||
+            referral.referral_link ||
             "";
-
 
         document.getElementById(
             "referralLink"
         ).value =
             link;
 
-
         document.getElementById(
             "refCount"
         ).textContent =
             formatNumber(
-                data.referralCount ??
-                data.referral_count ??
-                data.count ??
+                referral.count ??
+                referral.referralCount ??
+                referral.referral_count ??
                 0
             );
-
 
         document.getElementById(
             "refEarned"
         ).textContent =
             formatNumber(
-                data.totalEarned ??
-                data.total_earned ??
+                referral.totalEarned ??
+                referral.total_earned ??
                 0
             );
-
 
         const history =
             data.referrals ||
             data.history ||
             [];
 
-
         const container =
             document.getElementById(
                 "referralHistory"
             );
 
-
         container.innerHTML =
             "";
 
-
         history.forEach(
-            referral => {
+            referralItem => {
 
                 const div =
                     document.createElement(
@@ -4449,6 +4442,19 @@ async function loadReferrals(){
                 div.className =
                     "achievement";
 
+                const name =
+                    referralItem.username ||
+                    referralItem.firstName ||
+                    referralItem.first_name ||
+                    "Friend";
+
+                const reward =
+                    Number(
+                        referralItem.rewardCoins ??
+                        referralItem.reward_coins ??
+                        0
+                    );
+
                 div.innerHTML = `
                     <div class="achievement-icon">
                         👤
@@ -4456,20 +4462,19 @@ async function loadReferrals(){
 
                     <div class="achievement-info">
                         <div class="achievement-name">
-                            ${escapeHtml(
-                                referral.username ||
-                                referral.first_name ||
-                                "Friend"
-                            )}
+                            ${escapeHtml(name)}
                         </div>
 
                         <div class="achievement-desc">
-                            Successful referral
+                            ${escapeHtml(
+                                referralItem.status ||
+                                "Referral"
+                            )}
                         </div>
                     </div>
 
                     <div class="achievement-status done">
-                        +250
+                        +${formatNumber(reward)}
                     </div>
                 `;
 
@@ -4480,13 +4485,25 @@ async function loadReferrals(){
             }
         );
 
-
     }catch(error){
 
         console.error(
             "Referrals:",
             error
         );
+
+        const container =
+            document.getElementById(
+                "referralHistory"
+            );
+
+        if(container){
+            container.innerHTML =
+                `<div class="card-box"
+                      style="color:#dc2626">
+                    ${escapeHtml(error.message)}
+                 </div>`;
+        }
 
     }
 
